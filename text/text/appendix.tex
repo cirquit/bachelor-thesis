@@ -11,43 +11,46 @@
 %                             - Use the same commands (`chapter', `section', ...) as in main text
 % -------------------------------------------------------------------------------------------------
 %
-\chapter{Beispiel Anhang}
-\small{
-\begin{verbatim}
-/*
-* This code serves the initialization of an auxiliary probability array.
-* The array holds at each position a pre-calculated probability for the index
-* of that position. The probability reflects the Zipf-distribution for the
-* corresponding indexes
-*/
-Set zipfExponent to 1.4
-Set sum to 0
-Set maxInteger to 65535
-FOR i = 0 to maxInteger
-probArray[i] = 1/pow(i + 1, zipfExponent)
-Set sum = sum + probArray[i]
-END FOR
-FOR i = 0 to maxInteger
-Set probArray[i] = probArray[i]/sum
-END FOR
-FOR i = 1 to maxInteger
-Set probArray[i] = probArray[i] + probArray[i] = probArray[i-1]
-END FOR
+% \cite{andr04}
+\chapter{Appendix}
+``Da der Fokus sehr stark auf dem Machine Learning Bereich lag, aber die Domäne viele Tücken hatte und die Implementierung einen Großteil der Zeit in Anspruch genommen hat, wird es hier behandelt''
 
-/*
-* This code gets called in case a Zipf-distributed number is required. It
-* iterates over the probability array until the chosen random number v
-* is less than the value stored at the current array position i. The value of
-* the array position will be returned as the calculated Zipf-distributed
-* number
-*/
-Set v to a random number between 0 and 1
-FOR i = 0 to maxInteger
-IF v < probArray[i] THEN
-RETURN i
-END IF
-END FOR
-RETURN 0
+\section{Architektur}
+    ``Die Architektur des gesamten Projektes wurde in Haskell geplant, da ich mit externen und unsicheren Implementierungen arbeite''\\
+    ``Automatische Docs, weil ich gute Kommentare schreibe''
+    ``Hat geholfen Fehler schneller zu finden und Codereuse ist super geil gewesen'' \\
+    ``Bild von der Kommunikation zeichnen''
+    \subsection{Haskell Server}
+        ``Module'' \\
+        ``Typklassen sind geil'' \\ 
+        ``Globale Config ist nice'' \\
+        ``Automatische Serialisierung mit Aeson''
+    \subsection{Python Agent}
+        ``Module''     \\
+        ``CMD Parser'' \\
+        ``Keras''
+    \subsection{Kommunikation}
+        ``Haskell <-> Python: JSON ist von Python nativ als Dict unterstützt''
+        ``Python <-> Server: FFI Python to C++ (HFO) + (Zitat)''
+    \subsection{Parallelisierungsmöglichkeiten}
+        ``Bottleneck ist die Kommunikation über JSON-Files''
 
-\end{verbatim}
-}
+\section{Statistik}
+    ``Für Cross Entropy hab ich Varianz und STD mit Seed gebraucht, für MonadRandom gabs keine Implementierung, dsw hab ich eine eigne gemacht''
+    \subsection{Lineares Laufzeit und Speicherkomplexität für Evaluation}
+        ``Folds sind supernice, minimale Erklärung, Links zu Gabriels Blog, Vorzeigen von Effizienz''
+    \subsection{Stabile Varianzfunktion}
+        ``Catastrophic Cancellation, erste Lösung, zweite Lösung von Gabriel mit E-Mail Austausch''
+
+\section{Problematiken}
+    ``Server ist scheiße, nicht besonders gut dokumentiert''
+    \subsection{HFO Server}
+        ``Erfolgreicher Durchlauf ist abhängig vom Computer, bzw. von der Leistung'' \\
+        ``Undefinierte Lags zwischen Step 2k-8k'' \\
+        ``Bedienung vom Visualizer ist nicht richtig erklärt'' \\
+        ``Visualizer produziert nicht benutzbare logs, nur das erste Spiel ist `abspielbar', rest ist korrupt '' \\
+        ``Einloggen von Spielern nimmt sehr viel Zeit in Kauf, dafür muss ein Austausch von Policies on-the-fly passieren'' \\
+        ``Visualzer bricht bei 24k Steps ab, aber ohne ihn funktioniert die Simulation nicht, laggt nur rum'' \\
+        ``Es gibt keine Zeitangaben wie lange ein Agent nicht aktiv sein darf, wenn er keine Entscheidung abgibt wird er ignoriert, dieser Fall sollte behandelt werden für kompetative Benutzung''
+    \subsection{HFO Python Library}
+        ``Kodierung von Zuständen in denen sich der Agent befindet gibt ein Hexdump zurück, man muss per Hand die ENUMS herausfinden und hardcoden'' \\

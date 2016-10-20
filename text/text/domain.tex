@@ -1,0 +1,53 @@
+\chapter{Umsetzung in RoboCup2D}
+    ``Was ist RoboCup'' \\
+    ``Was für Ligen gibt es'' \\
+    ``Was für eine Domäne ist es im Vergleich zu anderen''
+    \section{Half Field Offense}
+        ``Was ist Half Field Offense'' \\
+        ``Wie ist das Spielfeld aufgebaut''
+        \subsection{Zustandsraum}
+            ``Unterschiedliche Zustandsräume, kommt drauf an wie viele Spieler aufm Feld sind (zitat vom HFO Paper)''\\
+            ``Angepasst für Maschinen (zitat HFO)'' \\
+            ``Umrechnung für Menschen''
+        \subsection{Aktionsraum}
+            ``Gibt 5 nicht parametrisierte Aktionen, die wir benutzt haben''\\
+            ``Gibt noch andere parametrisierte''
+        \subsection{Einschränkungen}
+            ``Sparse Fitness''                 \\
+            ``Simulation Learning''            \\
+            ``Hochdimensional Kontinuierlich'' \\
+            ``Auch genannt Black Box RL''
+
+    \section{Implementierung der Algorithmen}
+        ``Server in Haskell, HFOServer in C++, Agenten in Python''
+        \subsection{Wahrscheinlichkeitsverteilung von Aktionen}
+            ``Einfache Kodierung von Aktionen durch eine Wahrscheinlichkeitsverteilung, der Agent sampelt raus''\\
+            ``Parametrisierung''
+        \subsection{Cross Entropy mit DCT}
+            ``Parametrisierung''
+        \subsection{Neuroevolution mit DCT}
+            ``Parametrisierung''
+        \subsection{CoSyNE mit DCT}
+            ``Parametrisierung''
+
+    \section{Resultate}
+        ``Die Resultate wurden an einem PC mit Specs ausgeführt''
+        \subsection{1v1}
+            ``Domäne nochmal erklären, Zustandsraum spezifizieren, sodass alles replizierbar ist''
+            \subsubsection*{Wahrscheinlichkeitsverteilung}
+                ``Graph zeigen, Interpretation bzw. Erklärung''
+                ``Nach ~ 25 Episoden stagniert''
+            \subsubsection*{Cross Entropy}
+                ``Graph zeigen, Interpretation bzw. Erklärung''
+                ``Aggressivität''
+                ``Nach ~ 50 Episoden stagniert''
+            \subsubsection*{Neuroevolution}
+                ``Graph zeigen, Interpretation bzw. Erklärung''
+            \subsubsection*{CoSyNE}
+                ``Graph zeigen, Interpretation bzw. Erklärung''
+        \subsection{Vergleich}
+            ``Sicherheit <-> Aggressivität steht im Kontra zur Stabilität der Algorithmen''\\
+            ``Wenn Zeit ein Faktor wäre'' \\
+            ``Wenn Sicherheit ein Faktor wäre'' \\
+
+
