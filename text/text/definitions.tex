@@ -1,3 +1,5 @@
+% pdflatex -shell-escape -interaction=nonstopmode main.tex && pdflatex -shell-escape -interaction=nonstopmode main.tex
+
 \chapter{Definitionen}
 
 % \begin{itemize}
@@ -9,10 +11,33 @@
 Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} im Zusammenhang mit \textbf{neuronalen Netzen} und der \textbf{Cross Entropy Method}. Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fouriertransformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Methode zum GA.
 
     \section{Genetische Algorithmen}
-        ``Die Motivation von Genetischen Algorithmen kam aus der Natur bla blubb''\\
-        ``Im Folgenden behandeln wir die grundlegenden Operationen die einen GA ausmachen''
+        % ``Die Motivation von Genetischen Algorithmen kam aus der Natur bla blubb''\\
+        % ``Im Folgenden behandeln wir die grundlegenden Operationen die einen GA ausmachen''
+
+        % Ein Genetischer Algorithmus gehört zu den \textbf{unsupervised Learning} Methoden, die sich als Ziel setzen eine verborgene Struktur zu analysieren, ohne zu gekenntzeichnete Daten zu haben. John Holland
+
+        Ein genetischer Algorithmus ist ein Optimierungsverfahren, der meiner Meinung nach an einem natürlichen Vorgang am Besten zu erklären ist. Wir stellen uns beispielsweise zehn Antilopen und ein Gepard vor
+
+        \begin{figure}[htbp]
+            \begin{subfigure}{0.5\textwidth}
+                \includegraphics[width = 1\textwidth, left]{../pictures/cheetah.png}
+            \end{subfigure}
+            \begin{subfigure}{0.5\textwidth}
+                \includegraphics[width = 0.73\textwidth, right]{../pictures/antelope.png}
+            \end{subfigure}
+            \caption{Illustration von einem Geparden und einer Antilope \label{fig:somelabel}}
+        \end{figure}
+
+
+
+
+
         \subsection{Selektion}
-            ``Die besten x prozent werden genommen''
+            % ``Die besten x prozent werden genommen''
+
+            Der Selektionsschritt kommt zustande, wenn wir eine bereits evaluierte Population haben und spaltet sie in zwei Teile. Es wird oft als fester Prozentsatz $\alpha$ von der Gesamtpopulation kodiert (citation needed).
+
+            Der Selektionsschritt teilt die Population and der Stelle $\alpha * \textit{Länge der Population}$ zwei Teile auf.
         \subsection{Kreuzung}
             ``Es gibt viele Kreuzungsoperationen, wir behandeln nur welche am Beispiel von einer Liste'' \\
             ``one-point, two-point und n-point crossover''
@@ -55,8 +80,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 
     \section{Cross Entropy}
         ``Cross Entropy ist eine andere Möglichkeit um die Individuen darzustellen, anstatt von Zahlen, hab ich nun pro Coeffizient eine Normalverteilung habe mit Mean und STD'' \\
-        \cite{boer05}
-
+        (cite boer07)
         \subsection{Normalverteilung}
             ``Was ist eine Normalverteilung'' \\
             ``Wie programmiere ich eine Normalverteilung selber, Box-Muller, Randomness, Haskellcode Beispiel'' \\
