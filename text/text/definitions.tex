@@ -16,7 +16,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 
         % Ein Genetischer Algorithmus gehört zu den \textbf{unsupervised Learning} Methoden, die sich als Ziel setzen eine verborgene Struktur zu analysieren, ohne zu gekenntzeichnete Daten zu haben. John Holland
 
-        Ein genetischer Algorithmus ist ein Optimierungsverfahren, der meiner Meinung nach an einem natürlichen Vorgang am Besten zu erklären ist. Wir stellen uns beispielsweise zehn Antilopen und ein Gepard vor
+        Ein genetischer Algorithmus, im folgenden als \textit{GA} abgekürzt, ist ein Optimierungsverfahren, der meiner Meinung nach an natürlichen Feinden am Besten zu erklären ist. Wir stellen uns beispielsweise eine Gruppe Antilopen und einen Geparden vor.\\
 
         \begin{figure}[htbp]
             \begin{subfigure}{0.5\textwidth}
@@ -27,24 +27,240 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             \end{subfigure}
             \caption{Illustration von einem Geparden und einer Antilope \label{fig:somelabel}}
         \end{figure}
+        \noindent
+        Sei unser Gepard durch seine Geschwindigkeit den Antilopen überlegen, dann wird das Antilopenrudel über Zeit in ihrer Anzahl sinken. Dabei werden die langsamsen Antilopen dem Geparden erlegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Diese werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Antilopen-Babys bekommen die ähnlich schnell sind. Dieser Vorgang bezeichnet sich als \textbf{Kreuzung}. Die Überlebenswahrscheinlichkeit des Rudels wird dadurch erhöht und wir nennen diesen Parameter \textbf{Fitness}.\\
+        \\
+        Jede Antilope, oder auch \textbf{Individuum} genannt, hat eine eigene Fitness, die es aber bei Geburt noch nicht weiß, da sie noch nie vor einem Geparden weglaufen musste. Erst nachdem sie einmal erfolgreich entwischt ist, können wir uns vorstellen wie was ihre Fitness ist.\\
+        \\
+        Ganz selten wird ein Antilopen-Baby geboren das ein klein bisschen längere Beine hat als alle anderen, dabei hat solche Beine keiner in dem gesamten Rudel. Sie erlauben ihm schneller zu Laufen, aber leider hat diese Ausprägung nicht nur Vorteile, da die Standhaftigkeit darunter leidet. Dieser unerwartete Veränderung in den Kindern heißt \textbf{Mutation}.\\
+        \\
+        Fassen wir zusammen, nachdem jede Antilope die nach dem Raubkatzenangriff überlebt und sich fortgepflanzt hat, bekommen wir hoffentlich wieder eine vollzähliges Rudel, das wir \textbf{Population} nennen. Nach all diesen Schritten fängt der Kampf um das Überleben wieder an und geht solange, bis sich entweder Antilopen entwickeln die dem Gepard ständig entkommen können, oder bis die gesamte Population ausstirbt.\\
+        \\
+        Damit haben wir die wichtigsten Begrifflichkeiten von einem genetischen Algorithmus erklärt und kommen zu der Frage, wie wir ihn umsetzen.
 
+        \subsection{Individuen}
 
+            Ein Individuum besteht aus einer Kodierung, auch \textbf{Zustandsraum} genannt, die die aussagekräftigen Eigenschaften von ihn ausmachen. Für eine Antilope wäre beispielweise die folgende Kodierung möglich.
 
+            \begin{multicols}{2}
+                \hfill \\[-10mm]
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |l|r| } 
+                        \hline
+                        Höchstgeschwindigkeit    & $ 50\; \frac{km}{h}$   \\ \hline
+                        Beinlänge                & $ 47\; cm          $   \\ \hline
+                        Gewicht                  & $ 43\; kg          $   \\ \hline
+                        Alter in Jahren          & $ 12               $   \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Kodierung einer Antelope \label{fig:somelabel}}
+                \end{table}\par
+
+                \noindent
+                Die Aufgabe von unserem GA ist ein oder mehrere Individuen zu finden die es schaffen vor dem Geparden wegzulaufen. Da wir aber nicht wissen ob die vorgeschlagene Kodierung gut oder schlecht ist, müssen wir Antilopen mit zufälligen Ausprägungen erstellen und dann den Algorithmus arbeiten lassen.
+            \end{multicols}\\
+            \\
+            \noindent
+            Das schaffen wir indem wir Grenzen für die Kodierung festlegen und später zufällige Werte in diesen Rahmen ausprobieren.
+
+            \begin{table}[H]
+                \begin{center}
+                \begin{tabular}{ |l|r|r| } 
+                    \hline
+                    Ausprägung               & Minimaler Wert        & Maximaler Wert       \\ \hline
+                    Höchstgeschwindigkeit    & $ 40\; \frac{km}{h}$  & $ 80\; \frac{km}{h}$ \\ \hline
+                    Beinlänge                & $ 40\; cm          $  & $ 65\; cm          $ \\ \hline
+                    Gewicht                  & $ 39\; kg          $  & $ 63\; kg          $ \\ \hline
+                    Alter in Jahren          & $  2               $  & $ 20               $ \\ \hline
+                \end{tabular}
+                \end{center}
+                \caption{Grenzen für die Kodierung \label{fig:somelabel}}
+            \end{table}
+            \noindent
+            Für die Kodierung unseres Individuums eignet sich ein Array von Zahlen. Um die gesamte Population darzustellen würde ein 2-dimensionales Array reichen, wobei jedes Element ein einzelnes Individuum darstellt. \textit{(evtl Grafik)}
+
+        \subsection{Simulation}
+            Nachdem wir unsere Population an Antilopen erstellt haben, müssen wir sie in eine Simulationsumgebung schicken, die ihre Fitness misst. In unserem Beispiel müssten wir eine Physiksimulation mit einem Geparden programmieren, die nach einer Zeitspanne zurückgibt welche Antilopen überlebt haben. \\
+            \noindent
+            Die Komplexität der Simulation hat einen großen Einfluss darauf ob der GA eine Lösung finden kann. \textit{(Grafik)}
 
 
         \subsection{Selektion}
             % ``Die besten x prozent werden genommen''
 
-            Der Selektionsschritt kommt zustande, wenn wir eine bereits evaluierte Population haben und spaltet sie in zwei Teile. Es wird oft als fester Prozentsatz $\alpha$ von der Gesamtpopulation kodiert (citation needed).
+            Nachdem die Simulation vorbei ist, bekommen wir eine Population von Antilopen die jeweils überlebt hat oder nicht. Da die Fitness ist in diesem Fall binär ist, sortieren wir das Rudel aller Antilopen absteigend, wobei das Überleben natürlich mehr wert ist.\\
+            \\
+            Nach dem Sortieren müssen wir ein prozentualen Betrag wählen, wieviele Eltern wir aus der Population wählen. In unserer Implementierung nennen wir diesen Parameter $\alpha$. \textit{(Grafik)}
 
-            Der Selektionsschritt teilt die Population and der Stelle $\alpha * \textit{Länge der Population}$ zwei Teile auf.
         \subsection{Kreuzung}
-            ``Es gibt viele Kreuzungsoperationen, wir behandeln nur welche am Beispiel von einer Liste'' \\
-            ``one-point, two-point und n-point crossover''
+            
+            Die guten Individuen wurden ausgewählt und können sich fortpflanzen. Dafür nehmen wir jeweils zwei Individuen und nehmen zufällig die Ausprägungen von jeweils dem Vater und der Mutter. 
+            \\[10mm]
+            \begin{multicols}{2}
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |r| } 
+                        \hline
+                        \hfill Ausprägungen  \\ \hline
+                        \cellcolor{blue!25} $ 56\; \frac{km}{h}$ \\ \hline
+                        \cellcolor{blue!25} $ 42\; cm          $ \\ \hline
+                        \cellcolor{blue!25} $ 51\; kg          $ \\ \hline
+                        \cellcolor{blue!25} $  10              $ \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Kodierung des Vaters \label{fig:somelabel}}
+                \end{table}
+
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |r| } 
+                        \hline
+                        \hfill Ausprägungen  \\ \hline
+                        \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
+                        \cellcolor{yellow!25} $ 55\; cm          $ \\ \hline
+                        \cellcolor{yellow!25} $ 49\; kg          $ \\ \hline
+                        \cellcolor{yellow!25} $  8               $ \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Kodierung der Mutter \label{fig:somelabel}}
+                \end{table}
+
+            \end{multicols}
+
+            \begin{multicols}{2}
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |r| } 
+                        \hline
+                        \hfill Ausprägungen  \\ \hline
+                        \cellcolor{blue!25} $ 56\; \frac{km}{h}$ \\ \hline
+                        \cellcolor{yellow!25} $ 55\; cm          $ \\ \hline
+                        \cellcolor{yellow!25} $ 49\; kg          $ \\ \hline
+                        \cellcolor{blue!25} $  10              $ \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Kodierung vom Kind Nr.1 \label{fig:somelabel}}
+                \end{table}
+
+
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |r| } 
+                        \hline
+                        \hfill Ausprägungen  \\ \hline
+                        \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
+                        \cellcolor{blue!25} $ 42\; cm          $ \\ \hline
+                        \cellcolor{blue!25} $ 51\; kg          $ \\ \hline
+                        \cellcolor{yellow!25} $  8               $ \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Kodierung vom Kind Nr.2 \label{fig:somelabel}}
+                \end{table}
+            \end{multicols}
+
+            In unserem Beispiel haben wir die Kinder mit dem folgenden Python Code konstruiert.
+            \begin{minted}[escapeinside=||, xleftmargin=-50pt]{python}
+                vater  = [56,42,51,10]
+                mutter = [62,55,49,8]
+                kind1  = []
+                kind2  = []
+                for i in range(kodierung.length):
+                    r = random.uniform(0,1)
+                    if (r > 0.5):
+                        kind1[i] = vater[i]
+                        kind2[i] = mutter[i]
+                    else:
+                        kind1[i] = mutter[i]
+                        kind2[i] = vater[i]
+            \end{minted}
+            \noindent
+            Diese Art und Weise zwei Individuen zu kreuzen nennt sich \textbf{n-point crossover}, weil wir die Kodierung an undefiniert vielen Stellen unterbrechen und wieder zusammensetzen. Es gibt noch andere Kreuzungsmethoden die eine eine feste Anzahl von Aufteilungen benutzen, wie \textbf{one-} oder \textbf{two-point crossover}. \\
+            \\
+            \noindent
+            Um einen Unterschied zwischen diesen Methoden zu erkennen, stellen wir uns vor dass das Alter in Zusammenhang mit der Höchstgeschwindigkeit steht, weil ältere Tiere nicht mehr die Leistung bringen können die sie mal gebracht haben. Wenn nun ein Kind gezeugt wird, dass in unserem Beispiel ein hohes Alter vererbt, bringt ihm die Höchstgeschwindikeit nichts mehr. Deshalb wäre es besser, wenn diese Ausprägungen zusammen übernommen werden, weil dadurch eine höhere Fitness garantiert werden kann. Kreuzungsmethoden die die Kodierung nicht oft aufspalten verletzen diese Eigenschaft seltener als \textit{n-point crossover}.\\
+            \\
+            \noindent
+            Es ist zu beachten dass je nach Implementierung nur eins der beiden Kinder weiter verwendet wird, weil dann die Repopulation einfach  einfacher ist, die Varianz nicht zu stark gesenkt wird und keinerlei Information verloren geht, weil die Eltern in der Population die Kodierung weiter tragen.
+
+
         \subsection{Mutation}
-            ``Mutation ist hilfreich um die Varianz der Population etwas zu erhöhen'' \\
+%            ``Mutation ist hilfreich um die Varianz der Population etwas zu erhöhen'' \\
+            Nachdem die Kinder erstellt wurden, müssen wir die Kodierung der Individuen etwas verändern, damit die Varianz in der Gesamtpopulation erhöht wird. Das machen wir indem wir durch die Kodierung der Kinder durchgehen und jede Ausprägung mit einer geringen Wahrscheinlichkeit verändern. Diese nennen wir $\beta$.
+
+            \begin{multicols}{2}
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |r| } 
+                        \hline
+                        \hfill Ausprägungen  \\ \hline
+                        \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
+                        \cellcolor{blue!25}   $ 42\; cm          $ \\ \hline
+                        \cellcolor{blue!25}   $ 51\; kg          $ \\ \hline
+                        \cellcolor{yellow!25} $  8               $ \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Kodierung vom Kind Nr.2 \label{fig:somelabel}}
+                \end{table}
+
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |r| } 
+                        \hline
+                        \hfill Ausprägungen  \\ \hline
+                        \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
+                        \cellcolor{blue!25}   $ 42\; cm          $ \\ \hline
+                        \cellcolor{red!25}    $ 45\; kg          $ \\ \hline
+                        \cellcolor{yellow!25} $  8               $ \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Mutierte Kodierung vom Kind Nr.2 \label{fig:somelabel}}
+                \end{table}
+            \end{multicols}
+\newpage
+            Der Python Code sieht hier folgendermaßen aus:
+            \begin{minted}[escapeinside=||, xleftmargin=-50pt]{python}
+                kinder = [k1, k2...]
+                beta   = 0.1
+                for i in range(kinder.length):
+                    for j in range(kodierung.length):
+                        if (r > beta):
+                            kinder[i][j] = sampleNewFrom(kodierung[j].range)
+            \end{minted}
+            \noindent
+            Dieser Schritt ist wichtig damit man die Möglichkeit hat aus lokalen Fitnessminimas rauszukommen, weil es schnell passieren kann dass sich über Generationen gleichwertige Ausprägungen weiterverbreiten, da sie die derzeit beste Lösung vorschlagen. Ohne Mutation würde der GA zu dieser Lösung konvergieren ohne Bessere in Betracht zu ziehen.\\
+            \\
+            \noindent
+            In manchen Fällen kann man die Mutation noch weiter parametrisieren indem man ein Veränderungsfaktor als Argument hinzufügt. Diese Technik benutzt man, wenn die Kodierung nicht trivialerweise verändert werden kann, da sonst bestimmte Eigenschaften verloren gehen. In Kapitel 3 wird genau so ein Fall besprochen, weil wir unsere Individuen durch eine Wahrscheinlichkeitsverteilung darstellen. 
+
         \subsection{Repopulation}
-            ``Ist ein Schritt der oft implizit beim Crossover passiert, (zitat finden), wird nicht nur benutzt um Kinder und Eltern zu verknüpfen, sondern auch völlig neue Individuen hinzuzufügen''
+            % ``Ist ein Schritt der oft implizit beim Crossover passiert, (zitat finden), wird nicht nur benutzt um Kinder und Eltern zu verknüpfen, sondern auch völlig neue Individuen hinzuzufügen''
+
+            Die Eltern wurden ausgewählt, die Kindern gezeugt und mutiert, nun müssen wir die Population in eine Form bringen sodass die Simulation neu gestartet werden kann. Wir stellen das Problem wieder an einem Beispiel dar.
+
+            \begin{minted}[escapeinside=||, xleftmargin=-50pt]{python}
+
+                population = [i1,i2,...]                  # population.length = 10
+                alpha      = 0.4
+                eltern     = selection(population, alpha) # eltern.length = 4
+                kinder     = crossover(eltern)            # kinder.length = 4
+                beta       = 0.1
+                mutkinder  = mutation(kinder, beta)       # mutkinder.length = 4
+
+                newpopulation = eltern + mutkinder        # newpopulation.length = 8
+            \end{minted}
+            \noindent
+            Man kann einfach erkennen dass uns zwei Individuen zum Neustart der Simulation fehlen. Dieses Problem kann man auf viele Weisen angehen, die ihre Vorteile und Nachteile haben. 
+
+            \subsubsection*{Mehr Kinder erstellen}
+                Es ist möglich während der Kreuzung solange Kinder zu erzeugen, bis die Population wieder ihre Ausgangsgröße angenommen hat. Ein Vorteil wäre, dass diese Individuen mit wahrscheinlich besseren Ausgangskodierungen starten als inherent Neue. Der Nachteil ist jedoch die gesenkte Varianz in der Population und die erhöhte Wahrscheinlichkeit zum Feststecken in einem loken Fitnessminima.
+
+            \subsubsection*{Nicht selektiere Individuen nachfüllen}
+                Man kann die nicht benutzen Individuen aus der vorherigen Population zum Auffüllen benutzen, was sich aber nur dadurch begründen würde, wenn die Chance besteht dass sie in der erneuten Simulation besser abschneiden als bisher. Ansonsten nehmen sie einen Platz einem potenziell besseren Individuum weg.
+
+            \subsubsection*{Neue Individuen erstellen}
+                In der unserer Implementierung haben wir uns für das Nachfüllen von inherent neuen Individuen entschieden, da dadurch die Varianz der Population angehoben wird und dadurch mehr Lösungen möglich sind. Ein Nachteil sind die Kinder die dadurch keinen Platz bekommen, aber da dadurch keine Information verloren geht ist es zu vernachlässigen.
+
 
     \section{Neuroevolution}
         ``Neuroevolution beschäftigt sich mit der Verknüpfung von Genetischen Algorithmen und Neuronalen Netzn''
@@ -53,9 +269,9 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                 ``Formel von Machine Learning zeigen'' \\
                 ``Backpropagation wird angesprochen aber nicht ausführlich erklärt''\\
             \subsubsection*{Dense Ebene}
-                ``Kleines Beispielnetz aufmalen und durchrechnen''
+                ``Kleines Beispielnetz aufmalen und evtl durchrechnen''
             \subsubsection*{LSTM Ebene}
-                ``Kleines Beispielnetz aufmalen und durchrechnen''
+                ``Kleines Beispielnetz aufmalen und evtl durchrechnen''
             \subsubsection*{Softmax Ebene}
                 ``Erklärung bieten wieso es sowas gibt und was für eine Formel angewendet wird''
         \subsection{Verbindung mit genetischen Algorithmen}

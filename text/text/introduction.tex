@@ -1,47 +1,41 @@
 \chapter{Einführung}
 
-\begin{itemize}
-    \item Finden von Lösungen ohne große Anpassung von Hyperparamteren
-    \item Domänen mit starken Einschränkungen (sparse Fitness, hochdimensionale kontinuierlicher Zustandsraum)
-    \item Maschinelles Lernen ist eine potenziell große Hilfe zur Entwicklung von besseren Systemen
-\end{itemize}
+% \begin{itemize}
+%     \item Finden von Lösungen ohne große Anpassung von Hyperparamteren
+%     \item Domänen mit starken Einschränkungen (sparse Fitness, hochdimensionale kontinuierlicher Zustandsraum)
+%     \item Maschinelles Lernen ist eine potenziell große Hilfe zur Entwicklung von besseren Systemen
+% \end{itemize}
 
-Die Nützlichkeit von Automatisierung ist offensichtlich
-Viele benutzen Neuronale Netze mit Backpropagation, andere Möglichkeiten wie man Netze trainiert fallen ausm Fokus
-Ich spreche ein paar Möglichkeiten an und untersuche sie auf ihre Nützlichkeit in Fälle wo Backprop nicht möglich ist
-
+Für viele Probleme benutzt man heutzutage neuronale Netze (zitat), zum Beispiel zur Klassifikation von Bildern mit \textbf{Convolutional Neural Nets} (MNIST) oder zur Generierung von Text mithilfe von \textbf{Recurrent Neural Nets} \textit{(karpathy.github.io/2015/05/21/rnn-effectiveness)}. Diese allgemeinen Klassifikatoren (zitat) werden mithilfe von Stochastic Gradient Descend \textbf{SGD} trainert, einer Technik die es erlaubt Minima in der Graphlandschaft anzustreben. Andere Möglichkeiten wie man neuronale Netze trainieren kann fallen dabei aus dem Fokus. Manche Domänen erlauben uns jedoch nicht SGD zu benutzen und ich spreche in dieser Arbeit anderweitige Möglichkeiten an und untersuche sie auf ihre Nützlichkeit in Domänen mit spärlicher Fitness.
 
 \section{Aufgabenstellung}
-\begin{itemize}
-    \item Verschiedene Techniken auf multi agenten systeme anzuwenden
-    \item Kooperation und homogenität von Gewichten im Netz untersuchen
-    \item Schauen ob ichs hinkriege
-\end{itemize}
+% \begin{itemize}
+%     \item Verschiedene Techniken auf multi agenten systeme anzuwenden
+%     \item Kooperation und homogenität von Gewichten im Netz untersuchen
+%     \item Schauen ob ichs hinkriege
+% \end{itemize}
 
-In dieser Arbeit beschäftige ich mich mit der Implementierung von verschiedenen Machine Learning Algorithmen für eine Domäne Half Field Offense mit sparsen Fitnesssignalen und einem hochdimensionalen kontinuierlichen Zustandsraum und stelle diese gegenüber. Aus dem Vergleich kann man die Nützlichkeit für andere Domänen mit ähnlichen Einschränkungen erahnen. 
+In dieser Arbeit beschäftige ich mich mit der Entwicklung von neuronalen Netzen mithilfe von genetischen Algorithmen für die Domäne \textbf{Half Field Offense}. Diese hat spärliche Fitnesssignale, einen hochdimensionalen kontinuierlichen Zustandsraum und hat keine Möglichkeit die perfekte Lösung für eine Situation zu ermitteln. Aus dem Vergleich zwischen den verschiedenen Implementierungen kann man den Nutzen für andere Domänen mit ähnlichen Einschränkungen erahnen. 
 
 \section{Motivation}
-\begin{itemize}
-    \item Praktikum - DARTS
-    \item Gespräche mit Kommilitonen
-    \item Abstrakte Zusammenhänge nutzen um Abhängigkeiten auf der Domänenseite zu abstrahieren
-\end{itemize}
+% \begin{itemize}
+%     \item Praktikum - DARTS
+%     \item Gespräche mit Kommilitonen
+%     \item Abstrakte Zusammenhänge nutzen um Abhängigkeiten auf der Domänenseite zu abstrahieren
+% \end{itemize}
 
-Im Siemens Praktikum bin ich das erste Mal mit Genetischen Algorithmen in Kontakt gekommen
-Es kam die Frage auf welche Domänen ein Schwierigkeiten für Machine Learning Tasks darstellen und in der Industrie anwendbar sind
-Verteilte Systeme, Roboter die zusammen etwas lernen, etc
-Fitness Engineering, also die Anpassung von dem Rewardsignal, ist oft nötig für Aufgaben wo der Reward von viele Zeitschritten und kontinuierlichen Aktionsketten abhängt
-Deshalb kam die Idee dies auf die Probe zu stellen, mit einem Fußballsimulator und neuen Algorithmen, die einen Durchbruch erreicht haben (CoSyNE)
+Im Siemens Praktikum bin ich das erste Mal mit genetischen Algorithmen in Kontakt gekommen. Dabei lernte ich dass viele Domänen mit denen man sich in der Industrie auseinandersetzt mit herkömmlichen Deep Learning Methoden nur aufwendig bis gar nicht lösbar sind. 
+Oft wird als Teillösung \textbf{Fitness Engineering} betrieben, also die Anpassung des Rewardsignals wenn die Aufgaben von vielen Zeitschritten und kontinuierlichen Aktionsketten abhängen. Deshalb habe ich mich alternative Techniken zur Entwicklung von neuronalen Netzen untersucht.
 
 \section{Aufbau der Arbeit}
-\begin{itemize}
-    \item Erklärung der Grundlagen, GA, NN, DCT, CoSyNE, CE
-    \item Aufbaut der Domäne, Implementierung der Algorithmen
-    \item Präsentation der Resultate
-    \item Ausblick
-    \item Die Implementierung und Problematiken sind im Appendix
-    \item Veränderungen während der Arbeit
-\end{itemize}
+%\begin{itemize}
+%    \item Erklärung der Grundlagen, GA, NN, DCT, CoSyNE, CE
+%    \item Aufbaut der Domäne, Implementierung der Algorithmen
+%    \item Präsentation der Resultate
+%    \item Ausblick
+%    \item Die Implementierung und Problematiken sind im Appendix
+%    \item Veränderungen während der Arbeit
+%\end{itemize}
 
 
-Im Rahmen dieser Arbeit werden im Kapitel 2 die Grundlagen von Genetischen Algorithen und deren Verknüpfung zu neuronalen Netzen und der Cross Entropy Method erklärt und anschaulich dargestellt. Kapitel 3 beschäftigt sich mit der Domäne, Parametrisierung der Algorithmen und der jeweiligen Resultate. Das Kapitel 4 gibt einen Ausblick in weitere Verbesserungsmöglichkeiten und legt verwandte Felder dar. Im Appendix wird die Implementierung von dem gesamten System überschlagen, Problematiken angesprochen und Lehren die für eine zukünftige Arbeit gezogen werden können angesprochen.
+Im Rahmen dieser Arbeit werden im Kapitel 2 die Grundlagen von Genetischen Algorithen und deren Verknüpfung zu neuronalen Netzen und der Cross Entropy Method erklärt und anschaulich dargestellt. Kapitel 3 beschäftigt sich mit der Domäne, Parametrisierung der Algorithmen und der jeweiligen Resultate. Das Kapitel 4 gibt einen Ausblick in weitere Verbesserungsmöglichkeiten und legt verwandte Felder dar. Im Appendix wird die Implementierung vom gesamten System überschlagen, Problematiken angesprochen und Lehren die für eine zukünftige Arbeit gezogen werden können angesprochen.
