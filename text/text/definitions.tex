@@ -25,7 +25,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             \begin{subfigure}{0.5\textwidth}
                 \includegraphics[width = 0.73\textwidth, right]{../pictures/antelope.png}
             \end{subfigure}
-            \caption{Illustration von einem Geparden und einer Antilope \label{fig:somelabel}}
+            \caption{Illustration von einem Geparden und einer Antilope \label{fig:anitlopeAndGepard}}
         \end{figure}
         \noindent
         Sei unser Gepard durch seine Geschwindigkeit den Antilopen überlegen, dann wird das Antilopenrudel über Zeit in ihrer Anzahl sinken. Dabei werden die langsamsen Antilopen dem Geparden erlegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Diese werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Antilopen-Babys bekommen die ähnlich schnell sind. Dieser Vorgang bezeichnet sich als \textbf{Kreuzung}. Die Überlebenswahrscheinlichkeit des Rudels wird dadurch erhöht und wir nennen diesen Parameter \textbf{Fitness}.\\
@@ -55,12 +55,11 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     \end{tabular}
                     \end{center}
                     \caption{Kodierung einer Antelope \label{fig:somelabel}}
-                \end{table}\par
+                \end{table}
 
                 \noindent
                 Die Aufgabe von unserem GA ist ein oder mehrere Individuen zu finden die es schaffen vor dem Geparden wegzulaufen. Da wir aber nicht wissen ob die vorgeschlagene Kodierung gut oder schlecht ist, müssen wir Antilopen mit zufälligen Ausprägungen erstellen und dann den Algorithmus arbeiten lassen.
-            \end{multicols}\\
-            \\
+            \end{multicols}
             \noindent
             Das schaffen wir indem wir Grenzen für die Kodierung festlegen und später zufällige Werte in diesen Rahmen ausprobieren.
 
