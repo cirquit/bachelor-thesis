@@ -284,14 +284,26 @@
             ``Parametrisierung''
 
     \section{Resultate}
-        Im folgenden Teil beschreiben wir die Resultate und versuchen diese zu begründen. Durchschnittlich hat eine Trainigsphase mit 300 Generationen, Population der Größe 50 und 25 Episoden pro Team 30 Stunden gedauert. Die Simulationen wurden auf einem Laptop mit einem Intel i5 mit 2.9GHz und 4GB Arbeitsspeicher ausgeführt.
+        Im folgenden Teil beschreiben wir die Resultate und versuchen diese zu begründen. Durchschnittlich hat eine Trainigsphase mit 300 Generationen, Population der Größe 50 und 25 Episoden pro Team 30 Stunden gedauert. Die Simulationen wurden auf einem Laptop mit einem Intel i5 mit 2.9GHz und 4GB Arbeitsspeicher ausgeführt.\\[2mm]
+        \noindent
+        Nachdem wir pro Algorithmus die besten 5 Individuen ermitteln, lassen wir sie jeweils 10000 Spiele spielen, um die erfasste Fitness auf ihre Stabilität zu testen. \\[2mm]
+        \noindent
+        Sei $F_{Entwicklung}$ die entwickelte Fitness und $F_{Test}$ die neu getestete Fitness. Die Stabilität wird danach gemessen wie gering die Abweichung von $F_{Test}$ zu $F_{Entwicklung}$ ist. Je kleiner die Abweichung, umso stabiler und sicherer spielt das Individuum.\\
+
+        \begin{center}
+            \begin{math}
+                \text{Abweichung} = \frac{F_{Entwicklung} - F_{Test}}{F_{Entwicklung}}
+            \end{math}
+        \end{center}
 
         \subsection{1v1}
             Unser Lernziel für die HFO Domäne war einen offensiven Spieler zu trainieren der gegen einen vom Server gesteuerten Torwart so gut es geht Tore schießt. Das haben wir mit vier in Kapitel 2 angesprochenend Algorithmen getestet und stellen die Resultate vor. 
+
+\newpage
             \subsubsection*{Wahrscheinlichkeitsverteilung}
                 \begin{multicols}{2}
                     \noindent
-                    Die Wahrscheinlichkeitsverteilung war der erste naive Ansatz um zu überprüfen ob die Domäne bereits durch eine einfache Kodierung lösbar ist. Leider ging die Varianz in der Population nach der $25$ Generation gegen $0$ und die Verteilung sah folgendermaßen aus:
+                    Die Wahrscheinlichkeitsverteilung war der erste naive Ansatz um zu überprüfen ob die Domäne bereits durch eine einfache Kodierung lösbar ist. Leider ging die Varianz in der Population nach der $10$ Generation gegen $0$ und die Verteilung sah folgendermaßen aus:
                     \begin{table}[H]
                         \begin{center}
                         \begin{tabular}{ |l|r| } 
@@ -308,25 +320,165 @@
 
                     \begin{figure}[H]
                         \includegraphics[scale=0.5]{../pictures/summary/actiondist-fitness.png}\\
-                        \caption{Fitness Graph für die \\Wahrscheinlichkeitsverteilung}\label{fig:temp}
+                        \caption{Fitness Graph für die \\Wahrscheinlichkeitsverteilung}\label{fig:graph-ac}
                     \end{figure}
                 \end{multicols}
-%                     \includegraphics[scale=0.4]{../pictures/summary/actiondist-fitness.png}
-%                     \includegraphics[scale=0.4]{../pictures/summary/cross-entropy-fitness.png}
-%                     \includegraphics[scale=0.3]{../pictures/summary/cosyne-fitness.png}
-%                     \includegraphics[scale=0.3]{../pictures/summary/neural-fitness.png}
+                \noindent
+                Die gesamte Population ist zu dem Ergebnis konvergiert, dass jede Aktion gleich wahrscheinlich ist, bis auf \textit{Shoot}. Die Schussaktion hat wahrscheinlich zu oft zu einem Schuss ins Aus geführt, was sofort das Spiel als zu Gunsten des Torwarts beendet.\\
 
+                \noindent
+                Die maximale erreichte Fitness beträgt 28\% und schwankt im Bereich von $[10,25]$. Leider stellt sich heraus dass die besten fünf Werte Ausreißer waren und keinesfalls die durchschnittliche Gewinnwahrscheinlichkeit darstellen. 
+
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |l|r|r|r| } 
+                        \hline
+                        \hfill & Trained Fitness   & Tested Fitness  &          Error    \\ \hline
+                          Nr.1 &          28.00\%  &          6.82\% &          75.64\%  \\  
+                          Nr.2 &          25.00\%  &          5.54\% &          77.84\%  \\  
+                          Nr.3 &          24.00\%  &          5.40\% &          77.50\%  \\ 
+                          Nr.4 &          24.00\%  &          6.33\% &          73.62\%  \\ 
+                          Nr.5 &          22.00\%  &          6.65\% &          69.78\%  \\ \hline
+                          Mean &  \textbf{24.60\%} & \textbf{6.15\%} & \textbf{74.88\%}  \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Stabilität der besten 5 Wahrscheinlichkeitsverteilungs Individuen \label{fig:actiondisttable}}
+                \end{table}
+                \noindent
+                Die durchschnittliche Gewinnwahrscheinlichkeit liegt bei 6.15\% und wenn man den Spieler beobachtet kann man sich beim besten Willen nicht erklären, wie er überhaupt schafft Tore zu schießen, da er meistens versucht ins Tor zu laufen während ihm der Ball abgenommen wird. Es ist aber auch nicht verwunderlich, da der Spieler weder weiß wo der Torwart ist, ob er den Ball hat, noch wo er sich auf dem Spielfeld befindet. \\
+
+                \begin{center} \textit{(Link zum Video)} \end{center}
+
+\newpage
             \subsubsection*{Cross Entropy}
-                ``Graph zeigen, Interpretation bzw. Erklärung''
-                ``Aggressivität''
-                ``Nach ~ 50 Episoden stagniert''
+%                ``Graph zeigen, Interpretation bzw. Erklärung''
+%                ``Aggressivität''
+%                ``Nach ~ 50 Episoden stagniert''
+                \begin{multicols}{2}
+                    \noindent
+                    \\[5mm]
+                    Die Cross Entropy Methode hat sehr interessante Ergebnisse produziert, da sie durchschnittlich eine 4\% bessere Fitness hat, die Stabilität jedoch um 3\% schlechter ist, als wie die Wahrscheinlichkeitsverteilung.\\[2mm]
+                    Sie ist nach ungefähr 50 Generationen konvergiert und die maximale erreichte Fitness beträgt 32\% und schwankt im Bereich von $[15,30]$. 
+                    \begin{figure}[H]
+                       \includegraphics[scale=0.5]{../pictures/summary/cross-entropy-fitness.png}
+                       \caption{Fitness Graph für Cross Entropy}\label{fig:graph-ce}
+                    \end{figure}
+                \end{multicols}
+
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |l|r|r|r| } 
+                        \hline
+                        \hfill & Trained Fitness   & Tested Fitness  &          Error    \\ \hline
+                          Nr.1 &          32.00\%  &          7.26\% &          77.31\%  \\  
+                          Nr.2 &          32.00\%  &          7.46\% &          76.69\%  \\  
+                          Nr.3 &          28.00\%  &          7.37\% &          73.68\%  \\ 
+                          Nr.4 &          28.00\%  &          7.27\% &          74.04\%  \\ 
+                          Nr.5 &          28.00\%  &          3.46\% &          87.64\%  \\ \hline
+                          Mean &  \textbf{29.60\%} & \textbf{6.56\%} & \textbf{77.87\%}  \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Stabilität der besten 5 Cross Entropy Individuen \label{fig:crossentropytable}}
+                \end{table}
+                \noindent
+                Von den Werten sieht man kaum einen Unterschied zu der Wahrscheinlichkeitsverteilung, aber in der Simulation merkt man ein extrem aggressives Verhalten vom Spieler. Der Agent schießt den Ball sehr oft und versucht bereits nachdem er die Mitte des Spielfeldes überquert hat ein Tor zu schießen, unabhängig davon ob er in einer guten Position ist. Das führt natürlich wieder dazu dass er öfter ins Aus schießt, ist aber wesentlich interessanter anzuschauen, da er von Spiel zu Spiel unberechenbar ist. \\
+
+                \begin{center} \textit{(Link zum Video}) \end{center}
+\newpage
             \subsubsection*{Neuroevolution}
-                ``Graph zeigen, Interpretation bzw. Erklärung''
+                \begin{multicols}{2}
+                    \noindent
+                    \\[5mm]
+                    Der Ansatz die Gewichte naiv als DCT Koeffizienten darzustellen führe zu den besten Ergebnissen. Das stärkste Individuum hat knapp jedes zweite Spiel gewonnen und ist mehr als 3-mal stabiler als die Cross-Entropy Lösung. Die Fitness hat sich nach ungefähr 150 Generationen im Bereich von $[30,45]$ eingependelt.
+                    \begin{figure}[H]
+                       \includegraphics[scale=0.5]{../pictures/summary/neural-fitness.png}
+                       \caption{Fitness Graph für Cross Entropy}\label{fig:graph-ne}
+                    \end{figure}
+                \end{multicols}
+
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |l|r|r|r| } 
+                        \hline
+                        \hfill & Trained Fitness   & Tested Fitness  &          Error    \\ \hline
+                          Nr.1 &          44.00\%  &         19.04\% &          56.72\%  \\  
+                          Nr.2 &          44.00\%  &         20.18\% &          54.14\%  \\  
+                          Nr.3 &          42.00\%  &         20.07\% &          52.21\%  \\ 
+                          Nr.4 &          40.00\%  &         20.10\% &          49.75\%  \\ 
+                          Nr.5 &          40.00\%  &         21.28\% &          46.80\%  \\ \hline
+                          Mean &  \textbf{42.00\%} & \textbf{20.13\%} & \textbf{51.93\%}  \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Stabilität der besten 5 Neurevolution Individuen \label{fig:neuroevotable}}
+                \end{table}
+
+                \noindent
+                Die stabile Fitness ist bei knapp 20\% und damit gewinnen diese Individuen durchschnittliche jedes fünfte Spiel. Die Spielweise von diesem Ansatz könnte man \textit{geplant} erklären, da der Spieler oft zum Tor rennt, kurz vor dem Strafraum stehen bleibt und von Ecke zu Ecke pendelt bis er den Torwart etwas aus dem Tor gelockt hat um ein Tor zu schießen. Wenn er mal verliert, ist es weil er sofort zum Beginn des Spieles sich ins Aus schießt, oder zu nah am Tor ist, sodass ihm der Ball abgenommen wird.\\
+
+                \begin{center} \textit{(Link zum Video)} \end{center}
+\newpage
             \subsubsection*{CoSyNE}
-                ``Graph zeigen, Interpretation bzw. Erklärung''
+%                ``Graph zeigen, Interpretation bzw. Erklärung''
+                \begin{multicols}{2}
+                    \noindent
+                    \\[5mm]
+                    Der CoSyNE Algorithmus ist in der durchschnittlichen Fitness knapp 5\% hinter der Neuroevolution, hat dafür aber ganze 15\% in der Stabilität verloren. Aus der Natur von dem CoSyNE gab es selbst bei der 300 Generation noch exterm unterschiedliche Individuen und eine Konvergenz war nicht zu erkennen. 
+                    \begin{figure}[H]
+                       \includegraphics[scale=0.5]{../pictures/summary/cosyne-fitness.png}
+                       \caption{Fitness Graph für Cross Entropy}\label{fig:graph-co}
+                    \end{figure}
+                \end{multicols}
+
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |l|r|r|r| } 
+                        \hline
+                        \hfill & Trained Fitness   & Tested Fitness  &          Error    \\ \hline
+                          Nr.1 &          40.00\%  &         14.21\% &          64.47\%  \\  
+                          Nr.2 &          40.00\%  &         14.22\% &          64.45\%  \\  
+                          Nr.3 &          36.00\%  &         12.68\% &          64.48\%  \\ 
+                          Nr.4 &          36.00\%  &         15.42\% &          57.16\%  \\ 
+                          Nr.5 &          36.00\%  &          5.75\% &          84.02\%  \\ \hline
+                          Mean &  \textbf{37.60\%} & \textbf{12.45\%} & \textbf{66.98\%}  \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Stabilität der besten 5 Neurevolution Individuen \label{fig:neuroevotable}}
+                \end{table}
+                \noindent
+                Die beste Individuen haben lediglichlich nur knapp 12\% ihrer Spiele gewonnen und man kann eine ähnliche Taktik wie die Neuroevolution Agenten erahnen, nur wesentlich schlechter umgesetzt. Es passiert häufig, dass der Agent kurz vor dem Strafraum stehen bleibt und sich für eine sehr lange Zeit nicht bewegt. Da der Torwart nicht zu weit von dem Tor rausgeht, befinden sie sich im Deadlock bis der Agent versucht ein Tor zu schießen. Das Schießen am Anfang des Spiels tritt hier auf gehäuft auf.
+
+                \begin{center} \textit{(Link zum Video)} \end{center}
+\newpage
         \subsection{Vergleich}
-            ``Sicherheit <-> Aggressivität steht im Kontra zur Stabilität der Algorithmen''\\
-            ``Wenn Zeit ein Faktor wäre'' \\
-            ``Wenn Sicherheit ein Faktor wäre'' \\
+%            ``Sicherheit <-> Aggressivität steht im Kontra zur Stabilität der Algorithmen''\\
+%            ``Wenn Zeit ein Faktor wäre'' \\
+%            ``Wenn Sicherheit ein Faktor wäre'' \\
+
+             Im Vergleich zwischen allen Algorithmen sieht das Ranking folgendermaßen aus:
+
+                \begin{table}[H]
+                    \begin{center}
+                    \begin{tabular}{ |l|r|r|r| } 
+                        \hline
+                        \textbf{Algorithmus}          & E(Trained Fitness) & E(Tested Fitness) & E(Error)    \\ \hline
+                        Neuroevolution                &          42.00\%   &         20.13\%   &    51.93\%  \\ \hline
+                        CoSyNE                        &          37.60\%   &         12.45\%   &    66.98\%  \\ \hline
+                        Cross-Entropy                 &          29.60\%   &          6.56\%   &    77.87\%  \\ \hline
+                        Wahrscheinlichkeitsverteilung &          24.60\%   &          6.15\%   &    74.88\%  \\ \hline
+                    \end{tabular}
+                    \end{center}
+                    \caption{Alle Algorithmen gegenübergestellt \label{fig:vergleichstabelle}}
+                \end{table}
+
+            \noindent
+            Neuroevolution gewinnt eindeutig in allen getesteten Merkmalen und hat während den Aufnahmen den raffiniertesten Eindruck gemacht. Wir sehen pauschale Aggressivität wie bei Cross-Entropy zwar interessante Züge macht, jedoch nicht tauglich ist für den Einsatz auf dem echten Spielfeld. \\[2mm]
+
+            \noindent
+            Sicherheit und die \textit{Planung} machen auf lange Sicht viel mehr Sinn und sollten verstärkt werden. Der CoSyNE Algorithmus unterstützt diese Art von Entwicklung in dieser Dimensionalität schlechter als die naive Suche über alle Parameter. Es ist zu überprüfen ob diese Aussage für gleichzeitiges Lernen in einem 2v1 Setting übereinstimmt.\\[2mm]
+
+            \begin{center} \textit{(Link zur Best-Of-Compilation Video)} \end{center}
+
+
+
 
 
