@@ -16,7 +16,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 
         % Ein Genetischer Algorithmus gehört zu den \textbf{unsupervised Learning} Methoden, die sich als Ziel setzen eine verborgene Struktur zu analysieren, ohne zu gekenntzeichnete Daten zu haben. John Holland
 
-        Ein genetischer Algorithmus, im folgenden als \textit{GA} abgekürzt, ist ein Optimierungsverfahren, der meiner Meinung nach an natürlichen Feinden am Besten zu erklären ist. Wir stellen uns beispielsweise eine Gruppe Antilopen und einen Geparden vor.\\
+        Ein genetischer Algorithmus, im folgenden als \textit{GA} abgekürzt, ist ein Optimierungsverfahren, der an von der natürlichen Selektion und Evolution inspiriert ist. Wir stellen uns beispielsweise eine Gruppe Antilopen und einen Geparden vor.\\
 
         \begin{figure}[htbp]
             \begin{subfigure}{0.5\textwidth}
@@ -28,13 +28,13 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             \caption{Illustration von einem Geparden und einer Antilope \label{fig:anitlopeAndGepard}}
         \end{figure}
         \noindent
-        Sei unser Gepard durch seine Geschwindigkeit den Antilopen überlegen, dann wird das Antilopenrudel über Zeit in ihrer Anzahl sinken. Dabei werden die langsamsen Antilopen dem Geparden erlegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Diese werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Antilopen-Babys bekommen die ähnlich schnell sind. Dieser Vorgang bezeichnet sich als \textbf{Kreuzung}. Die Überlebenswahrscheinlichkeit des Rudels wird dadurch erhöht und wir nennen diesen Parameter \textbf{Fitness}.\\
+        Sei unser Gepard durch seine Geschwindigkeit den Antilopen überlegen, dann wird die Antilopenherde über Zeit in ihrer Anzahl sinken. Dabei werden die langsamsen Antilopen dem Geparden erlegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Diese werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Antilopen-Babys bekommen die ähnlich schnell sind. Diesen Vorgang bezeichnen wir als \textbf{Kreuzung}. Mit welcher Wahrscheinlichkeit jedes einzelne Tier vor dem Geparden entwischen kann nennen wir \textbf{Fitness}.\\
         \\
         Jede Antilope, oder auch \textbf{Individuum} genannt, hat eine eigene Fitness, die es aber bei Geburt noch nicht weiß, da sie noch nie vor einem Geparden weglaufen musste. Erst nachdem sie einmal erfolgreich entwischt ist, können wir uns vorstellen wie was ihre Fitness ist.\\
         \\
-        Ganz selten wird ein Antilopen-Baby geboren das ein klein bisschen längere Beine hat als alle anderen, dabei hat solche Beine keiner in dem gesamten Rudel. Sie erlauben ihm schneller zu Laufen, aber leider hat diese Ausprägung nicht nur Vorteile, da die Standhaftigkeit darunter leidet. Dieser unerwartete Veränderung in den Kindern heißt \textbf{Mutation}.\\
+        Ganz selten wird ein Antilopen-Baby geboren das ein klein bisschen längere Beine hat als alle anderen, dabei hat solche Beine keiner in dem gesamten Herde. Sie erlauben ihm schneller zu Laufen, aber leider hat diese Ausprägung nicht nur Vorteile, da die Standhaftigkeit darunter leidet. Dieser unerwartete Veränderung in den Kindern heißt \textbf{Mutation}.\\
         \\
-        Fassen wir zusammen, nachdem jede Antilope die nach dem Raubkatzenangriff überlebt und sich fortgepflanzt hat, bekommen wir hoffentlich wieder eine vollzähliges Rudel, das wir \textbf{Population} nennen. Nach all diesen Schritten fängt der Kampf um das Überleben wieder an und geht solange, bis sich entweder Antilopen entwickeln die dem Gepard ständig entkommen können, oder bis die gesamte Population ausstirbt.\\
+        Fassen wir zusammen, nachdem jede Antilope die nach dem Raubkatzenangriff überlebt und sich fortgepflanzt hat, bekommen wir hoffentlich wieder eine vollzähliges Herde, das wir \textbf{Population} nennen. Nach all diesen Schritten fängt der Kampf um das Überleben wieder an und geht solange, bis sich entweder Antilopen entwickeln die dem Gepard ständig entkommen können, oder bis die gesamte Population ausstirbt.\\
         \\
         Damit haben wir die wichtigsten Begrifflichkeiten von einem genetischen Algorithmus erklärt und kommen zu der Frage, wie wir ihn umsetzen.
 
@@ -88,7 +88,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
         \subsection{Selektion}
             % ``Die besten x prozent werden genommen''
 
-            Nachdem die Simulation vorbei ist, bekommen wir eine Population von Antilopen die jeweils überlebt hat oder nicht. Da die Fitness ist in diesem Fall binär ist, sortieren wir das Rudel aller Antilopen absteigend, wobei das Überleben natürlich mehr wert ist.\\
+            Nachdem die Simulation vorbei ist, bekommen wir eine Population von Antilopen die jeweils überlebt hat oder nicht. Da die Fitness ist in diesem Fall binär ist, sortieren wir die Herde aller Antilopen absteigend, wobei das Überleben natürlich mehr wert ist.\\
             \\
             Nach dem Sortieren müssen wir ein prozentualen Betrag wählen, wieviele Eltern wir aus der Population wählen. In unserer Implementierung nennen wir diesen Parameter $\alpha$. \textit{(Grafik)}
 
