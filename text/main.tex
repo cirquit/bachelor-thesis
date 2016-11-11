@@ -47,13 +47,13 @@
 % initialize macros
 % -------------------------------------------------------------------------------------------------
 %
-\lmutitle{Kooperative Neuroevolution\\[1mm] in RoboCup2D}  % title
+\lmutitle{Neuroevolutionäre Algorithmen\\[1mm] in RoboCup2D}  % title
 \lmustudentone{Alexander Isenko}                  % first author's name
 
 \lmuprofone{Prof. Dr. Claudia Linnhoff-Popien}    % first supervisor's name
 
 \lmuadvisorone{Thomas Gabor, M.Sc}                % first advisor's name
-\lmuadvisortwo{Lenz Belzner, Dipl.-Medieninf.}    % second advisor's name
+\lmuadvisortwo{Dr. Lenz Belzner}    % second advisor's name
 \lmudraftdate{\today}                             % only for versioning during work!
                                                   % (uncomment for final version!)
 \lmudeadline{11. November 2016}                       % deadline (day of submission)
@@ -101,14 +101,15 @@
 \input{hyphenation}                               % this file holds words latex cannot split
 
 % \definecolor{mylinkcolor}{RGB}{0, 126, 87}
-%\definecolor{mylinkcolor}{RGB}{0, 126, 150}
+\definecolor{mycitecolor}{RGB}{50, 50, 50}
 \definecolor{mylinkcolor}{RGB}{50, 50, 50}
 
 \hypersetup{                                      % color definitions
     colorlinks=true,
     linkcolor=mylinkcolor,
     filecolor=magenta,
-    urlcolor=cyan,
+    urlcolor=mylinkcolor,
+    citecolor=mycitecolor
 }
 %
 % =================================================================================================
@@ -161,7 +162,8 @@
 % -------------------------------------------------------------------------------------------------
 %
     \begin{spacing}{0.9}                          % save some space
-       \bibliographystyle{geralpha}               % for german thesis
+       \bibliographystyle{ieeetr}                 % enumerated citings
+%       \bibliographystyle{geralpha}               % for german thesis
        %\bibliographystyle{alpha}                 % for english thesis
        \bibliography{bibliography}                % the location of bib file
     \end{spacing}
