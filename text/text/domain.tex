@@ -327,25 +327,25 @@
                 Die gesamte Population ist zu dem Ergebnis konvergiert, dass jede Aktion gleich wahrscheinlich ist, bis auf \textit{Shoot}. Die Schussaktion hat wahrscheinlich zu oft zu einem Schuss ins Aus geführt, was sofort das Spiel als zu Gunsten des Torwarts beendet.\\
 
                 \noindent
-                Die maximale erreichte Fitness beträgt 28\% und schwankt im Bereich von $[10,25]$. Leider stellt sich heraus dass die besten fünf Werte Ausreißer waren und keinesfalls die durchschnittliche Gewinnwahrscheinlichkeit darstellen. 
+                Die maximale erreichte Fitness beträgt 33\% und schwankt im Bereich von $[15,25]$ mit ein paar Ausreißern. Leider stellt sich heraus dass die besten drei Werte Ausreißer waren und keinesfalls die durchschnittliche Gewinnwahrscheinlichkeit darstellen. 
 
                 \begin{table}[H]
                     \begin{center}
                     \begin{tabular}{ |l|r|r|r| } 
                         \hline
-                        \hfill & Trained Fitness   & Tested Fitness  &          Error    \\ \hline
-                          Nr.1 &          28.00\%  &          6.82\% &          75.64\%  \\  
-                          Nr.2 &          25.00\%  &          5.54\% &          77.84\%  \\  
-                          Nr.3 &          24.00\%  &          5.40\% &          77.50\%  \\ 
-                          Nr.4 &          24.00\%  &          6.33\% &          73.62\%  \\ 
-                          Nr.5 &          22.00\%  &          6.65\% &          69.78\%  \\ \hline
-                          Mean &  \textbf{24.60\%} & \textbf{6.15\%} & \textbf{74.88\%}  \\ \hline
+                        \hfill & Trained Fitness   & Tested Fitness   &          Error    \\ \hline
+                          Nr.1 &          33.33\%  &          5.26\%  &          82.22\%  \\  
+                          Nr.2 &          29.41\%  &          8.87\%  &          70.52\%  \\  
+                          Nr.3 &          28.00\%  &          6.06\%  &          78.36\%  \\ 
+                          Nr.4 &          25.00\%  &          2.18\%  &          91.28\%  \\ 
+                          Nr.5 &          24.00\%  &          6.42\%  &          73.25\%  \\ \hline
+                          Mean &  \textbf{27.95\%} &  \textbf{5.72\%}  & \textbf{79.53\%} \\ \hline
                     \end{tabular}
                     \end{center}
                     \caption{Stabilität der besten 5 Wahrscheinlichkeitsverteilungs Individuen \label{fig:actiondisttable}}
                 \end{table}
                 \noindent
-                Die durchschnittliche Gewinnwahrscheinlichkeit liegt bei 6.15\% und wenn man den Spieler beobachtet kann man sich beim besten Willen nicht erklären, wie er überhaupt schafft Tore zu schießen, da er meistens versucht ins Tor zu laufen während ihm der Ball abgenommen wird. Es ist aber auch nicht verwunderlich, da der Spieler weder weiß wo der Torwart ist, ob er den Ball hat, noch wo er sich auf dem Spielfeld befindet. \\
+                Die durchschnittliche Gewinnwahrscheinlichkeit liegt bei 5.72\% und wenn man den Spieler beobachtet kann man sich beim besten Willen nicht erklären, wie er überhaupt schafft Tore zu schießen, da er meistens versucht ins Tor zu laufen während ihm der Ball abgenommen wird. Es ist aber auch nicht verwunderlich, da der Spieler weder weiß wo der Torwart ist, ob er den Ball hat, noch wo er sich auf dem Spielfeld befindet. \\
 
                 \begin{center} \textit{(Link zum Video)} \end{center}
 

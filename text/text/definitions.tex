@@ -8,7 +8,7 @@
 %    \item ``Ausserdem verknüpfen wir diese mit einer Reduzierung vom Suchraum durch Fouriertransformationen und verwenden verschiedene Kodierung der Individuen, durch Normalverteilungen und direkt durch Zahlen''
 % \end{itemize}
 
-Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} im Zusammenhang mit \textbf{neuronalen Netzen} und der \textbf{Cross Entropy Method}. Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fouriertransformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Methode zum GA.
+Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} im Zusammenhang mit \textbf{neuronalen Netzen} und der \textbf{Cross Entropy Method}. Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fouriertransformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des Algorithmus.
 
     \section{Genetische Algorithmen}
         % ``Die Motivation von Genetischen Algorithmen kam aus der Natur bla blubb''\\
@@ -16,31 +16,31 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 
         % Ein Genetischer Algorithmus gehört zu den \textbf{unsupervised Learning} Methoden, die sich als Ziel setzen eine verborgene Struktur zu analysieren, ohne zu gekenntzeichnete Daten zu haben. John Holland
 
-        Ein genetischer Algorithmus, im folgenden als \textit{GA} abgekürzt, ist ein Optimierungsverfahren, der an von der natürlichen Selektion und Evolution inspiriert ist. Wir stellen uns beispielsweise eine Gruppe Antilopen und einen Geparden vor.\\
+        Ein genetischer Algorithmus, im folgenden als \textbf{GA} abgekürzt, ist ein Optimierungsverfahren, der an von der natürlichen Selektion und Evolution inspiriert ist. Alternativ findet sich hier\cite{ga} ein formaler Leitfaden. Wir stellen uns anschaulicher Weise eine Gruppe Gazellen und einen Geparden vor.\\
 
         \begin{figure}[htbp]
             \begin{subfigure}{0.5\textwidth}
                 \includegraphics[width = 1\textwidth, left]{../pictures/cheetah.png}
             \end{subfigure}
             \begin{subfigure}{0.5\textwidth}
-                \includegraphics[width = 0.73\textwidth, right]{../pictures/antelope.png}
+                \includegraphics[width = 0.73\textwidth, right]{../pictures/gazelle.png}
             \end{subfigure}
-            \caption{Illustration von einem Geparden und einer Antilope \label{fig:anitlopeAndGepard}}
+            \caption{Illustration von einem Geparden und einer Gazelle \label{fig:gazelleAndGepard}}
         \end{figure}
         \noindent
-        Sei unser Gepard durch seine Geschwindigkeit den Antilopen überlegen, dann wird die Antilopenherde über Zeit in ihrer Anzahl sinken. Dabei werden die langsamsen Antilopen dem Geparden erlegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Diese werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Antilopen-Babys bekommen die ähnlich schnell sind. Diesen Vorgang bezeichnen wir als \textbf{Kreuzung}. Mit welcher Wahrscheinlichkeit jedes einzelne Tier vor dem Geparden entwischen kann nennen wir \textbf{Fitness}.\\
+        Sei unser Gepard durch seine Geschwindigkeit den Gazellen überlegen, dann wird die Gazellenherde über Zeit in ihrer Anzahl sinken. Dabei werden die langsamsen Gazellen dem Geparden erlegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Die Überlebenden werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Gazellen-Babies bekommen die ähnlich schnell sind. Diesen Vorgang bezeichnen wir als \textbf{Kreuzung}. Mit welcher Wahrscheinlichkeit jedes einzelne Tier vor dem Geparden entwischen kann nennen wir \textbf{Fitness}.\\
         \\
-        Jede Antilope, oder auch \textbf{Individuum} genannt, hat eine eigene Fitness, die es aber bei Geburt noch nicht weiß, da sie noch nie vor einem Geparden weglaufen musste. Erst nachdem sie einmal erfolgreich entwischt ist, können wir uns vorstellen wie was ihre Fitness ist.\\
+        Jede Gazelle, oder auch \textbf{Individuum} genannt, hat eine eigene Fitness, die es aber bei Geburt noch nicht weiß, da sie noch nie vor einem Geparden weglaufen musste. Erst nachdem sie einmal erfolgreich entwischt ist, können wir uns vorstellen was ihre Fitness ist.\\
         \\
-        Ganz selten wird ein Antilopen-Baby geboren das ein klein bisschen längere Beine hat als alle anderen, dabei hat solche Beine keiner in dem gesamten Herde. Sie erlauben ihm schneller zu Laufen, aber leider hat diese Ausprägung nicht nur Vorteile, da die Standhaftigkeit darunter leidet. Dieser unerwartete Veränderung in den Kindern heißt \textbf{Mutation}.\\
+        Ganz selten wird ein Gazellen-Baby geboren das ein klein bisschen längere Beine hat als alle anderen, dabei hatte keiner dieses Merkmal vor ihr. Das erlaubt ihr schneller zu Laufen, was für sie erstmal positiv ist, leider hat diese Ausprägung aber den Nachteil, dass die Standhaftigkeit darunter leidet. Dieser unerwartete Veränderung in den Kindern heißt \textbf{Mutation}.\\
         \\
-        Fassen wir zusammen, nachdem jede Antilope die nach dem Raubkatzenangriff überlebt und sich fortgepflanzt hat, bekommen wir hoffentlich wieder eine vollzähliges Herde, das wir \textbf{Population} nennen. Nach all diesen Schritten fängt der Kampf um das Überleben wieder an und geht solange, bis sich entweder Antilopen entwickeln die dem Gepard ständig entkommen können, oder bis die gesamte Population ausstirbt.\\
+        Fassen wir zusammen; Nachdem jede Gazelle die nach dem Raubkatzenangriff überlebt und sich fortgepflanzt hat, bekommen wir hoffentlich wieder eine vollzähliges Herde, die wir \textbf{Population} nennen. Nach all diesen Schritten fängt der Kampf um das Überleben wieder an und geht solange, bis sich entweder Gazellen entwickeln die dem Gepard ständig entkommen können, oder bis die gesamte Population ausstirbt.\\
         \\
-        Damit haben wir die wichtigsten Begrifflichkeiten von einem genetischen Algorithmus erklärt und kommen zu der Frage, wie wir ihn umsetzen.
+        Damit haben wir die wichtigsten Begrifflichkeiten von einem genetischen Algorithmus erklärt und kommen zu der Frage wie wir ihn umsetzen.
 
         \subsection{Individuen}
 
-            Ein Individuum besteht aus einer Kodierung, auch \textbf{Zustandsraum} genannt, die die aussagekräftigen Eigenschaften von ihn ausmachen. Für eine Antilope wäre beispielweise die folgende Kodierung möglich.
+            Ein Individuum besteht aus einer Kodierung, auch \textbf{Zustandsraum} genannt, die die aussagekräftigen Eigenschaften von ihm ausmachen. Für eine Gazelle wäre beispielweise die folgende Kodierung möglich.
 
             \begin{multicols}{2}
                 \hfill \\[-10mm]
@@ -48,17 +48,17 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     \begin{center}
                     \begin{tabular}{ |l|r| } 
                         \hline
-                        Höchstgeschwindigkeit    & $ 50\; \frac{km}{h}$   \\ \hline
-                        Beinlänge                & $ 47\; cm          $   \\ \hline
+                        Höchstgeschwindigkeit    & $ 95\; \frac{km}{h}$   \\ \hline
+                        Beinlänge                & $ 86\; cm          $   \\ \hline
                         Gewicht                  & $ 43\; kg          $   \\ \hline
-                        Alter in Jahren          & $ 12               $   \\ \hline
+                        Hornlänge                & $ 12\; cm          $   \\ \hline
                     \end{tabular}
                     \end{center}
                     \caption{Kodierung einer Antelope \label{fig:somelabel}}
                 \end{table}
 
                 \noindent
-                Die Aufgabe von unserem GA ist ein oder mehrere Individuen zu finden die es schaffen vor dem Geparden wegzulaufen. Da wir aber nicht wissen ob die vorgeschlagene Kodierung gut oder schlecht ist, müssen wir Antilopen mit zufälligen Ausprägungen erstellen und dann den Algorithmus arbeiten lassen.
+                Die Aufgabe von unserem GA ist ein oder mehrere Individuen zu finden die es schaffen vor dem Geparden wegzulaufen. Da wir aber nicht wissen ob die vorgeschlagene Kodierung gut oder schlecht ist, müssen wir Gazellen mit zufälligen Ausprägungen erstellen und dann den Algorithmus arbeiten lassen.
             \end{multicols}
             \noindent
             Das schaffen wir indem wir Grenzen für die Kodierung festlegen und später zufällige Werte in diesen Rahmen ausprobieren.
@@ -68,21 +68,19 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                 \begin{tabular}{ |l|r|r| } 
                     \hline
                     Ausprägung               & Minimaler Wert        & Maximaler Wert       \\ \hline
-                    Höchstgeschwindigkeit    & $ 40\; \frac{km}{h}$  & $ 80\; \frac{km}{h}$ \\ \hline
-                    Beinlänge                & $ 40\; cm          $  & $ 65\; cm          $ \\ \hline
-                    Gewicht                  & $ 39\; kg          $  & $ 63\; kg          $ \\ \hline
-                    Alter in Jahren          & $  2               $  & $ 20               $ \\ \hline
+                    Höchstgeschwindigkeit    & $ 20\; \frac{km}{h}$  & $ 100\; \frac{km}{h}$ \\ \hline
+                    Beinlänge                & $ 40\; cm          $  & $ 90\; cm          $ \\ \hline
+                    Gewicht                  & $ 12\; kg          $  & $ 75\; kg          $ \\ \hline
+                    Hornlänge                & $  0\; cm          $  & $ 35\; cm          $ \\ \hline
                 \end{tabular}
                 \end{center}
-                \caption{Grenzen für die Kodierung \label{fig:somelabel}}
+                \caption{Grenzen für die Kodierung \cite{wiki:gazelle} \cite{blog:gazelle}\label{fig:somelabel}}
             \end{table}
             \noindent
-            Für die Kodierung unseres Individuums eignet sich ein Array von Zahlen. Um die gesamte Population darzustellen würde ein 2-dimensionales Array reichen, wobei jedes Element ein einzelnes Individuum darstellt. \textit{(evtl Grafik)}
+            % Für die Kodierung unseres Individuums eignet sich ein Array von Zahlen. Um die gesamte Population darzustellen würde ein 2-dimensionales Array reichen, wobei jedes Element ein einzelnes Individuum darstellt. \textit{(evtl Grafik)}
 
         \subsection{Simulation}
-            Nachdem wir unsere Population an Antilopen erstellt haben, müssen wir sie in eine Simulationsumgebung schicken, die ihre Fitness misst. In unserem Beispiel müssten wir eine Physiksimulation mit einem Geparden programmieren, die nach einer Zeitspanne zurückgibt welche Antilopen überlebt haben. \\
-            \noindent
-            Die Komplexität der Simulation hat einen großen Einfluss darauf ob der GA eine Lösung finden kann. \textit{(Grafik)}
+            Nachdem wir unsere Population an Gazellen erstellt haben, müssen wir sie in eine Simulationsumgebung schicken, die ihre Fitness misst. In unserem Beispiel müssten wir eine Physiksimulation mit einem Geparden programmieren, die uns nach einer Zeitspanne sagt welche Gazellen überlebt haben. Man muss beachten dass die Komplexität der Simulation einen großen Einfluss darauf hat ob der GA eine Lösung finden kann. $ $\textit{(Grafik)}
 
 
         \subsection{Selektion}
@@ -105,7 +103,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                         \cellcolor{blue!25} $ 56\; \frac{km}{h}$ \\ \hline
                         \cellcolor{blue!25} $ 42\; cm          $ \\ \hline
                         \cellcolor{blue!25} $ 51\; kg          $ \\ \hline
-                        \cellcolor{blue!25} $  10              $ \\ \hline
+                        \cellcolor{blue!25} $ 10\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
                     \caption{Kodierung des Vaters \label{fig:somelabel}}
@@ -119,7 +117,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                         \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
                         \cellcolor{yellow!25} $ 55\; cm          $ \\ \hline
                         \cellcolor{yellow!25} $ 49\; kg          $ \\ \hline
-                        \cellcolor{yellow!25} $  8               $ \\ \hline
+                        \cellcolor{yellow!25} $  8\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
                     \caption{Kodierung der Mutter \label{fig:somelabel}}
@@ -133,10 +131,10 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     \begin{tabular}{ |r| } 
                         \hline
                         \hfill Ausprägungen  \\ \hline
-                        \cellcolor{blue!25} $ 56\; \frac{km}{h}$ \\ \hline
+                        \cellcolor{blue!25}   $ 56\; \frac{km}{h}$ \\ \hline
                         \cellcolor{yellow!25} $ 55\; cm          $ \\ \hline
                         \cellcolor{yellow!25} $ 49\; kg          $ \\ \hline
-                        \cellcolor{blue!25} $  10              $ \\ \hline
+                        \cellcolor{blue!25}   $ 10\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
                     \caption{Kodierung vom Kind Nr.1 \label{fig:somelabel}}
@@ -149,9 +147,9 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                         \hline
                         \hfill Ausprägungen  \\ \hline
                         \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
-                        \cellcolor{blue!25} $ 42\; cm          $ \\ \hline
-                        \cellcolor{blue!25} $ 51\; kg          $ \\ \hline
-                        \cellcolor{yellow!25} $  8               $ \\ \hline
+                        \cellcolor{blue!25}   $ 42\; cm          $ \\ \hline
+                        \cellcolor{blue!25}   $ 51\; kg          $ \\ \hline
+                        \cellcolor{yellow!25} $  8\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
                     \caption{Kodierung vom Kind Nr.2 \label{fig:somelabel}}
