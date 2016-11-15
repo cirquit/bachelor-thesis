@@ -154,11 +154,14 @@
 
             \subsubsection*{Kodierung}
 
-            \begin{align*}
-                \text{Set von allen Aktionen }&X := \{\text{Move, Shoot, Dribble, Intercept, No-Op}\} \\
-                &\forall x \in X: P(x) \geq 0 \\
-                &\sum_{x \in X}^{} P(x) = 1
-            \end{align*}
+            \begin{figure}[H]
+                \begin{mdframed}
+                    Sei das Set von allen Aktionen $ X := $ \{Move, Shoot, Dribble, Intercept, No-Op\}, \\
+                    $P(x)$ die Wahrscheinlichkeit dass $x$ eintrifft, dann gilt: \\[2mm]
+                    \hspace*{25mm} \Resize{8cm}{$\forall x \in X: P(x) \geq 0 \;\;\land\;\; \sum_{x \in X}^{} P(x) = 1$}
+                \end{mdframed}
+                \caption{\label{kodierung} Kodierung der Aktionen als Wahrscheinlichkeitsverteilung}
+            \end{figure}
 
             \subsubsection*{Kreuzung}
             Die Kreuzung wurde auf zwei verschieden Arten umgesetzt, wobei sie im Vergleich an der vollständige Simulation weder neueartige Lösungen entwickelt haben, noch die Konvergenzzeit beeinflusst wurde.
@@ -206,16 +209,15 @@
 
             \subsubsection*{Normalisierung}
             Die zweite Methode hat beide Verteilungen genommen, die Wahrscheinlichkeiten für jeweiligen Aktionen addiert und folgendermaßen normalisiert.\\
-            \\
             \noindent
-            Seien $\mathcal{A, B}$ die diskreten Wahrscheinlichkeitsverteilungen die verknüpft werden sollen: \\
-            \begin{math}
-            \\
-            \hspace*{+4cm} \mathcal{C} := \{ \frac{(a_i + b_i)}{l} \; | \; a_i \in \mathcal{A}, b_i \in \mathcal{B}\} \hspace*{10mm} l := |\mathcal{A}|
-            \\
-            \end{math}
-            \\
-            \noindent
+            \begin{figure}[H]
+                \begin{mdframed}
+                    Seien $\mathcal{A, B}$ die diskreten Wahrscheinlichkeitsverteilungen, $l = |\mathcal{A}|$:\\[4mm]
+                    \hspace*{40mm}\Resize{6.5cm}{$\mathcal{C} := \{ \frac{(a_i + b_i)}{l} \; | \; a_i \in \mathcal{A}, b_i \in \mathcal{B}\}$} \\[4mm]
+                    dann ist $\mathcal{C}$ ist ihre Verknüpfung.
+                \end{mdframed}
+                \caption{\label{norm-prop} Normalisierung von Wahrscheinlichkeitsverteilungen}
+            \end{figure}
 
             \subsubsection*{Mutation}
             Die Mutation wurde auch mit jeweils dem Generator sowie Normalisierung umgesetzt. Im Kern ist jedoch die Funktion die das $\delta$ benutzt und es mit zufälligen Vorteichen in die Anzahl der Aktionen aufgeteilt. Man kann sich das $\delta$ als Veränderungsfaktor vorstellen, je höher er ist, umso unterschiedlicher wird die Wahrscheinlichkeitsverteilung.

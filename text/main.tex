@@ -93,6 +93,11 @@
 \usepackage{subcaption}
 \usepackage[export]{adjustbox}
 \usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata, positioning}
 
 \setcounter{tocdepth}{3}                          % sectioning depth in toc
 \setcounter{secnumdepth}{3}                       % sectioning depth in text
@@ -100,9 +105,17 @@
 \graphicspath{{./pictures/}}                      % put all graphics here
 \input{hyphenation}                               % this file holds words latex cannot split
 
+\newcommand*{\Resize}[2]{\resizebox{#1}{!}{#2}}%
+\DeclareUnicodeCharacter{0177}{\^y}
 % \definecolor{mylinkcolor}{RGB}{0, 126, 87}
 \definecolor{mycitecolor}{RGB}{50, 50, 50}
 \definecolor{mylinkcolor}{RGB}{50, 50, 50}
+
+\definecolor{inputnode}{RGB}{144, 201, 232}
+\definecolor{hiddennode}{RGB}{75,169,86}
+\definecolor{outputnode}{RGB}{255, 115, 2}
+\definecolor{missingnode}{RGB}{255, 255, 255}
+\definecolor{perceptronnode}{RGB}{255, 169, 2}
 
 \hypersetup{                                      % color definitions
     colorlinks=true,

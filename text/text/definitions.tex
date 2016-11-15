@@ -258,15 +258,124 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             \subsubsection*{Neue Individuen erstellen}
                 In der unserer Implementierung haben wir uns für das Nachfüllen von inherent neuen Individuen entschieden, da dadurch die Varianz der Population angehoben wird und dadurch mehr Lösungen möglich sind. Ein Nachteil sind die Kinder die dadurch keinen Platz bekommen, aber da dadurch keine Information verloren geht ist es zu vernachlässigen.
 
-
+\newpage
     \section{Neuroevolution}
-        ``Neuroevolution beschäftigt sich mit der Verknüpfung von Genetischen Algorithmen und Neuronalen Netzn''
-        \subsection{Neuronale Netze}
-                ``Neuronale Netze sind eine riesige Gleichung''\\
-                ``Formel von Machine Learning zeigen'' \\
-                ``Backpropagation wird angesprochen aber nicht ausführlich erklärt''\\
-            \subsubsection*{Dense Ebene}
-                ``Kleines Beispielnetz aufmalen und evtl durchrechnen''
+%        ``Neuroevolution beschäftigt sich mit der Verknüpfung von Genetischen Algorithmen und Neuronalen Netzn''
+        Der Begriff der Neuroevolution wurde im Jahre 1988 von D. Whiteley\cite{whiteley88} als alternative Möglichkeit zur Entwicklung von künstlichen neuronalen Netzen (\textbf{KNNs}) vorgeschlagen. Dabei wird versucht aus der Synergie von dem \textbf{selbstlernenden Charakter} von KNNs und der \textbf{explorativen Suche} eines GAs eine Taktik oder ein Klassifikator zu entwickeln der inherent neue Lösungen finden kann. Diese Erkenntnis hat man bereits im Jahr 1995 am Spiel \textit{Othello} festgestellt. \cite{othello95} \\[2mm]
+        \noindent
+        Wir versuchen in diesem Kapitel einen groben Überblick über die Funktionsweise von KNNs zu verschaffen und stellen den Bezug zu genetischen Algorithmen dar. Eine weitaus formalere Erklärung findet sich im Paper von ....
+
+        \subsection{Künstliche neuronale Netze}
+
+            Die Idee hinter künstlichen neuronalen Netzen ist der Versuch die Struktur vom menschliche Gehirn nachzuahmen. Ein durchschnittliches KNN besteht jedoch aus vielfach weniger Neuronen, meist Hundert bis mehrere Tausend, wobei unser Gehirn 86 Milliarden\cite{brainsize} besitzt.\\
+%            Um die Nutzung von so einem Netz zu veranschaulichen stellen wir, versuchen wir nun die Formel $f(x) = x^2$ vorauszusagen. Dafür brauchen wir eine Eingabe $x$, weil unsere Formel genau ein Argument besitzt und natürlich eine Ausgabe $y$. Das können wir in einem Neuron darstellen: \\
+
+%            \begin{figure}[H]
+%            \centering
+%                \begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
+%                    \tikzstyle{every pin edge}=[shorten <=1pt]
+%                    \node [perceptron, pin={[pin edge={<-}]left:x}, pin={[pin edge={->}]right:y}] (I-1) at (0,0) {$\sum$};
+%                \end{tikzpicture}
+%            \end{figure}
+            \noindent
+            Ein künstliches Neuron kann man sich anschaulich als eine Formel vorstellen, die eine oder \textbf{mehrere Eingaben} über gewichtete Pfade bekommt, sie \textbf{gewichtet aufsummiert} und eine Aktivierungsfunktion auf das Ergebnis anwendet die es auf den Bereich $[0,\infty]$, $[0,1]$, oder $[-1,1]$ abbildet. Dieses Resultat nennen wir $\hat{y}$:
+
+            \begin{figure}[H]
+                \begin{mdframed}
+                    \noindent
+                    Sei $n$ die Anzahl der Eingaben,\\
+                    \hspace*{4.5mm}    $X = \{x_0,x_1,...,x_n\}$ die Eingabe,\\
+                    \hspace*{4.5mm}    $W = \{w_0, w_1,...,w_n\}$ die jeweiligen Gewichte, \\
+                    \hspace*{4.5mm}    $f(x) = max(0,x)$ als Aktivierungsfunktion:\\[4mm]
+                    \hspace*{50mm} \Resize{4.5cm}{$\widehat{y} = f(\sum^{n}_{i = 0} x_i \cdot w_i)$}
+                \end{mdframed}
+                \caption{\label{neuron-math} Formel zur Berechnung des Ergebnisses eines Neurons}
+            \end{figure}
+
+            \noindent
+            Wenn man nun mehrere von diesen Neuronen in Reihe zusammenschaltet (Abbildung \ref{fig:nntikz}), kriegt man ein vollständig vermaschtes Netz welches grundsätzlich in drei Schichten unterteilen werden kann.
+            \begin{itemize}
+                \setlength{\itemsep}{5pt}
+                \item \textbf{Eingabeschicht} \\
+                    Hier kommt der Ausgangszustand rein, sei es ein kodierter Zustand eines Spiels, oder der Kurs vom DAX.
+                \item \textbf{Versteckte Schicht(en)} \\
+                    Dieser Teil des Netzes besteht oft aus mehreren Schichten, da er für die Abstraktion und die Lernfähigkeit verantwortlich ist.\cite{ANNModeling} Er bekommt die Signale aus der Eingabeschicht die er verarbeitet und weiterleitet. Je nachdem welche Neuronen dabei \textit{feuern} definiert das Ergebnis.
+                \item \textbf{Ausgabeschicht} \\
+                    Die Ausgabeschicht ist oft zum Sammeln der Signale von der vorherigen Schicht zuständig und auf dessen Ergebnis wird dann eine \textbf{Aktivierungsfunktion} angewendet, die die kumulierten Resultate in eine passende Form bringt. Diese könnenvon einfachen Ja/Nein Aussgagen sein, oder wie wir später kennen lernen werden, auch Wahrscheinlichkeitsverteilungen.
+
+            \end{itemize}
+
+            \tikzset{%
+              input neuron/.style={
+                circle,
+                draw,
+                minimum size=1cm,
+                fill=inputnode
+              },
+              hidden neuron/.style={
+                circle,
+                draw,
+                minimum size=1cm,
+                fill=hiddennode
+              },
+              output neuron/.style={
+                circle,
+                draw,
+                minimum size=1cm,
+                fill=outputnode
+              },
+              neuron missing/.style={
+                draw=none, 
+                scale=1.97,
+                text height=0.333cm,
+                execute at begin node=\color{black}$\vdots$,
+                fill=missingnode
+              },
+              perceptron/.style={
+                circle,
+                draw,
+                scale=3,
+                minimum size=1cm,
+                fill=perceptronnode
+              }
+            }
+
+            \begin{figure}[H]
+            \centering
+                \begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
+                    \foreach \m/\l [count=\y] in {1,2,3,missing,4}
+                        \node [input neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+                    \foreach \m [count=\y] in {1,missing,2}
+                        \node [hidden neuron/.try, neuron \m/.try ] (hidden-\m) at (2,2-\y*1.25) {};
+                    \foreach \m [count=\y] in {1,missing,2}
+                        \node [output neuron/.try, neuron \m/.try ] (output-\m) at (4,1.5-\y) {};
+                    \foreach \l [count=\i] in {1,2,3,n}
+                        \draw [<-] (input-\i) -- ++(-1,0)
+                            node [above, midway] {$x_\l$};
+                    \foreach \l [count=\i] in {1,m}
+                        \node [above] at (hidden-\i.north) {$h_\l$};
+                    \foreach \l [count=\i] in {1,k}
+                        \draw [->] (output-\i) -- ++(1,0)
+                            node [above, midway] {$y_\l$};
+                    \foreach \i [count=\n] in {1,...,4}
+                        \foreach \j [count=\m] in {1,...,2}
+                            \draw [->] (input-\i) -- node [sloped, above] {$w_{\n,\m}$} (hidden-\j);
+%                            \ifthenelse{\n=1}{
+%                                \draw [->] (input-\i) -- node [midway, sloped, above=0.3mm] {$w_{\n,\m}$} (hidden-\j);
+%                            }{
+%                                \draw [->] (input-\i) -- (hidden-\j);
+%                            }
+                    \foreach \i [count=\n] in {1,...,2}
+                        \foreach \j [count=\m] in {1,...,2}
+                            \draw [line width = 0.0mm, ->] (hidden-\i) -- node [midway, sloped, above=0.3mm] {$v_{\n, \m}$} (output-\j);
+                    \foreach \l [count=\x from 0] in {Eingabe, Versteckte, Ausgabe}
+                        \node [align=center, above] at (\x*2,2) {\l \\ Ebene};
+                \end{tikzpicture}
+                \caption{Skizze von einem vollständig vermaschten künstlichen neuronales Netz \label{fig:nntikz}}
+            \end{figure}
+
+            Diese Art und Weise Neuronen zusammen zu verknüpfen nennt sich \textbf{Dense}, oder Dense-Ebene.
+
             \subsubsection*{LSTM Ebene}
                 ``Kleines Beispielnetz aufmalen und evtl durchrechnen''
             \subsubsection*{Softmax Ebene}
