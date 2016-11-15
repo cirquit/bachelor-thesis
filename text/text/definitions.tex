@@ -286,8 +286,8 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     Sei $n$ die Anzahl der Eingaben,\\
                     \hspace*{4.5mm}    $X = \{x_0,x_1,...,x_n\}$ die Eingabe,\\
                     \hspace*{4.5mm}    $W = \{w_0, w_1,...,w_n\}$ die jeweiligen Gewichte, \\
-                    \hspace*{4.5mm}    $f(x) = max(0,x)$ als Aktivierungsfunktion:\\[4mm]
-                    \hspace*{50mm} \Resize{4.5cm}{$\widehat{y} = f(\sum^{n}_{i = 0} x_i \cdot w_i)$}
+                    \hspace*{4.5mm}    $\sigma(x) = max(0,x)$ als Aktivierungsfunktion:\\[4mm]
+                    \hspace*{50mm} \Resize{4.5cm}{$\widehat{y} = \sigma(\sum^{n}_{i = 0} x_i \cdot w_i)$}
                 \end{mdframed}
                 \caption{\label{neuron-math} Formel zur Berechnung des Ergebnisses eines Neurons}
             \end{figure}
@@ -301,7 +301,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                 \item \textbf{Versteckte Schicht(en)} \\
                     Dieser Teil des Netzes besteht oft aus mehreren Schichten, da er für die Abstraktion und die Lernfähigkeit verantwortlich ist.\cite{ANNModeling} Er bekommt die Signale aus der Eingabeschicht die er verarbeitet und weiterleitet. Je nachdem welche Neuronen dabei \textit{feuern} definiert das Ergebnis.
                 \item \textbf{Ausgabeschicht} \\
-                    Die Ausgabeschicht ist oft zum Sammeln der Signale von der vorherigen Schicht zuständig und auf dessen Ergebnis wird dann eine \textbf{Aktivierungsfunktion} angewendet, die die kumulierten Resultate in eine passende Form bringt. Diese könnenvon einfachen Ja/Nein Aussgagen sein, oder wie wir später kennen lernen werden, auch Wahrscheinlichkeitsverteilungen.
+                    Die Ausgabeschicht ist oft zum Sammeln der Signale von der vorherigen Schicht zuständig und auf dessen Ergebnis wird dann eine \textbf{Aktivierungsfunktion} angewendet, die die kumulierten Resultate in eine passende Form bringt. Diese können von einfachen Ja/Nein Aussgagen sein, oder wie wir später kennen lernen werden, auch Wahrscheinlichkeitsverteilungen darstellen.
 
             \end{itemize}
 
@@ -373,14 +373,29 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                 \end{tikzpicture}
                 \caption{Skizze von einem vollständig vermaschten künstlichen neuronales Netz \label{fig:nntikz}}
             \end{figure}
-
-            Diese Art und Weise Neuronen zusammen zu verknüpfen nennt sich \textbf{Dense}, oder Dense-Ebene.
+            \noindent
+            Diese Art und Weise Neuronen zusammen zu verknüpfen nennt sich \textbf{Dense}, oder Dense-Ebene. Wenn man das gesamte Netz aus solchen Ebenen zusammenbaut, hat man leider die Einschränkung dass man keine zeitabstrahierten Ergebnisse lernen kann. Dafür gibt es \textbf{rekurrente Neuronen} die vorherige Zustände zum Ergebnis beisteuern können.
 
             \subsubsection*{LSTM Ebene}
-                ``Kleines Beispielnetz aufmalen und evtl durchrechnen''
+                Ein spezielles Neuron aus der rekurrenten Familie ist das \textbf{Long Short Term Memory} (LSTM) Neuron\cite{lstm}. Es zeichnet sich durch die Eigenschaft aus, dass es sich über lange Zeitfenster Information behalten kann. Der Aufbau basiert auf dem Modell einer Speicherzelle, sodass wir durch verschiedene Eingänge (\textbf{Gates}), die Schreib-,Lese- und Resetaktionen nachbauen können \cite{lstm-new}. Einer der wichtigste Aspekte von diesen Neuronen ist jedoch dass sie ableitbar sind, weil dadurch das eine Trainingsmethode \textbf{Backpropagation} ermöglicht wird \cite{backprop}.
+
             \subsubsection*{Softmax Ebene}
-                ``Erklärung bieten wieso es sowas gibt und was für eine Formel angewendet wird''
+                Es gibt eine Aktivierungsfunktion der wir besondere Aufmerksamkeit widmen, da sie unsere viele Neuronen zu einem nützlichen Ergebnis zusammenfassen kann. Die generalisierte logistische Funktion, oder auch \textbf{normalisierte Exponentialfunktion} nimmt als Argument einen $k$-dimensionalen Vektor \textbf{z} von reelen Zahlen und gibt uns widerrum den gleichen Vektor zurück, wo alle Werte auf den Bereich [0,1] normalisiert wurden.
+
+            \begin{figure}[H]
+                \begin{mdframed}
+                    Sei $j = 1,...,K$: \\
+                    \hspace*{45mm} \Resize{4cm}{$\sigma(\textbf{z})_j = \frac{e^{\textbf{z}_j}}{\sum^{K}_{k = 1} e^{\textbf{z}_k}}$}
+                \end{mdframed}
+                \caption{\label{softmax} Definition der Softmax Funktion}
+            \end{figure}
+
+            \noindent
+            Aufmerksame Leser fragen sich vielleicht warum man keine einfache Normalisierung vornimmt. Wenn man als Trainingsfunktion bei Backpropagation den logistischen Fehler (\textbf{logistic-loss}) oder \textbf{cross entropy loss} benutzt, kürzt sich das $e$ sehr schön weg und bietet sich daher an.
+
         \subsection{Verbindung mit genetischen Algorithmen}
+            Wenn man sich etwas komplexere neuronale Netze anschaut, wie XYZ sieht man wieviele Gewichte man braucht.
+
             ``Die Verknüpfung findet in der Kodierung von den Individuen statt - wir nehmen eine (naive) Darstellung von allen Gewichten''
             ``Problematik -> Folgerung zu DCT''
 
