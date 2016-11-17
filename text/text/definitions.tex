@@ -384,7 +384,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 
             \begin{figure}[H]
                 \begin{mdframed}
-                    Sei $j = 1,...,K$: \\
+                    Sei $j = 1,2,...,K$: \\
                     \hspace*{45mm} \Resize{4cm}{$\sigma(\textbf{z})_j = \frac{e^{\textbf{z}_j}}{\sum^{K}_{k = 1} e^{\textbf{z}_k}}$}
                 \end{mdframed}
                 \caption{\label{softmax} Definition der Softmax Funktion}
@@ -394,17 +394,33 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             Aufmerksame Leser fragen sich vielleicht warum man keine einfache Normalisierung vornimmt. Wenn man als Trainingsfunktion bei Backpropagation den logistischen Fehler (\textbf{logistic-loss}) oder \textbf{cross entropy loss} benutzt, kürzt sich das $e$ sehr schön weg und bietet sich daher an.
 
         \subsection{Verbindung mit genetischen Algorithmen}
-            Wenn man sich etwas komplexere neuronale Netze anschaut, wie XYZ sieht man wieviele Gewichte man braucht.
+            Wenn wir nun zum trainieren von ANNs genetische Algorithmen benutzen wollen, müssten wir das Netz als Liste von Gewichten kodieren, aus denen es besteht. Ein Beispiel dafür bietet der \textbf{GENITOR}\cite{moriarty1999evolutionary} Algorithmus. Dabei werden die einzelnen Gewichte der Kreuzung und einer speziellen Mutation ausgesetzt die von der Varianz der Gesamtpopulation abhängt. \\
 
-            ``Die Verknüpfung findet in der Kodierung von den Individuen statt - wir nehmen eine (naive) Darstellung von allen Gewichten''
-            ``Problematik -> Folgerung zu DCT''
+            \noindent
+            Ein weiterer Ansatz ist \textbf{SANE}\cite{moriarty1999evolutionary}, der einzelne Neuronen für die \textit{Hidden Ebene} entwickelt und daraus ein Netz generiert. Dadurch wurde die Mobility-Strategie für das Spiel Othello wiederentdeckt. \\
 
-    \section{Diskrete Cosinus Transformation - DCT}
-        ``Der Suchraum kann durch die sog. DCT auf beliebige Dimensionalität eingeschränkt werden, wenn bestimmte Annahmen getroffen werden können'' \\
-        ``Fouriertransformationen machen folgendes...'' \\
-        ``Es gibt eine Inverse die aus einem n-stelligen liste eine m-stellige macht, wo die Zahlen korelliert sind (Beispiele)''
+            \noindent
+            Leider benutzen neuronale Netze heutzutage je nach Anwendungsgebiet immer aufwendigere Strukturen die extrem viele Gewichte besitzen. Eine naive genetische Suche in so einem hochdimensionalen Zustandsraum dauert zu lange und deshalb gibt es Techniken die uns erlauben zielsicherer und effizienter den Raum aller Möglichkeiten zu durchsuchen.
+
+%            ``Die Verknüpfung findet in der Kodierung von den Individuen statt - wir nehmen eine (naive) Darstellung von allen Gewichten''
+%            ``Problematik -> Folgerung zu DCT''
+
+    \section{Diskrete Kosinus Transformation}
+        % ``Der Suchraum kann durch die sog. DCT auf beliebige Dimensionalität eingeschränkt werden, wenn bestimmte Annahmen getroffen werden können'' \\
+        % ``Fouriertransformationen machen folgendes...'' \\
+        % ``Es gibt eine Inverse die aus einem n-stelligen liste eine m-stellige macht, wo die Zahlen korelliert sind (Beispiele)''
+
+        Eine dieser Techniken ist die Nutzung der diskreten Kosinustransformation, die zur Familie der Fouriertransformationen gehört. Eine \textbf{Fouriertransformation} spaltet ein Signal in beliebig viele trigonometrische Funktionen, wie Sinus oder Kosinus. Über die Summe dieser Funktionen kann jede mögliche Ausprägung von Daten beschrieben werden. \\
+
+        \noindent
+        Was uns die Fouriertransformation dadurch liefert ist ein diskretes Frenquenzenspekturm, das in Form von Koeffizienten für die Kosinusfunktionen die Datenpunkte reproduzierbar macht. Dabei wird pro Datenpunkt ein einzelner Koeffizient benutzt. Es gibt für diese Transformation eine Inverse, die uns erlaubt alle Datenpunkte basierend auf den Koeffizienten wieder zurück zu gewinnen. 
+
+        \noindent
+        Wenn wir aber einen Großteil der Koeffizieten nicht benutzen und versuchen trotzdem die Datenpunkte zu erstellen, kriegen wir lediglich eine Annäherung. Diese ist aber meistens gut genug, dass wir keinen Unterschied merken. Diese Kompressionsmethode ist vielfach gebraucht in der Kodierung vom JPEG oder MPEG. Eine ausführlichere Erklärung findet sich im Ursprungspaper für die Anwendung in der Neuroevolution\cite{cosyne1}.
+
         \subsection{Kodierung des Suchraums}
-            ``Die Kodierung besteht aus eine 20-stellingen Liste wie im Paper (Cosyne), wo damit 2k Gewichte entwickelt wurden''
+%            ``Die Kodierung besteht aus eine 20-stellingen Liste wie im Paper (Cosyne), wo damit 2k Gewichte entwickelt wurden''     
+            Im Grund generieren wir 20 zufällige Zahlen, die die Frequenzen darstellen, benutzen die inverse Kosinustransformation zur Erstellung von dem Ausgangsgraphen und samplen sehr viele Gewichte raus. Da diese zueinander räumliche korelliert sind ist die Annahme dass Gewichte in einem KNN ähnliche Eigenschaften haben in \cite{cosyne1} bewiesen worden. 
 
     \section{Cooperative Synapsen Neuroevolution - CoSyNE}
         ``CoSyNE wurde vom Prof.Dr.Schmidhuber an der ETH Zürich entwickelt und hat damit sehr viele anderen Algorithmen in den Schatten gestellt''\\
