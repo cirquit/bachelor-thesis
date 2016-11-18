@@ -157,6 +157,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             \end{multicols}
 
             In unserem Beispiel haben wir die Kinder mit dem folgenden Python Code konstruiert.
+            \begin{mdframed}
             \begin{minted}[escapeinside=||, xleftmargin=-50pt]{python}
                 vater  = [56,42,51,10]
                 mutter = [62,55,49,8]
@@ -171,6 +172,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                         kind1[i] = mutter[i]
                         kind2[i] = vater[i]
             \end{minted}
+            \end{mdframed}
             \noindent
             Diese Art und Weise zwei Individuen zu kreuzen nennt sich \textbf{n-point crossover}, weil wir die Kodierung an undefiniert vielen Stellen unterbrechen und wieder zusammensetzen. Es gibt noch andere Kreuzungsmethoden die eine eine feste Anzahl von Aufteilungen benutzen, wie \textbf{one-} oder \textbf{two-point crossover}. \\
             \\
@@ -194,7 +196,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                         \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
                         \cellcolor{blue!25}   $ 42\; cm          $ \\ \hline
                         \cellcolor{blue!25}   $ 51\; kg          $ \\ \hline
-                        \cellcolor{yellow!25} $  8               $ \\ \hline
+                        \cellcolor{yellow!25} $  8\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
                     \caption{Kodierung vom Kind Nr.2 \label{fig:somelabel}}
@@ -208,7 +210,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                         \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
                         \cellcolor{blue!25}   $ 42\; cm          $ \\ \hline
                         \cellcolor{red!25}    $ 45\; kg          $ \\ \hline
-                        \cellcolor{yellow!25} $  8               $ \\ \hline
+                        \cellcolor{yellow!25} $  8\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
                     \caption{Mutierte Kodierung vom Kind Nr.2 \label{fig:somelabel}}
@@ -216,6 +218,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             \end{multicols}
 \newpage
             Der Python Code sieht hier folgendermaßen aus:
+            \begin{mdframed}
             \begin{minted}[escapeinside=||, xleftmargin=-50pt]{python}
                 kinder = [k1, k2...]
                 beta   = 0.1
@@ -224,6 +227,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                         if (r > beta):
                             kinder[i][j] = sampleNewFrom(kodierung[j].range)
             \end{minted}
+            \end{mdframed}
             \noindent
             Dieser Schritt ist wichtig damit man die Möglichkeit hat aus lokalen Fitnessminimas rauszukommen, weil es schnell passieren kann dass sich über Generationen gleichwertige Ausprägungen weiterverbreiten, da sie die derzeit beste Lösung vorschlagen. Ohne Mutation würde der GA zu dieser Lösung konvergieren ohne Bessere in Betracht zu ziehen.\\
             \\
@@ -410,26 +414,147 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
         % ``Fouriertransformationen machen folgendes...'' \\
         % ``Es gibt eine Inverse die aus einem n-stelligen liste eine m-stellige macht, wo die Zahlen korelliert sind (Beispiele)''
 
-        Eine dieser Techniken ist die Nutzung der diskreten Kosinustransformation, die zur Familie der Fouriertransformationen gehört. Eine \textbf{Fouriertransformation} spaltet ein Signal in beliebig viele trigonometrische Funktionen, wie Sinus oder Kosinus. Über die Summe dieser Funktionen kann jede mögliche Ausprägung von Daten beschrieben werden. \\
+        Eine dieser Techniken ist die Nutzung der diskreten Kosinustransformation (\textbf{DCT}), die zur Familie der Fouriertransformationen gehört. Eine \textbf{Fouriertransformation} spaltet ein Signal in beliebig viele trigonometrische Funktionen, wie Sinus oder Kosinus und über die Summe dieser Funktionen kann jede mögliche Ausprägung von Daten beschrieben werden. \\
 
         \noindent
-        Was uns die Fouriertransformation dadurch liefert ist ein diskretes Frenquenzenspekturm, das in Form von Koeffizienten für die Kosinusfunktionen die Datenpunkte reproduzierbar macht. Dabei wird pro Datenpunkt ein einzelner Koeffizient benutzt. Es gibt für diese Transformation eine Inverse, die uns erlaubt alle Datenpunkte basierend auf den Koeffizienten wieder zurück zu gewinnen. 
+        Diese Fouriertransformation liefert uns dadurch ein diskretes Frenquenzenspekturm, das in Form von Koeffizienten für die dargestellt wird. Dabei wird pro Datenpunkt ein Koeffizient benutzt. Es gibt für diese Transformation die inverses Kosinustransformation, das uns erlaubt alle Datenpunkte basierend auf den Koeffizienten wieder zurück zu gewinnen.
+
+        \begin{multicols}{2}
+            \begin{figure}[H]
+                \begin{center}
+                    \includegraphics[scale=1]{../pictures/gazelle-uncompressed.jpg}\\
+                    \caption{Unkomprimiert}\label{fig:gazelle-uncompressed}
+                \end{center}
+            \end{figure}
+            \par
+            \begin{figure}[H]
+                \begin{center}
+                    \includegraphics[scale=0.239]{../pictures/gazelle-compressed.jpg}\\
+                    \caption{Komprimiert (1:5)}\label{fig:gazelle-compressed}
+                \end{center}
+            \end{figure}
+        \end{multicols}
 
         \noindent
-        Wenn wir aber einen Großteil der Koeffizieten nicht benutzen und versuchen trotzdem die Datenpunkte zu erstellen, kriegen wir lediglich eine Annäherung. Diese ist aber meistens gut genug, dass wir keinen Unterschied merken. Diese Kompressionsmethode ist vielfach gebraucht in der Kodierung vom JPEG oder MPEG. Eine ausführlichere Erklärung findet sich im Ursprungspaper für die Anwendung in der Neuroevolution\cite{cosyne1}.
+        Wenn wir aber viele der Koeffizieten nicht benutzen und trotzdem versuchen die Datenpunkte wiederherzustellen, kriegen wir lediglich eine Annäherung, wie man in Abbildung \ref{fig:gazelle-compressed} sieht. Diese ist aber meistens gut genug, dass wir keinen Unterschied merken. Eine sehr ähnliche Kompressionsmethode benutzt man auch um JPEG oder MPEG zu kodieren.
 
         \subsection{Kodierung des Suchraums}
-%            ``Die Kodierung besteht aus eine 20-stellingen Liste wie im Paper (Cosyne), wo damit 2k Gewichte entwickelt wurden''     
-            Im Grund generieren wir 20 zufällige Zahlen, die die Frequenzen darstellen, benutzen die inverse Kosinustransformation zur Erstellung von dem Ausgangsgraphen und samplen sehr viele Gewichte raus. Da diese zueinander räumliche korelliert sind ist die Annahme dass Gewichte in einem KNN ähnliche Eigenschaften haben in \cite{cosyne1} bewiesen worden. 
 
-    \section{Cooperative Synapsen Neuroevolution - CoSyNE}
-        ``CoSyNE wurde vom Prof.Dr.Schmidhuber an der ETH Zürich entwickelt und hat damit sehr viele anderen Algorithmen in den Schatten gestellt''\\
-        ``Methodik, ist wie GA bloß mit einer Aktion mehr die statt spielbare `Policies', nur im Koeffizientraum entwickle'' \\
-        ``Dies erlaubt eine (zitat) Kooperative Entwicklung von Koeffizienten für die nachfolgenden Inv.DCT'' \\
-        ``Kein Crossover, geringe Mutation'' \\
-        ``Beispiele vom Erfolg'' \\
+            Diese Technik wenden wir nun auf die Gewichte von dem neuronalen Netz an. Dafür beschränken wir den Suchraum auf eine kleine Anzahl der Koeffizienten und benutzen die inverse Kosinustransformation um aus ihnen die nötige Anzahl von Gewichten zu erstellen. In Abbildung \ref{fig:dct-pre},\ref{fig:dct-after} sieht man eine Anwendung auf 100 Gewichte die in einem Verhältnis von 1:2 komprimiert wurden. Das bedeutet dass wir den Suchraum mit dem sichtbaren Genauigkeitsverlust halbiert haben.\\
+
+            \noindent
+            Bei größeren Verhältnissen bemerken wir eine starke örtliche Korrelation (\ref{fig:dct-my-case}) zwischen den benachbarten Zahlen und diese Eigenschaft passt zu der Annahme dass sich Gewichte in neuronalen Netzen ähnlich verhalten. Eine ausführlichere Erklärung findet sich im Ursprungspaper für die Anwendung in der Neuroevolution.\cite{cosyne1}
+            \begin{multicols}{2}
+                \begin{figure}[H]
+                    \begin{center}
+                        \includegraphics[scale=0.2]{../pictures/DCT-pre.png}\\
+                        \caption{Unkomprimiert}\label{fig:dct-pre}
+                    \end{center}
+                \end{figure}
+                \par
+                \begin{figure}[H]
+                    \begin{center}
+                        \includegraphics[scale=0.2]{../pictures/DCT-after.png}\\
+                        \caption{Komprimiert (1:2)}\label{fig:dct-after}
+                    \end{center}
+                \end{figure}
+            \end{multicols}
+
+    \section{Kooperative Synapsen Neuroevolution}
+%         ``CoSyNE wurde vom Prof.Dr.Schmidhuber an der ETH Zürich entwickelt und hat damit sehr viele anderen Algorithmen in den Schatten gestellt''\\
+%        ``Methodik, ist wie GA bloß mit einer Aktion mehr die statt spielbare `Policies', nur im Koeffizientraum entwickle'' \\
+%        ``Dies erlaubt eine (zitat) Kooperative Entwicklung von Koeffizienten für die nachfolgenden Inv.DCT'' \\
+%        ``Kein Crossover, geringe Mutation'' \\
+%        ``Beispiele vom Erfolg'' \\
+        Nachdem wir nun den Zustandsraum komprimiert haben, sodass ein genetischer Algorithmus ihn in absehbarer Zeit entwickeln kann und damit gleichzeitig ein neuronales Netz befüllt werden kann, erschließt sich die Verküpfung zu einem mächtigen Werkzeug das viele interessante Eigenschaften besitzt. Der Algorithmus wird \textbf{Cooperative Synapsen Neuroevolution}\cite{cosyne2}, oder auch \textbf{CoSyNE} genannt.\\
+
+        \noindent
+        Er zeichnet sich speziell dadurch aus, dass er auf kontinuierlichen Zuständen und Aktionen funktioniert und spärliche Fitnessignale interpretieren kann. Das schafft er indem er rekurrente Netze aufbaut und die genetische Suche mit aggresiver Mutation im Zustandsraum beschleunigt. Ein gutes Beispiel dafür ist das Rennspiel \textbf{TORCS}\cite{cosyne3} wo der Algorithmus 993 Gewichte in 33 Koeffizienten kodiert und lediglich durch die Bilddaten ähnlich gute Ergebnisse liefert wie die per Hand programmierten Agenten die die Physik des Spieles kennen.\\
+
+        \noindent
+        Ein großer Nachteil von genetischen Algorithmen ist das sie oft schnell zu lokalen Maxima konvergieren und sehr schlecht aus diesem Tal rauskommen. Um dieses Problem anzugehen, versucht man oft die Stellschrauben wie Mutationswahrscheinlichkeit oder Kinderanzahl per Hand zu verändern. CoSyNE benutzt dafür eine ganz eine \textbf{genetische Methode} um die Suche einfacher zu gestalten. Sie nennt sich Permutation und erzeugt innerhalb der gesamten Population Unterteilungen in kleinere Populationen die in einer \textbf{kooperativen und koevolutionären} Beziehung stehen.
+%        \begin{figure}[H]
+%            \begin{center}
+%                \includegraphics[scale=0.5]{../pictures/DCT-my-case.png}\\
+%                \caption{1024 Gewichte auf 23 reduziert}\label{fig:dct-my-case}
+%            \end{center}
+%        \end{figure}
         \subsection{Permutation}
-            ``Wir transponieren, shuffeln und transponieren zurück''
+            % ``Wir transponieren, shuffeln und transponieren zurück''
+            Der Permutationsschritt wird ganz am Ende von dem genetischen Algorithmus statt der Repopulation aufgerufen und vermischt jeden \colorbox{green!25}{Eigenschaftsraum} der Gesamtpopulation. 
+
+            \begin{table}[H]
+                \begin{center}
+                \begin{tabular}{ |r|r|r|r|r| } 
+                    \hline
+                    Individuum & \cellcolor{green!25} Höchstgeschwindigkeit & \cellcolor{green!25} Beinlänge & \cellcolor{green!25} Gewicht & \cellcolor{green!25} Hornlänge \\ \hline
+                    $1$        & $60\; \frac{km}{h}$   & $40\; cm$ & $50\; kg$ & $10\; cm$ \\ \hline
+                    $2$        & $61\; \frac{km}{h}$   & $41\; cm$ & $51\; kg$ & $11\; cm$ \\ \hline
+                    $3$        & $62\; \frac{km}{h}$   & $42\; cm$ & $52\; kg$ & $12\; cm$ \\ \hline
+                    $4$        & $63\; \frac{km}{h}$   & $43\; cm$ & $53\; kg$ & $13\; cm$ \\ \hline
+                    $5$        & $64\; \frac{km}{h}$   & $44\; cm$ & $54\; kg$ & $14\; cm$ \\ \hline
+                    $6$        & $65\; \frac{km}{h}$   & $45\; cm$ & $55\; kg$ & $15\; cm$ \\ \hline
+                \end{tabular}
+                \end{center}
+                \caption{Vor der Permutation \label{fig:pre-perm}}
+            \end{table}
+
+            \begin{table}[H]
+                \begin{center}
+                \begin{tabular}{ |r|r|r|r|r| } 
+                    \hline
+                    Individuum & \cellcolor{green!25} Höchstgeschwindigkeit & \cellcolor{green!25} Beinlänge & \cellcolor{green!25} Gewicht & \cellcolor{green!25} Hornlänge \\ \hline
+                    $1$        & \cellcolor{blue!45} $61\; \frac{km}{h}$   & \cellcolor{yellow!25} $43\; cm$ & \cellcolor{red!15} $54\; kg$ & \cellcolor{violet!45} $12\; cm$ \\ \hline
+                    $2$        & \cellcolor{blue!45} $60\; \frac{km}{h}$   & \cellcolor{yellow!45} $44\; cm$ &                    $51\; kg$ & \cellcolor{violet!25} $14\; cm$ \\ \hline
+                    $3$        & \cellcolor{blue!15} $64\; \frac{km}{h}$   & \cellcolor{yellow!65} $45\; cm$ & \cellcolor{red!35} $53\; kg$ & \cellcolor{violet!45} $10\; cm$ \\ \hline
+                    $4$        &                     $63\; \frac{km}{h}$   & \cellcolor{yellow!25} $40\; cm$ & \cellcolor{red!35} $52\; kg$ & $13\; cm$ \\ \hline
+                    $5$        & \cellcolor{blue!15} $62\; \frac{km}{h}$   & \cellcolor{yellow!45} $41\; cm$ &                    $54\; kg$ & \cellcolor{violet!25} $11\; cm$ \\ \hline
+                    $6$        &                     $65\; \frac{km}{h}$   & \cellcolor{yellow!65} $42\; cm$ & \cellcolor{red!15} $50\; kg$ & $15\; cm$ \\ \hline
+                \end{tabular}
+                \end{center}
+                \caption{Nach der Permutation \label{fig:pre-perm}}
+            \end{table}
+
+            \noindent
+            Wenn wir uns die Population als zweidimensionale Liste vorstellen, wo jedes Indviduum eine eigene Liste mit seinen spezifischen Ausprägungen ist, können wir die Population transponieren, wobei nun jede Eigenschaft eine eigene Liste ist, diese vermischen und wieder zurück transponieren um die neuen Individuen zu bekommen. Der folgende Pythoncode veranschaulicht das Prinzip unter Verwendung der \textit{numpy} Bibliothek.
+
+            \begin{mdframed}
+            \begin{minted}[escapeinside=||, xleftmargin=-80pt]{python}
+                import numpy as np
+
+                i_1 = [1,10,100,1000] # Individuum 1-5
+                i_2 = [2,20,200,2000]
+                i_3 = [3,30,300,3000]
+                i_4 = [4,40,400,4000]
+                i_5 = [5,50,500,5000]
+
+                population = np.array([i_1, i_2, i_3, i_4, i_5])
+                eigenschaftsraum = np.transpose(population)
+                
+                for eig in eigenschaftsraum:
+                    np.random.shuffle(eig)
+
+                population = np.transpose(eigenschaftsraum)
+
+                print population
+
+                [[   2   40  500 5000]
+                 [   1   50  200 1000]
+                 [   4   10  300 3000]
+                 [   3   30  100 2000]
+                 [   5   20  400 4000]]
+
+            \end{minted}
+            \end{mdframed}
+            \noindent
+            Man erkennt leicht, dass keiner der ursprünglichen Individuen erhalten bleibt und wir vollkommen Neue bekommen. Der Sinn hinter dem Verschmischen in der Eigenschaftsebene versteckt sich in der \textbf{Verknüpfungung mit der Kreuzungsmethode}. Wenn wir zwei Individuen kreuzen, werden ihre Kinder sicherlich die gesamte Information von ihren Eltern in der Population übernehmen. Da CoSyNE den Repopulationsschritt nicht ausführt, aber dennoch schlechte Individuen wegwirft, wird irgendwann nur noch die Kodierung von den Kindern übrig bleiben.\\
+
+            \noindent
+            Das führt zur Homogenität in den einzelnen Eigenschaften, die zum Beispiel dafür verantworlich ist, dass alle Individuen gleich große Hörner haben. Wenn nun innerhalb der Hornlänge zufällig gemischt wird, bleibt alles gleich, da die gesamte Liste aus dem gleichen Element besteht. \\
+
+            \noindent
+            Die Annahme von CoSyNE ist dass die Lösung für das Problem in der Kombination von den Ausprägungen von allen Individuen liegt, die wir am Anfang erstellen. Durch das aggressive Aussortieren durchsuchen wir den Raum aller Möglichkeiten schneller und darin liegt der größte Vorteil von diesem Algorithmus.
+
 
     \section{Cross Entropy}
         ``Cross Entropy ist eine andere Möglichkeit um die Individuen darzustellen, anstatt von Zahlen, hab ich nun pro Coeffizient eine Normalverteilung habe mit Mean und STD'' \\
