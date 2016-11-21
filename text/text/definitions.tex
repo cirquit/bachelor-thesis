@@ -237,21 +237,24 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
         \subsection{Repopulation}
             % ``Ist ein Schritt der oft implizit beim Crossover passiert, (zitat finden), wird nicht nur benutzt um Kinder und Eltern zu verknüpfen, sondern auch völlig neue Individuen hinzuzufügen''
 
-            Die Eltern wurden ausgewählt, die Kindern gezeugt und mutiert, nun müssen wir die Population in eine Form bringen sodass die Simulation neu gestartet werden kann. Wir stellen das Problem wieder an einem Beispiel dar.
+            Die Eltern wurden ausgewählt, die Kindern gezeugt und mutiert, nun müssen wir die Population in eine Form bringen sodass die Simulation neu gestartet werden kann. Wir stellen das Problem wieder an einem Beispiel dar.\\
 
+            \begin{mdframed}
             \begin{minted}[escapeinside=||, xleftmargin=-50pt]{python}
 
-                population = [i1,i2,...]                  # population.length = 10
-                alpha      = 0.4
-                eltern     = selection(population, alpha) # eltern.length = 4
-                kinder     = crossover(eltern)            # kinder.length = 4
-                beta       = 0.1
-                mutkinder  = mutation(kinder, beta)       # mutkinder.length = 4
+          population = [i1,i2,...]                  # population.length = 10
+          alpha      = 0.4
+          eltern     = selection(population, alpha) # eltern.length = 4
+          kinder     = crossover(eltern)            # kinder.length = 4
+          beta       = 0.1
+          mutkinder  = mutation(kinder, beta)       # mutkinder.length = 4
 
-                newpopulation = eltern + mutkinder        # newpopulation.length = 8
+          newpopulation = eltern + mutkinder        # newpopulation.length = 8
             \end{minted}
+            \end{mdframed}
+            \hfill \\
             \noindent
-            Man kann einfach erkennen dass uns zwei Individuen zum Neustart der Simulation fehlen. Dieses Problem kann man auf viele Weisen angehen, die ihre Vorteile und Nachteile haben. 
+            Wir sehen dass uns zwei Individuen zum Neustart der Simulation fehlen. Dieses Problem kann man auf viele Weisen angehen, die ihre eigenen Vorteile und Nachteile haben. 
 
             \subsubsection*{Mehr Kinder erstellen}
                 Es ist möglich während der Kreuzung solange Kinder zu erzeugen, bis die Population wieder ihre Ausgangsgröße angenommen hat. Ein Vorteil wäre, dass diese Individuen mit wahrscheinlich besseren Ausgangskodierungen starten als inherent Neue. Der Nachteil ist jedoch die gesenkte Varianz in der Population und die erhöhte Wahrscheinlichkeit zum Feststecken in einem loken Fitnessminima.
@@ -466,19 +469,19 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 %        ``Dies erlaubt eine (zitat) Kooperative Entwicklung von Koeffizienten für die nachfolgenden Inv.DCT'' \\
 %        ``Kein Crossover, geringe Mutation'' \\
 %        ``Beispiele vom Erfolg'' \\
-        Nachdem wir nun den Zustandsraum komprimiert haben, sodass ein genetischer Algorithmus ihn in absehbarer Zeit entwickeln kann und damit gleichzeitig ein neuronales Netz befüllt werden kann, erschließt sich die Verküpfung zu einem mächtigen Werkzeug das viele interessante Eigenschaften besitzt. Der Algorithmus wird \textbf{Cooperative Synapsen Neuroevolution}\cite{cosyne2}, oder auch \textbf{CoSyNE} genannt.\\
+        Nachdem wir nun den Zustandsraum komprimiert haben, sodass ein genetischer Algorithmus ihn in absehbarer Zeit entwickeln und ein neuronales Netz befüllt werden kann, erschließt sich die Verküpfung zu einem mächtigen Werkzeug das viele interessante Eigenschaften besitzt. Der Algorithmus wird \textbf{Cooperative Synapsen Neuroevolution}\cite{cosyne2}, oder auch \textbf{CoSyNE} genannt.\\
 
         \noindent
         Er zeichnet sich speziell dadurch aus, dass er auf kontinuierlichen Zuständen und Aktionen funktioniert und spärliche Fitnessignale interpretieren kann. Das schafft er indem er rekurrente Netze aufbaut und die genetische Suche mit aggresiver Mutation im Zustandsraum beschleunigt. Ein gutes Beispiel dafür ist das Rennspiel \textbf{TORCS}\cite{cosyne3} wo der Algorithmus 993 Gewichte in 33 Koeffizienten kodiert und lediglich durch die Bilddaten ähnlich gute Ergebnisse liefert wie die per Hand programmierten Agenten die die Physik des Spieles kennen.\\
 
         \noindent
         Ein großer Nachteil von genetischen Algorithmen ist das sie oft schnell zu lokalen Maxima konvergieren und sehr schlecht aus diesem Tal rauskommen. Um dieses Problem anzugehen, versucht man oft die Stellschrauben wie Mutationswahrscheinlichkeit oder Kinderanzahl per Hand zu verändern. CoSyNE benutzt dafür eine ganz eine \textbf{genetische Methode} um die Suche einfacher zu gestalten. Sie nennt sich Permutation und erzeugt innerhalb der gesamten Population Unterteilungen in kleinere Populationen die in einer \textbf{kooperativen und koevolutionären} Beziehung stehen.
-%        \begin{figure}[H]
-%            \begin{center}
-%                \includegraphics[scale=0.5]{../pictures/DCT-my-case.png}\\
-%                \caption{1024 Gewichte auf 23 reduziert}\label{fig:dct-my-case}
-%            \end{center}
-%        \end{figure}
+%         \begin{figure}[H]
+%             \begin{center}
+%                 \includegraphics[scale=0.5]{../pictures/DCT-my-case.png}\\
+%                 \caption{1024 Gewichte auf 23 Koeffizienten reduziert}\label{fig:dct-my-case}
+%             \end{center}
+%         \end{figure}
         \subsection{Permutation}
             % ``Wir transponieren, shuffeln und transponieren zurück''
             Der Permutationsschritt wird ganz am Ende von dem genetischen Algorithmus statt der Repopulation aufgerufen und vermischt jeden \colorbox{green!25}{Eigenschaftsraum} der Gesamtpopulation. 
@@ -556,9 +559,70 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             Die Annahme von CoSyNE ist dass die Lösung für das Problem in der Kombination von den Ausprägungen von allen Individuen liegt, die wir am Anfang erstellen. Durch das aggressive Aussortieren durchsuchen wir den Raum aller Möglichkeiten schneller und darin liegt der größte Vorteil von diesem Algorithmus.
 
 
-    \section{Cross Entropy}
-        ``Cross Entropy ist eine andere Möglichkeit um die Individuen darzustellen, anstatt von Zahlen, hab ich nun pro Coeffizient eine Normalverteilung habe mit Mean und STD'' \\
-        (cite boer07)
+    \section{Cross Entropy Method}
+        Eine andere Möglichkeit die Individuen in dem GA zu kodieren stellt die \textbf{Cross Entropy Method} dar. Das ist ein Algorithmus der oft als Vergleichskriterium verwendet wird, da er oft zu suboptimalen Strategien konvergiert\cite{cem}. Die Anwendung in unserem neuroevolutionären Schema basiert darauf, dass wir Individuen nicht als Ansammlung von Zahlen zu speichern, sondern jede Eigenschaft als Normalverteilung dargestellt wird. Diese Abläufe illustrieren wir anhand der Erklärung was eine Normalverteilung ist.
+
         \subsection{Normalverteilung}
-            ``Was ist eine Normalverteilung'' \\
-            ``Wie programmiere ich eine Normalverteilung selber, Box-Muller, Randomness, Haskellcode Beispiel'' \\
+
+            Eine Normalverteilung ist eine sehr bekannte stetige Wahrscheinlichkeitsverteilung. Ihre Wahrscheinlichkeitsdichtefunktion wird oft Gauß-Kurve oder Glockenkurve genannt und findet Anwendung in verschiedensten Anwendungsgebieten, weil sie natürliche Vorgänge exakt oder ähnlich genug modelliert. Bekannte Beispiele dafür sind die Streuung von Messfehlern oder die irreguläre Bewegung von Partikeln in einer Flüssigkeit (\textbf{Brownsche Bewegung}).\\
+
+            \noindent
+            Die Wahrscheinlichkeitsdichtefunktion der Normalverteilung ist von zwei Parametern abhängig, dem Durchschnitt und der Standartabweichung:
+
+            \begin{figure}[H]
+                \begin{mdframed}
+                    \noindent
+                    Sei $\mu$ der Durchschnitt,\\
+                    \hspace*{4.5mm}    $\sigma$ die Standartabweichung, dann ist\\[4mm]
+                    \hspace*{50mm} \Resize{6cm}{$\mathcal{N}(x\;|\;\mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \cdot e^{-\frac{(x - \mu)^2}{2\sigma^2}} $} \\[4mm]
+                    \hspace*{4.5mm} die Wahrscheinlichkeitsdichtefunktion der Normalverteilung.
+                \end{mdframed}
+%                \caption{\label{norm-dist-pdf-formel} Definition der Wahrscheinlichkeitsdichtefunktion der Normalverteilung}
+            \end{figure}
+
+            \begin{figure}[H]
+                    \begin{center}
+                        \includegraphics[scale=0.4]{../pictures/diagrams/normal-dist-example.png}\\
+                        \caption{Dichtefunktionen von Normalverteilungen}\label{fig:norm-dist-pdf}
+                    \end{center}
+            \end{figure}
+
+            \noindent
+            Die Abbildung (\ref{fig:norm-dist-pdf}) zeigt beispielhafte Ausprägungen der Dichtefunktion, an denen man erkennen kann, dass die Standartabweichung für die Amplitute und der Durchschnitt für die Phase verantwortlich ist. Um die Wahrscheinlichkeit zu berechnen, dass eine zufällige Variable $\mathcal{X}$  mit den Grenzen $a \leq \mathcal{X} \leq b$ eintritt ist:
+
+            \begin{figure}[H]
+                \begin{mdframed}
+                    \hspace*{40mm} \Resize{6cm}{$P(a \leq \mathcal{X} \leq b) = \int_a^{b} \; \mathcal{N} (\mu, \sigma^2)$}
+                \end{mdframed}
+                \caption{Wahrscheinlichkeit der Ausprägung $a \leq \mathcal{X} \leq b$}
+            \end{figure}
+
+            \noindent
+            Diese Formel lässt sich an dem Beispiel von Regenfall pro Quadratmeter veranschaulichen:
+
+            \begin{figure}[H]
+                    \begin{center}
+                        \includegraphics[scale=0.5]{../pictures/diagrams/rainfall-pdf.png}\\
+%                        \caption{Kodierung der Eigenschaften durch Normalverteilungen}\label{fig:norm-dist-encoding}
+                    \end{center}
+            \end{figure}
+            \noindent
+            Die Wahrscheinlichkeit dass auf pro Quadratmeter \textit{genau} $2cm$ Regenwasser fällt ist extrem gering, weil nicht ein Yoctometer ($10^{-24})$ mehr oder weniger fallen. Wenn wir diese zufällige Ausprägung aber als Grenzen definieren, dann steigt die Wahrscheinlichkeit. Die Wahrscheinlichkeit dass zwischen $1cm$ und $3cm$ Regenwasser fällt ist eine viel wertvollere Aussage und ist als Integral zwischen den Grenzen der Dichtefunktion definiert.\\
+
+
+
+
+            \subsubsection*{Kodierung durch Normalverteilungen}
+
+            \begin{figure}[H]
+                    \begin{center}
+                        \includegraphics[scale=0.5]{../pictures/diagrams/cross-entropy-visualization-ga.png}\\
+                        \caption{Kodierung der Eigenschaften durch Normalverteilungen}\label{fig:norm-dist-encoding}
+                    \end{center}
+            \end{figure}
+
+            Stellen wir nun die Kodierung der Eigenschaften von jedem Individuum als Normalverteilung dar. Das bedeutet wir haben für jede Eigenschaft, zum Beispiel \textit{Hornlänge}, einen Durchschnitt und eine Standartabweichung. Die Abbilung (\ref{fig:norm-dist-encoding}) zeigt dies beispielhaft für fünf Individuen mit jeweils 4 Eigenschaften dar.\\
+
+
+%            ``Was ist eine Normalverteilung'' \\
+%            ``Wie programmiere ich eine Normalverteilung selber, Box-Muller, Randomness, Haskellcode Beispiel'' \\
