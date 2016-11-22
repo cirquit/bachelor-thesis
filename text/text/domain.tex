@@ -18,20 +18,17 @@
     \end{figure}
 
     \section{Half Field Offense}
-        % ``Was ist Half Field Offense'' \\
-        % ``Wie ist das Spielfeld aufgebaut'' \\
-        % ``Warum wurde diese Domäne gewählt'' \\
 
         Die Domäne Half Field Offense grenzt das Spielfeld auf eine Hälfte ein, sodass wir 4 Angreifer und 3 Verteidiger + Torwart haben. Diese Einschränkung vereinfacht den Such- und Zustandsraum immens und erlaubt potenziell eine Wiederverwendbarkeit der Agenten, wenn eine vollständige Mannschaft aufgebaut wird.\\
         \\
-        In unserer Implementierung haben wir lediglich ein 1v1 Szenario, also ein Angreifer gegen ein Torwart. Diese sieht jedoch explizit ein nahtlosen Skalierung auf ein 4vs4 Szenario vor, sodass weitere Parametrisierung ohne viel Aufwand ausprobiert werden können.\\
+        In unserer Implementierung haben wir lediglich ein 1vs1 Szenario, also ein Angreifer gegen ein Torwart. Diese sieht jedoch explizit ein nahtlosen Skalierung auf ein 4vs4 Szenario vor, sodass weitere Parametrisierung ohne viel Aufwand ausprobiert werden können.\\
 
         \begin{figure}[htbp]
             \includegraphics[width = 0.5\textwidth,height = 0.4\textheight, center]{../pictures/half-field.png}
             \caption{Screenshot von dem Spielfeld für den Subtask HFO \label{fig:somelabel}}
         \end{figure}
         \noindent
-        Im Folgenden wir die Domäne samt Zustandsraum und Aktionen erklärt, sowie ihren Einschränkungen für die Anwendung von Machine Learning Algorithmen.\\
+        Im Folgenden wird die Domäne samt Zustandsraum und Aktionen erklärt, sowie ihren Einschränkungen für die Anwendung von Machine Learning Algorithmen.\\
         % \cite{ http://www.cs.utexas.edu/users/ai-lab/?hausknecht:aamasws16 }
 \newpage
         \subsection{Zustandsraum}
@@ -39,40 +36,74 @@
             % ``Angepasst für Maschinen (zitat HFO)'' \\
             % ``Umrechnung für Menschen'' \\
             % ``Fullstate flag''
-            Der Zustandsraum der HFO Domäne kann in den \textbf{High Level State} und den \textbf{Low Level State} aufgeteilt werden. Der Unterschied ist lediglich in der Dimensionalität, da man aus dem Low Level State den High Level State ableiten kann. Die Zustandsräume werden durch folgende Formeln aufgespannt:\\
-            \\
+            Der Zustandsraum der HFO Domäne kann in den \textbf{High Level State} und den \textbf{Low Level State} aufgeteilt werden. Der Unterschied ist lediglich in der Dimensionalität, da man aus dem Low Level State den High Level State ableiten kann. Die Zustandsräume werden durch folgende Formeln definiert:\\
+            
+            \begin{mdframed}
             \textit{Sei T die Anzahl der Teammitglieder, O die Anzahl der Gegner:}
             \begin{center}
                 \textit{High Level State} $ := 10 + 6T + 3O \hspace{10mm} $ \\
                 \textit{Low Level State}  $ := 58 + 8T + 8O \hspace{9mm} $ \\
             \end{center}
+            \end{mdframed}
 %            \textit{(Frage: Alles vom Paper abschreiben oder referenzieren?)} \\
  %           \\
-            In unserem 1v1 High Level Setting haben wir damit 13 Zustandsparameter. Vier von diesen Parametern gehören zu dem Torwart, aber da seine Position implizit durch andere Ausprägungen gegeben ist, werden sie nicht beachtet. Redundante Information würde den Suchraum unnötig aufblähen und die Suche verlängern. Folgende 9 Zustände wurden bereitgestellt:
+            In unserem 1vs1 High Level Setting haben wir damit 13 Zustandsparameter. Vier von diesen Parametern gehören zu dem Torwart, aber da seine Position implizit durch andere Ausprägungen gegeben ist, beachten wir sie nicht. Redundante Information würde den Suchraum unnötig aufblähen und die Suche verlängern. Deshalb wurden nur die folgenden 9 Zustände bereitgestellt:
 
             \begin{table}[H]
                 \begin{center}
-                \hspace*{-1.5cm}
-                \begin{tabular}{ |l|c|c|c| } 
+                \hspace*{-2cm}
+                \begin{tabular}{ |l|c|c|c|c|c| } 
                     \hline
-                    \hfill Zustandsbeschreibung & Wertebereich & Kontinuierlich & Boole'sch \\ \hline
-                    x Koordinaten & $[ -1, +1 ]$ & X & \hfill \\ \hline
-                    y Koordinaten & $[ -1, +1 ]$ & X & \hfill \\ \hline
-                    Sichtrichtung & $[ -1, +1]$ & X & \hfill \\ \hline
-                    Nähe zum Ball & $[ -1, +1 ]$ & X & \hfill \\ \hline
-                    Winkel zum Ball & $[ -1, +1 ]$ & X & \hfill \\ \hline
-                    Kann eine Ballaktion ausgeführt werden & $[ -1, +1 ]$ & \hfill & X \\ \hline
-                    Winkel zum Mittelpunkt des Tors & $[ -1, +1 ]$ & X & \hfill \\ \hline
-                    Größte offene Winkel zwischen Torwart und Torpfosten & $[ -1, +1 ]$ & X & \hfill \\ \hline
+                    \hfill Zustandsbeschreibung                          & Wertebereich & Winkel & Boole'sch & Lage & Anderes \\ \hline
+                    x-Koordinaten                                        & $[ -1, +1 ]$ & \hfill & \hfill    &      & X       \\ \hline
+                    y-Koordinaten                                        & $[ -1, +1 ]$ & \hfill & \hfill    &      & X       \\ \hline
+                    Sichtrichtung                                        & $[ -1, +1 ]$ & X      & \hfill    &      & \hfill  \\ \hline
+                    Nähe zum Ball                                        & $[ -1, +1 ]$ & \hfill & \hfill    & X    & \hfill  \\ \hline
+                    Winkel zum Ball                                      & $[ -1, +1 ]$ & X      & \hfill    &      & \hfill  \\ \hline
+                    Kann eine Ballaktion ausgeführt werden               & $[ -1, +1 ]$ & \hfill & X         &      & \hfill  \\ \hline
+                    Winkel zum Mittelpunkt des Tors                      & $[ -1, +1 ]$ & X      & \hfill    &      & \hfill  \\ \hline
+                    Größte offene Winkel zwischen Torwart und Torpfosten & $[ -1, +1 ]$ & X      & \hfill    &      & \hfill  \\ \hline
                 \end{tabular}
                 \end{center}
                 \caption{Zustandsraum von HFO 1vs1 \label{fig:somelabel}}
             \end{table}
 
-            \hspace*{-1.5cm}
-            \textit{(Muss hier eine Erklärung wie der Zustand kodiert war hin, also Normalisierung der Winkel?\\
-            \hspace*{-1.5cm} Wäre dann eigentlich abschreiben ab 15.1.1 von https://github.com/LARG/HFO/blob/master/doc/manual.pdf)}
+            % \hspace*{-1.5cm}
+            % \textit{(Muss hier eine Erklärung wie der Zustand kodiert war hin, also Normalisierung der Winkel?\\
+            % \hspace*{-1.5cm} Wäre dann eigentlich abschreiben ab 15.1.1 von https://github.com/LARG/HFO/blob/master/doc/manual.pdf)}
             % (src: https://github.com/LARG/HFO/blob/master/doc/manual.pdf ab 15.1.1)
+            \noindent
+            Der Zustand kann in 4 Kategorieren unterteilt werden, die auf den Wertebereich von $[ -1, +1 ]$ reduziert wurden.
+
+            \subsubsection*{Winkelkodierung}
+                Die Winkel sind im Bereich von $[0, \pi]$ und durch folgende Formel auf den Bereich $[-1, +1]$ transformiert:
+
+                \begin{mdframed}
+                    Sei $f : [0,\pi] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
+                    \hspace*{5mm} $g : [-1, +1] \rightarrow [0, \pi]$, die Inverse: \\[4mm]
+                    \hspace*{10mm} \Resize{4.5cm}{$f(x) = (\frac{x}{\pi} - 1) \cdot 2$}
+                    \hspace*{20mm} \Resize{4.5cm}{$g(x) = (\frac{x}{2} + 1) \cdot \pi$}
+                \end{mdframed}
+
+            \subsubsection*{Boole'sche Kodierung}
+                Die boole'schen Werte sind binär und $-1$ entspricht $false$ und $1$ entsprechend $true$.
+
+            \subsubsection*{Lagekodierung}
+                Die Lagekodierung ist normalisiert auf der maximale diagonale Länge des Spielfelds die durch $max_{l} = \sqrt{l^2 + w^2}$ gegeben ist, wobei $l$ die Länge und $w$ die Breite ist. In dem Fall für HFO, entspricht sie $sqrt(2^2 + 2^2) ~= 2.82$.\\
+
+                \begin{mdframed}
+                Sei $f : [-max_{l}, max_{l}] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
+                    \hspace*{5mm} $g : [-1, +1] \rightarrow [-max_{l}, max_{l}]$, die Inverse: \\[4mm]
+                    \hspace*{25mm} \Resize{3.5cm}{$f(x) = \frac{x}{max_{l}}$}
+                    \hspace*{20mm} \Resize{3.5cm}{$g(x) = x \cdot max_{l}$}
+                \end{mdframed}
+
+            \subsubsection*{Anderes}
+                Unter diese Kategorie fallen nur die x- und y-Koordinaten und sind trivialerweise im Bereich von [-1, +1], weil das die Grenzen des Spielfelds sind.
+
+            \hfill \\[2mm]
+            \noindent
+            Wir wollen an dieser Stelle anmerken dass wir alle Zustände mit normal verteilten Rauschen empfangen haben.
         \subsection{Aktionsraum}
             % ``Gibt 6 nicht parametrisierte Aktionen, die wir benutzt haben''\\
             % ``Gibt noch andere parametrisierte''
@@ -119,11 +150,11 @@
         Der ausführliche Aufbau der Algorithmen wird näher im Appendix erklärt, hier schauen wir uns die Parametrisierung grobe Funktionsweise an. Die Simulation kann in die folgenden drei Teile unterteilt werden.
 
         \subsubsection*{Simulationsserver}
-        Der Simulationsserver ist in C++ geschrieben und wurde 1-zu-1 aus [cite HFO] übernommen. Er wird durch Flags beim Starten parametrisiert.
+        Der Simulationsserver ist in C++ geschrieben und wurde 1-zu-1 aus \cite{hfo} übernommen. Er wird durch Flags beim Starten parametrisiert.
         % (src: https://github.com/LARG/HFO)
 
         \subsubsection*{Agenten}
-        Die Agenten sind in Python geschrieben und stellen eine Erweiterung von einem der Beispielskripte dar [cite HFO]. Diese Prozesse werden auch mit eigenen Kommandozeilenparametern aufgerufen.
+        Die Agenten sind in Python geschrieben und stellen eine Erweiterung von einem der Beispielskripte dar\cite{hfo}. Diese Prozesse werden auch mit eigenen Kommandozeilenparametern aufgerufen.
 
         \subsubsection*{Koordinator}
         Der Koordinator ist für die Umsetzung des GAs und den jeweiligen Kodierungen zuständig, startet den Server und die Agenten Skripte und überwacht die Simulation. Er ist, wie alle folgenden Codebeispiele, in Haskell geschrieben.
@@ -290,17 +321,17 @@
             ``Parametrisierung''
 
     \section{Resultate}
-        Im folgenden Teil beschreiben wir die Resultate und versuchen diese zu begründen. Durchschnittlich hat eine Trainigsphase mit 300 Generationen, Population der Größe 50 und 25 Episoden pro Team 30 Stunden gedauert. Der Suchraum für die Neuroevolution wurde von 916 Gewichten auf 20 Koeffizienten reduziert, welches der Kompressionsrate 1:45 entspricht. Die Simulationen wurden auf einem Laptop mit einem Intel i5 mit 2.9GHz und 4GB Arbeitsspeicher ausgeführt.\\[2mm]
+        Im folgenden Teil beschreiben wir die Resultate und versuchen diese zu begründen. Durchschnittlich hat eine Trainigsphase mit 300 Generationen, Population der Größe 50 und 25 Episoden pro Team 30 Stunden gedauert. Der Suchraum für die Neuroevolution wurde von 916 Gewichten auf 20 Koeffizienten reduziert, welches einer Kompressionsrate 1:45 entspricht. Die Simulationen wurden auf einem Laptop mit einem Intel i5 mit Dual Core 2.9GHz und 4GB Arbeitsspeicher ausgeführt.\\[2mm]
         \noindent
-        Nachdem wir pro Algorithmus die besten 5 Individuen ermitteln, lassen wir sie jeweils 10000 Spiele spielen, um die erfasste Fitness auf ihre Stabilität zu testen. \\[2mm]
+        Nachdem wir pro Algorithmus die besten 5 Individuen ermittelt haben, ließen wir sie jeweils 10000 Spiele spielen, um die erfasste Fitness auf ihre Stabilität zu testen. \\[2mm]
         \noindent
         Sei $F_{Entwicklung}$ die entwickelte Fitness und $F_{Test}$ die neu getestete Fitness. Die Stabilität wird danach gemessen wie gering die Abweichung von $F_{Test}$ zu $F_{Entwicklung}$ ist. Je kleiner die Abweichung, umso stabiler und sicherer spielt das Individuum.\\
 
+        \begin{mdframed}
         \begin{center}
-            \begin{math}
-                \text{Abweichung} = \frac{F_{Entwicklung} - F_{Test}}{F_{Entwicklung}}
-            \end{math}
+            \hspace*{0mm} \Resize{6cm}{$\text{Abweichung} = \frac{F_{Entwicklung} - F_{Test}}{F_{Entwicklung}}$}
         \end{center}
+        \end{mdframed}
 
         \subsection{1v1}
             Unser Lernziel für die HFO Domäne war einen offensiven Spieler zu trainieren der gegen einen vom Server gesteuerten Torwart so gut es geht Tore schießt. Das haben wir mit vier in Kapitel 2 angesprochenend Algorithmen getestet und stellen die Resultate vor. 
