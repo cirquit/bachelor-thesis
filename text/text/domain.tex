@@ -201,43 +201,43 @@
             Die erste Methode kam aus der Idee wie man mit einer absehbaren Laufzeit eine Wahrscheinlichkeitsverteilung über $n$ Aktionen erstellt. Dafür werden $n-1$ zufällige Zahlen erstellt, als Liste verpackt, sortiert und jeweils eine $0$ von vorne und eine $100$ am Ende angehängt.
 
             \begin{mdframed}
-            \begin{minted}[escapeinside=||, xleftmargin=-50pt]{haskell}
-                    > let n = 5
-                    > take (n-1) <$> getRandomRs (0,100)
-                    [87, 15, 55, 38]
-                    > sort it
-                    [15, 38, 55, 87]
-                    > 0 : it ++ [100]
-                    [0, 15, 38, 55, 87, 100]
+            \begin{minted}[escapeinside=||, linenos]{haskell}
+> let n = 5
+> take (n-1) <$> getRandomRs (0,100)
+[87, 15, 55, 38]
+> sort it
+[15, 38, 55, 87]
+> 0 : it ++ [100]
+[0, 15, 38, 55, 87, 100]
             \end{minted}
             \end{mdframed}
             \noindent
             Anschließend wird diese Liste dupliziert und um ein Element nach rechts verschoben und paarweise voneinander abgezogen.
             \begin{mdframed}
-            \begin{minted}[escapeinside=||, xleftmargin=-50pt]{haskell}
-                    > let l1 = [0, 15, 38, 55, 87, 100]
-                    > drop 1 l1
-                    [15,38,55,87,100]
-                    > let l2 = it
-                    > {-
-                      [15, 38, 55, 87, 100]
-                    - [ 0, 15, 38, 55,  87, 100]
-                    = [15, 23, 17, 32,  13]
-                    -}
-                    > zipWith (-) l2 l1
-                    [15, 23, 17, 32, 13]
-                    > sum it
-                    100
+            \begin{minted}[escapeinside=||, linenos]{haskell}
+> let l1 = [0, 15, 38, 55, 87, 100]
+> drop 1 l1
+[15,38,55,87,100]
+> let l2 = it
+> {-
+  [15, 38, 55, 87, 100]
+- [ 0, 15, 38, 55,  87, 100]
+= [15, 23, 17, 32,  13]
+-}
+> zipWith (-) l2 l1
+[15, 23, 17, 32, 13]
+> sum it
+100
             \end{minted}
             \end{mdframed}
             \noindent
             Damit haben wir eine Wahrscheinlichkeitsverteilung über 5 Aktionen und können uns sicher sein dass sie aufsummiert immer $100$ ergibt. Die Kreuzung von zwei solcher Individuen wurde mit den jeweiligen Listen umgesetzt, aus denen sie generiert wurden. Dafür wurde elementweise der Durchschnitt berechnet und daraus entsteht dann eine neue Generatorliste aus der sich die Verteilung berechnen lässt.
             \begin{mdframed}
-            \begin{minted}[escapeinside=||, xleftmargin=-50pt]{haskell}
-                    > let individualA = [0, 15, 38, 55, 87, 100]
-                    > let individualB = [0, 7, 22, 35, 51, 100]
-                    > zipWith (\x y -> (x + y) `div` 2) individualA individualB
-                    [0, 11, 30, 45, 69, 100]
+            \begin{minted}[escapeinside=||, linenos]{haskell}
+> let individualA = [0, 15, 38, 55, 87, 100]
+> let individualB = [0, 7, 22, 35, 51, 100]
+> zipWith (\x y -> (x + y) `div` 2) individualA individualB
+[0, 11, 30, 45, 69, 100]
             \end{minted}
             \end{mdframed}
             \subsubsection*{Normalisierung}
@@ -256,15 +256,15 @@
             Die Mutation wurde auch mit jeweils dem Generator sowie Normalisierung umgesetzt. Im Kern ist jedoch die Funktion die das $\delta$ benutzt und es mit zufälligen Vorteichen in die Anzahl der Aktionen aufgeteilt. Man kann sich das $\delta$ als Veränderungsfaktor vorstellen, je höher er ist, umso unterschiedlicher wird die Wahrscheinlichkeitsverteilung.
             \begin{mdframed}
             \begin{multicols}{2}
-                \begin{minted}[escapeinside=||, xleftmargin=-50pt]{haskell}
-                    > let delta = 20
-                    > splitDelta delta 5
-                    [-4, +4, +4, -4, -4]
+                \begin{minted}[escapeinside=||, linenos]{haskell}
+> let delta = 20
+> splitDelta delta 5
+[-4, +4, +4, -4, -4]
                 \end{minted}
-                \begin{minted}[escapeinside=||, xleftmargin=-80pt]{haskell}
-                    > let delta = 100
-                    > splitDelta delta 4
-                    [-25, +25, +25, -25]
+                \begin{minted}[escapeinside=||]{haskell}
+> let delta = 100
+> splitDelta delta 4
+[-25, +25, +25, -25]
                 \end{minted}
             \end{multicols}
             \end{mdframed}
@@ -272,25 +272,25 @@
 
             Wir erstellen teilen das $\delta$ in $n-1$ Teile auf, fügen eine $0$ von vorne und $100$ von hinten hinzu und verknüpfen es analog wie in der Kreuzung mit dem Ausgangsgenerator. Diesmal müssen wir jedoch die Zahlen per Hand auf den Bereich von $0 - 100$ begrenzen.
             \begin{mdframed}
-            \begin{minted}[escapeinside=||, xleftmargin=-80pt]{haskell}
-                > let delta = 100
-                > splitDelta delta 4
-                [-25, +25, +25, -25]
-                > let mutGen = 0 : it ++ [100]
-                > let child = [0, 14, 31, 49, 75, 100]
-                > {-
-                  [0, -25, +25, +25, -25, 100]
-                + [0,  14,  31,  49,  75, 100]
-                = [0, -11,  56,  74,  50, 200]
-                min 0
-                  [0,   0,  56,  74,  50, 200]
-                max 100
-                  [0,   0,  56,  74,  50, 100]
-                sort
-                  [0,   0,  50,  56,  74, 100]
-                -}
-                > sort $ zipWith (((max 0 . min 100) .) . (+)) child mutGen
-                [0,0,50,56,74,100]
+            \begin{minted}[escapeinside=||, linenos]{haskell}
+> let delta = 100
+> splitDelta delta 4
+[-25, +25, +25, -25]
+> let mutGen = 0 : it ++ [100]
+> let child = [0, 14, 31, 49, 75, 100]
+> {-
+  [0, -25, +25, +25, -25, 100]
++ [0,  14,  31,  49,  75, 100]
+= [0, -11,  56,  74,  50, 200]
+min 0
+  [0,   0,  56,  74,  50, 200]
+max 100
+  [0,   0,  56,  74,  50, 100]
+sort
+  [0,   0,  50,  56,  74, 100]
+-}
+> sort $ zipWith (((max 0 . min 100) .) . (+)) child mutGen
+[0,0,50,56,74,100]
             \end{minted}
             \end{mdframed}
 
@@ -300,25 +300,25 @@
 
             Bei der Lösung mit der Normalisierung generieren wir uns wieder die Liste aus dem $\delta$, summieren sie elementweise mit der Verteilung, überprüfen ob die Grenzen von $[0,100]$ überschritten wurden und normalisieren sie wie in der Kreuzung.
             \begin{mdframed}
-            \begin{minted}[escapeinside=||, xleftmargin=-80pt]{haskell}
-                > let delta = 50
-                > splitDelta delta 5
-                [-10, +10, +10, -10, -10]
-                > let mutGen = it
-                > let child = [15, 8, 34, 21, 22]
-                > zipWith (((max 0 . min 100) .) . (+)) child mutGen
-                [5,18,44,11,12]
-                > normalizeDist it
-                [5,20,48,12,15]
+            \begin{minted}[escapeinside=||, linenos]{haskell}
+> let delta = 50
+> splitDelta delta 5
+[-10, +10, +10, -10, -10]
+> let mutGen = it
+> let child = [15, 8, 34, 21, 22]
+> zipWith (((max 0 . min 100) .) . (+)) child mutGen
+[5,18,44,11,12]
+> normalizeDist it
+[5,20,48,12,15]
             \end{minted}
             \end{mdframed}
             Damit bekommen wir wieder eine veränderte diskrete Verteilung zurück.
         \subsection{Cross Entropy mit DCT}
-            ``Parametrisierung''
+            1108 Gewichte für das 9-12-5 LSTM Netz in 20 Koeffizienten kodiert (1:55)
         \subsection{Neuroevolution mit DCT}
-            ``Parametrisierung''
+            1108 Gewichte für das 9-12-5 LSTM Netz in 20 Koeffizienten kodiert (1:55)
         \subsection{CoSyNE mit DCT}
-            ``Parametrisierung''
+            1108 Gewichte für das 9-12-5 LSTM Netz in 20 Koeffizienten kodiert (1:55)
 
     \section{Resultate}
         Im folgenden Teil beschreiben wir die Resultate und versuchen diese zu begründen. Durchschnittlich hat eine Trainigsphase mit 300 Generationen, Population der Größe 50 und 25 Episoden pro Team 30 Stunden gedauert. Der Suchraum für die Neuroevolution wurde von 916 Gewichten auf 20 Koeffizienten reduziert, welches einer Kompressionsrate 1:45 entspricht. Die Simulationen wurden auf einem Laptop mit einem Intel i5 mit Dual Core 2.9GHz und 4GB Arbeitsspeicher ausgeführt.\\[2mm]
@@ -514,8 +514,3 @@
             Sicherheit und die \textit{Planung} machen auf lange Sicht viel mehr Sinn und sollten verstärkt werden. Der CoSyNE Algorithmus unterstützt diese Art von Entwicklung in dieser Dimensionalität schlechter als die naive Suche über alle Parameter. Es ist zu überprüfen ob diese Aussage für gleichzeitiges Lernen in einem 2v1 Setting übereinstimmt.\\[2mm]
 
             \begin{center} \textit{(Link zur Best-Of-Compilation Video)} \end{center}
-
-
-
-
-

@@ -8,7 +8,7 @@
 %    \item ``Ausserdem verknüpfen wir diese mit einer Reduzierung vom Suchraum durch Fouriertransformationen und verwenden verschiedene Kodierung der Individuen, durch Normalverteilungen und direkt durch Zahlen''
 % \end{itemize}
 
-Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} im Zusammenhang mit \textbf{neuronalen Netzen} und der \textbf{Cross Entropy Method}. Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fouriertransformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
+Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} (Kap. 2.1) im Zusammenhang mit \textbf{neuronalen Netzen} (Kap 2.2.1) und der \textbf{Cross Entropy Method} (Kap. 2.5). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fouriertransformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
 
     \section{Genetische Algorithmen}
         % ``Die Motivation von Genetischen Algorithmen kam aus der Natur bla blubb''\\
@@ -16,7 +16,8 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 
         % Ein Genetischer Algorithmus gehört zu den \textbf{unsupervised Learning} Methoden, die sich als Ziel setzen eine verborgene Struktur zu analysieren, ohne zu gekenntzeichnete Daten zu haben. John Holland
 
-        Ein genetischer Algorithmus, im folgenden als \textbf{GA} abgekürzt, ist ein Optimierungsverfahren, der von der natürlichen Selektion und Evolution inspiriert ist. Alternativ findet sich hier\cite{ga} ein formaler Leitfaden. Wir stellen uns anschaulicher Weise eine Gruppe Gazellen und einen Geparden vor.\\
+        Ein genetischer Algorithmus, im folgenden als \textbf{GA} abgekürzt, ist ein Optimierungsverfahren, das von der natürlichen Selektion und Evolution inspiriert ist. Ein formaler Leitfaden findet sich im Fundamentalwerk zu Genetischen Algorithmen \cite{ga}.\\[2mm]
+        Stellen wir uns anschaulicher Weise eine Gruppe Gazellen und einen Geparden vor.\\
 
         \begin{figure}[htbp]
             \begin{subfigure}{0.5\textwidth}
@@ -25,16 +26,16 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             \begin{subfigure}{0.5\textwidth}
                 \includegraphics[width = 0.73\textwidth, right]{../pictures/gazelle.png}
             \end{subfigure}
-            \caption{Illustration von einem Geparden und einer Gazelle \label{fig:gazelleAndGepard}}
+            \caption{Illustration eines Geparden und einer Gazelle \label{fig:gazelleAndGepard}}
         \end{figure}
         \noindent
-        Sei unser Gepard durch seine Geschwindigkeit den Gazellen überlegen, dann wird die Gazellenherde über Zeit in ihrer Anzahl sinken. Dabei werden die langsamsen Gazellen dem Geparden erlegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Die Überlebenden werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Gazellen-Babies bekommen die ähnlich schnell sind. Diesen Vorgang bezeichnen wir als \textbf{Kreuzung}. Mit welcher Wahrscheinlichkeit jedes einzelne Tier vor dem Geparden entwischen kann nennen wir \textbf{Fitness}.\\
+        Sei unser Gepard durch seine Geschwindigkeit den Gazellen überlegen, dann wird die Gazellenherde über Zeit in ihrer Anzahl sinken. Dabei werden die langsamen Gazellen dem Geparden erliegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Die Überlebenden werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Gazellen-Babies bekommen die ähnlich schnell sind. Diesen Vorgang bezeichnen wir als \textbf{Kreuzung}. Mit welcher Wahrscheinlichkeit jedes einzelne Tier vor dem Geparden entwischen kann nennen wir \textbf{Fitness}.\\
         \\
-        Jede Gazelle, oder auch \textbf{Individuum} genannt, hat eine eigene Fitness, die es aber bei Geburt noch nicht weiß, da sie noch nie vor einem Geparden weglaufen musste. Erst nachdem sie einmal erfolgreich entwischt ist, können wir uns vorstellen was ihre Fitness ist.\\
+        Jede Gazelle, oder auch \textbf{Individuum} genannt, hat eine eigene Fitness, die es aber bei Geburt noch nicht weiß, da sie noch nie vor einem Geparden weglaufen musste. Erst nachdem sie einmal erfolgreich entwischt ist, können wir uns vorstellen, was ihre Fitness ist.\\
         \\
-        Ganz selten wird ein Gazellen-Baby geboren das ein etwas längere Beine hat als alle anderen, dabei hatte keiner dieses Merkmal vor ihr. Das erlaubt ihr schneller zu Laufen, was für sie erstmal positiv ist, dennoch hat diese Ausprägung aber den Nachteil, dass die Standhaftigkeit darunter leidet. Dieser unerwartete Veränderung bei den Kindern heißt \textbf{Mutation}.\\
+        Ganz selten wird ein Gazellen-Baby geboren, das ein etwas längere Beine hat als alle anderen, dabei hatte keiner dieses Merkmal vor ihr. Das erlaubt ihr schneller zu laufen, was für sie erstmal positiv ist. Diese Ausprägung hat jedoch den Nachteil, dass die Standhaftigkeit darunter leidet. Diese unerwartete Veränderung bei den Kindern heißt \textbf{Mutation}.\\
         \\
-        Fassen wir zusammen; Nachdem jede Gazelle die nach dem Raubkatzenangriff überlebt und sich fortgepflanzt hat, bekommen wir hoffentlich wieder eine vollzähliges Herde, die wir \textbf{Population} nennen. Nach all diesen Schritten fängt der Kampf um das Überleben wieder an und geht solange, bis sich entweder Gazellen entwickeln die dem Gepard ständig entkommen können, oder bis die gesamte Population ausstirbt.\\
+        Fassen wir zusammen: Nachdem jede überlebte Gazelle sich fortgepflanzt hat, bekommen wir hoffentlich wieder eine vollzähliges Herde, die wir \textbf{Population} nennen. Nach all diesen Schritten fängt der Kampf um das Überleben wieder an und geht solange, bis sich entweder Gazellen entwickeln, die dem Gepard ständig entkommen können, oder bis die gesamte Population ausstirbt.\\
         \\
         Damit haben wir die wichtigsten Begrifflichkeiten von einem genetischen Algorithmus erklärt und kommen zur Umsetzung der einzelnen Schritte.
 
@@ -58,10 +59,10 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                 \end{table}
 
                 \noindent
-                Die Aufgabe von unserem GA ist ein oder mehrere Individuen zu finden die es schaffen vor dem Geparden wegzulaufen. Da wir aber nicht wissen ob die vorgeschlagene Kodierung gut oder schlecht ist, müssen wir Gazellen mit zufälligen Ausprägungen erstellen und dann den Algorithmus arbeiten lassen.
+                Die Aufgabe von unserem GA ist ein oder mehrere Individuen zu finden, die es schaffen vor dem Geparden wegzulaufen. Da wir aber nicht wissen, ob die vorgeschlagene Kodierung gut oder schlecht ist, müssen wir Gazellen mit zufälligen Eigenschaften erstellen und dann den Algorithmus arbeiten lassen.
             \end{multicols}
             \noindent
-            Das schaffen wir indem wir Grenzen für die Kodierung festlegen und später zufällige Werte in diesen Rahmen ausprobieren.
+            Das schaffen wir, indem wir Grenzen für die Kodierung festlegen und später zufällige Werte in diesen Rahmen ausprobieren.
 
             \begin{table}[H]
                 \begin{center}
@@ -74,53 +75,48 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     Hornlänge                & $  0\; cm          $  & $ 35\; cm          $ \\ \hline
                 \end{tabular}
                 \end{center}
-                \caption{Grenzen für die Kodierung \cite{wiki:gazelle} \cite{blog:gazelle}\label{fig:somelabel}}
+                \caption{Grenzen für die Kodierung \cite{wiki:gazelle} \cite{blog:gazelle}\label{fig:gazelle-bounds}}
             \end{table}
             \noindent
             % Für die Kodierung unseres Individuums eignet sich ein Array von Zahlen. Um die gesamte Population darzustellen würde ein 2-dimensionales Array reichen, wobei jedes Element ein einzelnes Individuum darstellt. \textit{(evtl Grafik)}
 
-        \subsection{Simulation}
-            Nachdem wir unsere Gazellenpopulation erstellt haben, müssen wir sie in eine Simulationsumgebung schicken, die ihre Fitness misst. In unserem Beispiel müssten wir eine Physiksimulation mit einem Geparden programmieren, die uns nach einer Zeitspanne sagt welche Gazellen überlebt haben. Man muss beachten dass die Komplexität der Simulation einen großen Einfluss darauf hat ob der GA eine Lösung finden kann, oder nicht.
-
+        \subsection{Evaluation}
+            Nachdem wir unsere Gazellenpopulation erstellt haben, müssen wir sie der Natur überlassen. Dann ist es unsere Aufgabe nach einer festen Zeitspanne und sie alle wieder aufzusammeln. Dadurch finden wir heraus wie viele Gazellen überlebet haben und können diese Information den nächsten genetischen Methoden übergeben.
 
         \subsection{Selektion}
-            % ``Die besten x prozent werden genommen''
 
-            Nachdem die Simulation vorbei ist, bekommen wir die Rückmeldung welche Gazellen überlebt haben. Da die Fitness ist in diesem Fall binär ist, sortieren wir die Herde aller Gazellen absteigend, wobei das Überleben natürlich mehr wert ist.\\
-            \\
-            Nach dem Sortieren müssen wir ein prozentualen Betrag wählen, wieviele Eltern wir aus der Population wählen. In unserer Implementierung nennen wir diesen Parameter $\alpha$.
+            Nachdem die Evaluation vorbei ist, bekommen wir die Rückmeldung welche Gazellen überlebt haben. Aus dieser Menge können wir nun einen prozentualen Betrag wählen, die Eltern sein werden. In unserer Implementierung nennen wir diesen Parameter $\alpha$. Damit versichern wir, dass nur die erfolgreichen Eigenschaften weiter in der Population erhalten bleiben und der Rest wegfällt.
 
         \subsection{Kreuzung}
-            
-            Die erfolgreichen Individuen wurden ausgewählt und können sich nun fortpflanzen. Dafür nehmen wir jeweils zwei Individuen und vertauschen zufällig die Ausprägungen von jeweils dem Vater und der Mutter. 
-            \\[10mm]
+            Die erfolgreichen Individuen wurden ausgewählt und können sich nun fortpflanzen. Dafür nehmen wir jeweils zwei Individuen und vertauschen zufällig ihre Ausprägungen.
+            \\[8mm]
             \begin{multicols}{2}
                 \begin{table}[H]
                     \begin{center}
                     \begin{tabular}{ |r| } 
                         \hline
-                        \hfill Ausprägungen  \\ \hline
+                        \hfill Eigenschaften  \\ \hline
                         \cellcolor{blue!25} $ 56\; \frac{km}{h}$ \\ \hline
                         \cellcolor{blue!25} $ 42\; cm          $ \\ \hline
                         \cellcolor{blue!25} $ 51\; kg          $ \\ \hline
                         \cellcolor{blue!25} $ 10\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
-                    \caption{Kodierung des Vaters \label{fig:somelabel}}
+                    \caption{Kodierung des Vaters \label{fig:enc-dad}}
                 \end{table}
 
                 \begin{table}[H]
                     \begin{center}
                     \begin{tabular}{ |r| } 
                         \hline
-                        \hfill Ausprägungen  \\ \hline
+                        \hfill Eigenschaften  \\ \hline
                         \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
                         \cellcolor{yellow!25} $ 55\; cm          $ \\ \hline
                         \cellcolor{yellow!25} $ 49\; kg          $ \\ \hline
                         \cellcolor{yellow!25} $  8\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
-                    \caption{Kodierung der Mutter \label{fig:somelabel}}
+                    \caption{Kodierung der Mutter \label{fig:enc-mom}}
                 \end{table}
 
             \end{multicols}
@@ -130,14 +126,14 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     \begin{center}
                     \begin{tabular}{ |r| } 
                         \hline
-                        \hfill Ausprägungen  \\ \hline
+                        \hfill Eigenschaften  \\ \hline
                         \cellcolor{blue!25}   $ 56\; \frac{km}{h}$ \\ \hline
                         \cellcolor{yellow!25} $ 55\; cm          $ \\ \hline
                         \cellcolor{yellow!25} $ 49\; kg          $ \\ \hline
                         \cellcolor{blue!25}   $ 10\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
-                    \caption{Kodierung vom Kind Nr.1 \label{fig:somelabel}}
+                    \caption{Kodierung vom Kind Nr.1 \label{fig:child-1}}
                 \end{table}
 
 
@@ -145,148 +141,152 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     \begin{center}
                     \begin{tabular}{ |r| } 
                         \hline
-                        \hfill Ausprägungen  \\ \hline
+                        \hfill Eigenschaften  \\ \hline
                         \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
                         \cellcolor{blue!25}   $ 42\; cm          $ \\ \hline
                         \cellcolor{blue!25}   $ 51\; kg          $ \\ \hline
                         \cellcolor{yellow!25} $  8\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
-                    \caption{Kodierung vom Kind Nr.2 \label{fig:somelabel}}
+                    \caption{Kodierung vom Kind Nr.2 \label{fig:child-2}}
                 \end{table}
             \end{multicols}
+            \noindent
+            Das können wir nun sooft machen wie wir Eltern finden, oder bis wir genug Kinder produziert haben.
 
-\newpage
-
-            In unserem Beispiel haben wir die Kinder mit dem folgenden Python Code konstruiert:
+            \newpage
+            In unserem Beispiel haben wir die Kinder mit dem folgenden Python-Code konstruiert:
+            \hfill \\
             \begin{mdframed}
-            \begin{minted}[escapeinside=||, xleftmargin=-50pt]{python}
-                vater  = [56,42,51,10]
-                mutter = [62,55,49,8]
-                kind1  = []
-                kind2  = []
-                for i in range(kodierung.length):
-                    r = random.uniform(0,1)
-                    if (r > 0.5):
-                        kind1[i] = vater[i]
-                        kind2[i] = mutter[i]
-                    else:
-                        kind1[i] = mutter[i]
-                        kind2[i] = vater[i]
+            \begin{minted}[escapeinside=||, linenos]{python}
+vater  = [56,42,51,10]
+mutter = [62,55,49,8]
+kind1  = []
+kind2  = []
+for i in range(kodierung.length):
+    r = random.uniform(0,1)
+    if (r > 0.5):
+        kind1[i] = vater[i]
+        kind2[i] = mutter[i]
+    else:
+        kind1[i] = mutter[i]
+        kind2[i] = vater[i]
             \end{minted}
             \end{mdframed}
+            \hfill \\[4mm]
             \noindent
-            Diese Art und Weise zwei Individuen zu kreuzen nennt sich \textbf{n-point crossover}, weil wir die Kodierung an undefiniert vielen Stellen unterbrechen und wieder zusammensetzen. Es gibt noch andere Kreuzungsmethoden die eine eine feste Anzahl von Aufteilungen benutzen, wie \textbf{one-} oder \textbf{two-point crossover}. \\
+            In \textit{Z.1-2} definieren wir die Eigenschaften der Mutter und des Vaters. Dann iterieren wir durch die Länge der Kodierung (\textit{Z.5}) und wählen mit einer 50\% Wahrscheinlichkeit (\textit{Z.6-7}) aus für jedes Kind aus, ob die gewählte Eigenschaft vom Vater oder von der Mutter kommt.\\
+
+            \noindent
+            Diese Art und Weise zwei Individuen zu kreuzen nennt sich \textbf{n-point crossover}, weil wir die Kodierung an zufällig vielen Stellen unterbrechen. Es gibt noch andere Kreuzungsmethoden die eine eine feste Anzahl von Aufteilungen benutzen, wie \textbf{one-} oder \textbf{two-point crossover}. \\
             \\
             \noindent
-            Um einen Unterschied zwischen diesen Methoden zu erkennen, stellen wir uns vor dass die Beinlänge im Zusammenhang mit der Höchstgeschwindigkeit steht, weil längere Beine eine größere Sprungweiter ermöglichen. Wenn nun ein Kind gezeugt wird, dass lange Beine vererbt, wird die Höchstgeschwindigkeit dadurch nicht automatisch angepasst. Deshalb wäre es besser, wenn diese Ausprägungen zusammen übernommen werden, weil dadurch eine höhere Fitness garantiert werden kann. Kreuzungsmethoden wie n-point-crossover können diese Eigenschaft eher verletzen als one-point-crossover.\\
+            Um einen Unterschied zwischen diesen Methoden zu erkennen, stellen wir uns vor dass die Beinlänge im Zusammenhang mit der Höchstgeschwindigkeit steht, weil längere Beine eine größere Sprungweite ermöglichen. Wenn nun ein Kind gezeugt wird, dass lange Beine vererbt, wird die Höchstgeschwindigkeit dadurch nicht automatisch angepasst. Deshalb wäre es besser, wenn diese Ausprägungen zusammen übernommen werden, weil dadurch eine höhere Fitness garantiert werden kann. Kreuzungsmethoden wie n-point-crossover verletzen diese Eigenschaft eher als wie one-point-crossover.\\
             \\
             \noindent
             Je nach Implementierung verwendet man nur eins der beiden Kinder, weil das die Varianz der Gesamtpopulation weniger beeinflusst und trotzdem keinerlei Information verloren geht, weil die Eltern die Kodierung weiter tragen.
 
-
+\newpage
         \subsection{Mutation}
 %            ``Mutation ist hilfreich um die Varianz der Population etwas zu erhöhen'' \\
             Nachdem die Kinder erstellt wurden, müssen wir die Kodierung der Individuen etwas verändern, damit die Varianz in der Gesamtpopulation erhöht wird. Das machen wir indem wir durch die Kodierung der Kinder durchgehen und jede Ausprägung mit einer geringen Wahrscheinlichkeit verändern. Diese nennen wir $\beta$.
 
+            \hspace*{-2cm}
             \begin{multicols}{2}
                 \begin{table}[H]
                     \begin{center}
                     \begin{tabular}{ |r| } 
                         \hline
-                        \hfill Ausprägungen  \\ \hline
+                        \hfill Eigenschaften  \\ \hline
                         \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
                         \cellcolor{blue!25}   $ 42\; cm          $ \\ \hline
                         \cellcolor{blue!25}   $ 51\; kg          $ \\ \hline
                         \cellcolor{yellow!25} $  8\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
-                    \caption{Kodierung vom Kind Nr.2 \label{fig:somelabel}}
+                    \caption{Kodierung von einem Kind \label{fig:child-enc}}
                 \end{table}
 
                 \begin{table}[H]
                     \begin{center}
                     \begin{tabular}{ |r| } 
                         \hline
-                        \hfill Ausprägungen  \\ \hline
+                        \hfill Eigenschaften  \\ \hline
                         \cellcolor{yellow!25} $ 62\; \frac{km}{h}$ \\ \hline
                         \cellcolor{blue!25}   $ 42\; cm          $ \\ \hline
                         \cellcolor{red!25}    $ 45\; kg          $ \\ \hline
                         \cellcolor{yellow!25} $  8\; cm          $ \\ \hline
                     \end{tabular}
                     \end{center}
-                    \caption{Mutierte Kodierung vom Kind Nr.2 \label{fig:somelabel}}
+                    \caption{Mutierte Kodierung vom Kind\label{fig:mut-child-enc}}
                 \end{table}
             \end{multicols}
-\newpage
+
             Die Mutation kann folgendermaßen in Python umgesetzt werden:
             \begin{mdframed}
-            \begin{minted}[escapeinside=||, xleftmargin=-50pt]{python}
-                kinder = [k1, k2...]
-                beta   = 0.1
-                for i in range(kinder.length):
-                    for j in range(kodierung.length):
-                        r = random.uniform(0,1)
-                        if (r > beta):
-                            kinder[i][j] = sampleNewFrom(kodierung[j].range)
+            \begin{minted}[escapeinside=||, linenos]{python}
+kinder = [k1, k2...]
+beta   = 0.1
+for i in range(kinder.length):
+    for j in range(kodierung.length):
+        r = random.uniform(0,1)
+        if (r > beta):
+            kinder[i][j] = sampleNewFrom(kodierung[j].range)
             \end{minted}
             \end{mdframed}
+            \hfill \\[1mm]
             \noindent
-            Dieser Schritt ist wichtig damit man die Möglichkeit hat aus lokalen Fitnessminimas rauszukommen, weil es schnell passieren kann dass sich über Generationen gleichwertige Ausprägungen weiterverbreiten, da sie die derzeit beste Lösung vorschlagen. Ohne Mutation würde der GA zu dieser Lösung konvergieren ohne Bessere in Betracht zu ziehen.\\
-            \\
+            In \textit{Z.1-2} definieren wir Mutationswahrscheinlichkeit und die Kinder. Dann gehen wir jede Kodierung von jedem Kind durch (\textit{Z.3-4}) und verändern die Eigenschaft mit einer 10\% Wahrscheinlichkeit (\textit{Z.5-7}).\\
+
             \noindent
-            In manchen Fällen kann man die Mutation noch weiter parametrisieren indem man ein Veränderungsfaktor als Argument hinzufügt. Diese Technik benutzt man, wenn die Kodierung nicht trivialerweise verändert werden kann, da sonst bestimmte Eigenschaften verloren gehen. In Kapitel 3 wird genau so ein Fall besprochen, weil wir unsere Individuen durch eine Wahrscheinlichkeitsverteilung darstellen. 
+            Dieser Schritt ist wichtig, sodass trotz konvergierter Population neue Eigenschaften ausprobiert werden, da sie vielleicht eine bessere Lösung bieten. Der GA tendiert oft dazu sich erstmal für eine suboptimalen Lösung zu entscheiden und die Mutation erlaubt uns einen Ausweg daraus. \\
+
+            \noindent
+            In manchen Fällen kann man die Mutation noch weiter parametrisieren, indem man ein Veränderungsfaktor als Argument hinzufügt. Diese Technik benutzt man, wenn die Kodierung nicht trivialerweise verändert werden kann, da sonst bestimmte Eigenschaften verloren gehen. In Kapitel 3 wird genau so ein Fall besprochen, weil wir unsere Individuen durch eine Wahrscheinlichkeitsverteilung darstellen. 
+
+\newpage
 
         \subsection{Repopulation}
-            Die Eltern wurden ausgewählt, die Kindern gezeugt und mutiert, nun müssen wir die Population in eine Form bringen, sodass die Simulation neu gestartet werden kann. Wir stellen das Problem wieder an einem Beispiel dar.\\
+            Die Eltern wurden ausgewählt, die Kindern gezeugt und mutiert, nun müssen wir die Population in eine Form bringen, sodass die Evaluation neu gestartet werden kann. Wir stellen das Problem wieder an einem Beispiel dar.\\
 
             \begin{mdframed}
-            \begin{minted}[escapeinside=||, xleftmargin=-50pt]{python}
+            \begin{minted}[escapeinside=||, linenos]{python}
 
-          population = [i1,i2,...]                  # population.length = 10
-          alpha      = 0.4
-          eltern     = selection(population, alpha) # eltern.length = 4
-          kinder     = crossover(eltern)            # kinder.length = 4
-          beta       = 0.1
-          mutkinder  = mutation(kinder, beta)       # mutkinder.length = 4
+population = [i1,i2,...]                  # population.length = 10
+alpha      = 0.4
+eltern     = selection(population, alpha) # eltern.length = 4
+kinder     = crossover(eltern)            # kinder.length = 4
+beta       = 0.1
+mutkinder  = mutation(kinder, beta)       # mutkinder.length = 4
 
-          newpopulation = eltern + mutkinder        # newpopulation.length = 8
+newpopulation = eltern + mutkinder        # newpopulation.length = 8
             \end{minted}
             \end{mdframed}
             \hfill \\
             \noindent
-            Wir sehen dass uns zwei Individuen zum Neustart der Simulation fehlen. Dieses Problem kann man auf viele Weisen angehen, die ihre eigenen Vorteile und Nachteile haben. 
+            Wir sehen dass uns zwei Individuen weniger als zu Anfang haben können deshalb die Evaluation nicht neu starten. Dieses Problem kann man auf viele Weisen angehen, die ihre eigenen Vorteile und Nachteile haben. 
 
             \subsubsection*{Mehr Kinder erstellen}
-                Es ist möglich während der Kreuzung solange Kinder zu erzeugen, bis die Population wieder ihre Ausgangsgröße angenommen hat. Ein Vorteil wäre, dass diese Individuen mit wahrscheinlich besseren Ausgangskodierungen starten als inherent Neue. Der Nachteil ist jedoch die gesenkte Varianz in der Population und die erhöhte Wahrscheinlichkeit zum Feststecken in einem loken Fitnessminima.
+                Es ist möglich während der Kreuzung solange Kinder zu erzeugen, bis die Population wieder ihre Ausgangsgröße angenommen hat. Ein Vorteil wäre, dass diese Individuen mit wahrscheinlich besseren Ausgangskodierungen starten als Neue. Der Nachteil ist jedoch die gesenkte Varianz in der Population und die erhöhte Wahrscheinlichkeit zum Feststecken in einem suboptimalen Lösungen.
 
             \subsubsection*{Nicht selektiere Individuen nachfüllen}
-                Man kann die nicht benutzen Individuen aus der vorherigen Population zum Auffüllen benutzen, was sich aber nur dann gewählt werden sollte, wenn die Chance besteht dass sie in der erneuten Simulation besser abschneiden als bisher. Ansonsten nehmen sie den Platz für ein potenziell besseres Individuum weg.
+                Man kann die nicht benutzen Individuen aus der vorherigen Population zum Auffüllen benutzen, was sich aber nur dann gewählt werden sollte, wenn die Chance bestünde, dass sie in der erneuten Simulation besser abschneiden als bisher. Ansonsten nehmen sie den Platz für ein potenziell besseres Individuum weg.
 
             \subsubsection*{Neue Individuen erstellen}
-                In unserer Implementierung haben wir uns für das Nachfüllen von inherent neuen Individuen entschieden, da dadurch die Varianz der Population angehoben wird und dadurch mehr Lösungen möglich sind. Ein Nachteil dabei sind die potenziellen Kinder die  keinen Platz bekommen, aber da dadurch keine Information verloren geht, können wir es vernachlässigen.
-
+                In unserer Implementierung haben wir uns für das Nachfüllen von völlig neuen Individuen entschieden, da dadurch die Varianz der Population angehoben wird und dadurch mehr Lösungen möglich sind. Ein Nachteil ist dabei sind die potenziellen Kinder die  keinen Platz bekommen, aber da dadurch keine Information verloren geht, können wir es vernachlässigen.
 \newpage
+
     \section{Neuroevolution}
 %        ``Neuroevolution beschäftigt sich mit der Verknüpfung von Genetischen Algorithmen und Neuronalen Netzn''
-        Der Begriff der Neuroevolution wurde im Jahre 1988 von D. Whiteley\cite{whiteley88} als alternative Möglichkeit zur Entwicklung von künstlichen neuronalen Netzen (\textbf{KNNs}) vorgeschlagen. Dabei wird versucht aus der Synergie von dem \textbf{selbstlernenden Charakter} von KNNs und der \textbf{explorativen Suche} eines GAs eine Taktik oder ein Klassifikator zu entwickeln der völlig neue Lösungen finden kann. Den Beweis dafür hat man bereits im Jahr 1995 am Spiel \textit{Othello} festgestellt. \cite{othello95} \\[2mm]
+        Der Begriff der Neuroevolution wurde im Jahre 1988 von D. Whiteley \cite{whiteley88} als alternative Möglichkeit zum Trainieren von künstlichen neuronalen Netzen (\textbf{KNNs}) vorgeschlagen. Dabei wird versucht aus der Synergie von dem \textbf{selbstlernenden Charakter} von KNNs und der \textbf{explorativen Suche} eines GAs eine Taktik oder ein Klassifikator zu entwickeln der völlig neue Lösungen finden kann. Den Beweis dafür hat man bereits im Jahr 1995 am Spiel \textit{Othello} festgestellt. \cite{othello95} \\[2mm]
         \noindent
         Wir versuchen in diesem Kapitel einen groben Überblick über die Funktionsweise von KNNs zu verschaffen und stellen den Bezug zu genetischen Algorithmen dar. Eine weitaus formalere Erklärung findet sich im Paper von ....
 
         \subsection{Künstliche neuronale Netze}
 
-            Die Idee hinter künstlichen neuronalen Netzen ist der Versuch die Struktur vom menschliche Gehirn nachzuahmen. Ein durchschnittliches KNN besteht jedoch aus vielfach weniger Neuronen, meist Hundert bis mehrere Tausend, wobei unser Gehirn 86 Milliarden\cite{brainsize} besitzt.\\
-%            Um die Nutzung von so einem Netz zu veranschaulichen stellen wir, versuchen wir nun die Formel $f(x) = x^2$ vorauszusagen. Dafür brauchen wir eine Eingabe $x$, weil unsere Formel genau ein Argument besitzt und natürlich eine Ausgabe $y$. Das können wir in einem Neuron darstellen: \\
-
-%            \begin{figure}[H]
-%            \centering
-%                \begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
-%                    \tikzstyle{every pin edge}=[shorten <=1pt]
-%                    \node [perceptron, pin={[pin edge={<-}]left:x}, pin={[pin edge={->}]right:y}] (I-1) at (0,0) {$\sum$};
-%                \end{tikzpicture}
-%            \end{figure}
+            Die Idee hinter künstlichen neuronalen Netzen ist der Versuch die Struktur vom menschliche Gehirn nachzuahmen. Ein übliches KNN besteht jedoch aus vielfach weniger Neuronen, meist hundert bis mehrere tausend, wobei unser Gehirn 86 Milliarden\cite{brainsize} besitzt.\\
             \noindent
-            Ein künstliches Neuron kann man sich anschaulich als eine Formel vorstellen, die \textbf{eine oder mehrere Eingaben} über \textbf{gewichtete Pfade} bekommt, sie \textbf{aufsummiert} und eine Aktivierungsfunktion auf das Ergebnis anwendet die es auf den Bereich $[0,\infty]$, $[0,1]$, oder $[-1,1]$ abbildet. Dieses Resultat nennen wir $\hat{y}$:
+            Ein künstliches Neuron kann man sich anschaulich als eine Formel vorstellen, die \textbf{eine oder mehrere Eingaben} über \textbf{gewichtete Pfade} bekommt, sie \textbf{aufsummiert} und eine Aktivierungsfunktion auf das Ergebnis anwendet, die auf den Bereich $[0,\infty]$, $[0,1]$, oder $[-1,1]$ abbildet. Dieses Resultat nennen wir $\hat{y}$:
 
             \begin{figure}[H]
                 \begin{mdframed}
@@ -294,22 +294,22 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     Sei $n$ die Anzahl der Eingaben,\\
                     \hspace*{4.5mm}    $X = \{x_0,x_1,...,x_n\}$ die Eingabe,\\
                     \hspace*{4.5mm}    $W = \{w_0, w_1,...,w_n\}$ die jeweiligen Gewichte, \\
-                    \hspace*{4.5mm}    $\sigma(x) = max(0,x)$ als Aktivierungsfunktion:\\[4mm]
+                    \hspace*{4.5mm}    $\sigma(x) = max(x,0)$ als Aktivierungsfunktion:\\[4mm]
                     \hspace*{50mm} \Resize{4.5cm}{$\widehat{y} = \sigma(\sum^{n}_{i = 0} x_i \cdot w_i)$}
                 \end{mdframed}
                 \caption{\label{neuron-math} Formel zur Berechnung des Ergebnisses eines Neurons}
             \end{figure}
 
             \noindent
-            Wenn man nun mehrere von diesen Neuronen in Reihe zusammenschaltet (Abbildung \ref{fig:nntikz}), kriegt man ein vollständig vermaschtes Netz welches grundsätzlich in drei Schichten unterteilen werden kann.
+            Wenn man nun mehrere von diesen Neuronen in Reihe zusammenschaltet (Abbildung \ref{fig:nntikz}), kriegt man ein vollständig vermaschtes Netz, welches grundsätzlich in drei Schichten unterteilt werden kann.
             \begin{itemize}
                 \setlength{\itemsep}{5pt}
                 \item \textbf{Eingabeschicht} \\
                     Hier kommt der Ausgangszustand rein, sei es ein kodierter Zustand eines Spiels, RGB Werte von einem Bild, oder der DAX.
                 \item \textbf{Versteckte Schicht(en)} \\
-                    Dieser Teil des Netzes besteht oft aus mehreren Schichten, da er für die Abstraktion und die Lernfähigkeit verantwortlich ist\cite{ANNModeling}. Er bekommt die Signale aus der Eingabeschicht die er verarbeitet und weiterleitet. Je nachdem welche Neuronen dabei \textit{feuern} definiert das Ergebnis.
+                    Dieser Teil des Netzes besteht oft aus mehreren Schichten, da er für die Abstraktion und die Lernfähigkeit verantwortlich ist \cite{ANNModeling}. Er bekommt die Signale aus der Eingabeschicht, die er verarbeitet und weiterleitet. Je nachdem, welche Neuronen dabei \textit{feuern}, beeinflusst das Endergebnis stark.
                 \item \textbf{Ausgabeschicht} \\
-                    Die Ausgabeschicht ist oft zum Sammeln der Signale von der vorherigen Schicht zuständig und auf dessen Ergebnis wird dann eine \textbf{Aktivierungsfunktion} angewendet, die die kumulierten Resultate in eine passende Form bringt. Diese können einfache Ja/Nein Aussgagen sein, oder wie wir später kennen lernen werden, auch Wahrscheinlichkeitsverteilungen darstellen.
+                    Die Ausgabeschicht ist oft zum Sammeln der Signale von der vorherigen Schicht zuständig und auf ihren Ergebnissen wird dann eine \textbf{Aktivierungsfunktion} angewendet, die die kumulierten Resultate in eine passende Form bringt. Sie varrieren zwischen einfachen Ja/Nein Aussgagen, oder wie wir später kennen lernen werden, auch Wahrscheinlichkeitsverteilungen.
 
             \end{itemize}
 
@@ -382,10 +382,60 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                 \caption{Skizze von einem vollständig vermaschten künstlichen neuronales Netz \label{fig:nntikz}}
             \end{figure}
             \noindent
-            Diese Art und Weise Neuronen zusammen zu verknüpfen nennt sich \textbf{Dense}, oder Dense-Ebene. Wenn man das gesamte Netz aus solchen Ebenen zusammenbaut, hat man leider die Einschränkung dass man keine zeitabstrahierten Ergebnisse lernen kann. Dafür gibt es \textbf{rekurrente Neuronen} die vorherige Zustände zum Ergebnis beisteuern können.
+            Neuronen wie in Abbildung \ref{fig:nntikz} zusammen zu verknüpfen nennt sich ein \textbf{Feedforward} Netzwerk, da es keine Zyklen beinhaltet. Sie besitzen die Einschränkung das sie ohne Rücksicht auf die resultierenden Effekte in der Domäne ein Ergebnis liefern, da sie das Signal nur nach vorne weiterleiten.\\
+
+            \noindent
+            Um eigene Resultate und zeitliche Abstraktionen einfacher zu berücksichtigen gibt es \textbf{rekurrente Netze} die direkte Zyklen beinhalten.
 
             \subsubsection*{LSTM Ebene}
-                Ein spezielles Neuron aus der rekurrenten Familie ist das \textbf{Long Short Term Memory} (LSTM) Neuron\cite{lstm}. Es zeichnet sich durch die Eigenschaft aus, dass es sich über lange Zeitfenster Information behalten kann. Der Aufbau basiert auf dem Modell einer Speicherzelle, sodass wir durch verschiedene Eingänge (\textbf{Gates}), die Schreib-,Lese- und Reset-Aktionen nachbauen können \cite{lstm-new}. Einer der wichtigste Aspekte von diesen Neuronen ist jedoch dass sie ableitbar sind, weil dadurch das eine Trainingsmethode \textbf{Backpropagation} ermöglicht wird \cite{backprop}.
+                Ein spezielles Neuron aus dem rekurrente Netze bestehen können, ist das \textbf{Long Short Term Memory} (LSTM) Neuron\cite{lstm}. Es zeichnet sich durch die Eigenschaft aus, dass es über lange Zeitfenster Information behalten kann. Der Aufbau basiert auf dem Modell einer Speicherzelle, sodass wir durch verschiedene Eingänge (\textbf{Gates}), die Schreib-,Lese- und Reset-Aktionen nachbauen können \cite{lstm-new}. Einer der wichtigste Aspekte von diesen Neuronen ist jedoch, dass sie ableitbar sind, weil dadurch die Trainingsmethode \textbf{Backpropagation} ermöglicht wird \cite{backprop}.
+
+\newpage
+            \subsubsection*{Backpropagation}
+                Um diese Technik zum Trainieren von KNNs zu erklären müssen wir zunächst zeigen wie man den Fehler von einem neuronalen Netz misst. Dafür brauchen wir eine \textbf{Kostenfunktion} die uns die Abweichung zum Soll-Ergebnis gibt. Die Ergebnisse des Netzes für $\widehat{y}$ ist in Abbildung \ref{neuron-math} definiert.
+
+                \begin{figure}[H]
+                    \begin{mdframed}
+                        \noindent
+                        Sei $m$ die Größe des Trainingssets,\\
+                        \hspace*{4.5mm} $Y = \{y_0, y_1,...,y_m\}$ ein Vektor von Soll-Ergebnissen, \\
+                        \hspace*{4.5mm} $\widehat{Y} = \{\widehat{y}_0, \widehat{y}_1,...,\widehat{y}_m\}$ ein Vektor von Resultaten des KNNs, dann ist:\\[4mm]
+                        \hspace*{30mm} \Resize{7cm}{cost$(Y, \widehat{Y}) = \frac{1}{m} \cdot \sum_{j = 0}^{m} \; (y_j - \widehat{y}_j)^2$}\\[4mm]
+                        die mittlere quadratische Abweichung.
+                    \end{mdframed}
+                    \caption{\label{cost-math} Formel zur Berechnung des \textit{MSE} Fehlers von einem KNN}
+                \end{figure}
+                \noindent
+                Eine der möglichen Kostenfunktionen sieht man in Abbildung \ref{cost-math}, die \textbf{mittlere quadratische Abweichung} (MSE). Je kleiner diese Kostenfunktion ist, umso besser kann unser KNN die Ergebnisse nachahmen. Um die Kosten zu minimieren, müssen wir die gesamte Funktion samt der Berechnung vom $\widehat{y}$ partiell nach den Gewichten ableiten. \\[2mm]
+                Mit dem resultierenden Gradienten verändern wir die Gewichte, sodass der Fehler möglichst verringert wird. Dafür leiten wir die Anpassungsformel für jedes Gewicht her:
+
+%                 Damit finden wir heraus, wie wir jedes einzelne Gewicht verändern müssen damit am Ende das richtige Ergebnis rauskommt, sodass alles gegen 0 geht. Dafür leiten wir die Anpassungsformel für jedes Gewicht her:
+
+                \begin{figure}[H]
+                    \begin{mdframed}
+                        \noindent
+                        Pro Beobachtung $j$ in $Y$,\\
+                        pro Gewicht $i$ in $W$ leiten wir partiell nach $w_i$ ab:\\[4mm]
+    \hspace*{40mm} \Resize{5.5cm}{$\frac{\partial \text{cost}(y_j,\widehat{y}_j)}{\partial w_i} = \frac{\partial}{\partial w_i} (y_j - \widehat{y}_j)^2$} \\[2mm]
+    \hspace*{62.3mm} \Resize{7.0cm}{$ = \frac{\partial}{\partial w_i} (y_j - max(\sum_{i = 0}^{n} x_i \cdot w_i ,0))^2$} \\[2mm]
+    \hspace*{62.3mm} \Resize{6.25cm}{$ = -2 \cdot \frac{\partial}{\partial w_i} \; max(\sum_{i = 0}^{n} x_i \cdot w_i ,0)$} \\[2mm]
+    \hspace*{62.3mm} \Resize{6.25cm}{$ =   \begin{cases}
+                                            0 & \sum_{i = 0}^{n} x_i \cdot w_i < 0 \\[2mm]
+                                            -2 \cdot x_i & \sum_{i = 0}^{n} x_i \cdot w_i > 0 \\
+                                        \end{cases}$}\\[4mm]
+                        Damit bekommen wir für Anpassungsregel für jedes Gewicht:\\[4mm]
+                        \hspace*{40mm} \Resize{6.5cm}{$w_i \leftarrow w_i + \begin{cases}
+                                                                               0 & \sum_{i = 0}^{n} x_i \cdot w_i < 0 \\[2mm]
+                                                                               -2 \cdot x_i & \sum_{i = 0}^{n} x_i \cdot w_i > 0 \\
+                                                                             \end{cases}$}
+                    \end{mdframed}
+                    \caption{\label{derivative} Berechnung der Anpassungsregel für jedes Gewicht nach MSE}
+                \end{figure}
+
+
+                \noindent
+                Diese Technik kann man benutzen, solange das gesamte Netz als Formel dargestellt ableitbar ist, selbst wenn es mehrere versteckte Schichten hat. Leider braucht sie dafür ein Trainingsset von Daten, was in oft aufwendig zu generieren ist. Deshalb benutzen wir eine simulationsbasierte Lernmethode.
+
 
             \subsubsection*{Softmax Ebene}
                 Es gibt eine Aktivierungsfunktion der wir besondere Aufmerksamkeit widmen, da sie die Neuronen der Ausgabeschicht zu einem nützlichen Ergebnis zusammenfassen kann. Die generalisierte logistische Funktion, oder auch \textbf{normalisierte Exponentialfunktion} nimmt als Argument einen $k$-dimensionalen Vektor \textbf{z} von reelen Zahlen und gibt uns widerrum den gleichen Vektor zurück, wo alle Werte auf den Bereich [0,1] normalisiert wurden.
@@ -477,13 +527,13 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 
         \noindent
         Ein großer Nachteil von genetischen Algorithmen ist das sie oft schnell zu lokalen Maxima konvergieren und sehr schlecht aus diesem Tal rauskommen. Um dieses Problem anzugehen, versucht man die Stellschrauben wie Mutationswahrscheinlichkeit oder Kinderanzahl per Hand zu verändern. CoSyNE benutzt dafür eine ganz eigene \textbf{genetische Methode} um die Suche einfacher zu gestalten. Sie nennt sich Permutation und erzeugt innerhalb der gesamten Population Unterteilungen in kleinere Populationen die in einer \textbf{kooperativen und koevolutionären} Beziehung stehen.
-%         \begin{figure}[H]
-%             \begin{center}
-%                 \includegraphics[scale=0.5]{../pictures/DCT-my-case.png}\\
-%                 \caption{1024 Gewichte auf 23 Koeffizienten reduziert}\label{fig:dct-my-case}
-%             \end{center}
-%         \end{figure}
-\newpage
+%          \begin{figure}[H]
+%              \begin{center}
+%                  \includegraphics[scale=0.5]{../pictures/DCT-my-case.png}\\
+%                  \caption{1024 Gewichte auf 23 Koeffizienten reduziert}\label{fig:dct-my-case}
+%              \end{center}
+%          \end{figure}
+% \newpage
         \subsection{Permutation}
             % ``Wir transponieren, shuffeln und transponieren zurück''
             Der Permutationsschritt wird ganz am Ende von dem genetischen Algorithmus statt der Repopulation aufgerufen und vermischt jeden \colorbox{green!25}{Eigenschaftsraum} der Gesamtpopulation. 
@@ -524,30 +574,29 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             Wenn wir uns die Population als zweidimensionale Liste vorstellen, wo jedes Indviduum eine eigene Liste mit seinen spezifischen Ausprägungen ist, können wir die Population transponieren, wobei nun jede Eigenschaft eine eigene Liste ist, diese vermischen und wieder zurück transponieren um die neuen Individuen zu bekommen. Der folgende Pythoncode veranschaulicht das Prinzip unter Verwendung der \textit{numpy} Bibliothek.
 
             \begin{mdframed}
-            \begin{minted}[escapeinside=||, xleftmargin=-80pt]{python}
-                import numpy as np
+            \begin{minted}[escapeinside=||, linenos]{python}
+import numpy as np
 
-                i_1 = [1,10,100,1000] # Individuum 1-5
-                i_2 = [2,20,200,2000]
-                i_3 = [3,30,300,3000]
-                i_4 = [4,40,400,4000]
-                i_5 = [5,50,500,5000]
+i_1 = [1,10,100,1000] # Individuum 1-5
+i_2 = [2,20,200,2000]
+i_3 = [3,30,300,3000]
+i_4 = [4,40,400,4000]
+i_5 = [5,50,500,5000]
 
-                population = np.array([i_1, i_2, i_3, i_4, i_5])
-                eigenschaftsraum = np.transpose(population)
-                
-                for eig in eigenschaftsraum:
-                    np.random.shuffle(eig)
+population = np.array([i_1, i_2, i_3, i_4, i_5])
+eigenschaftsraum = np.transpose(population)
+  
+for eig in eigenschaftsraum:
+    np.random.shuffle(eig)
 
-                population = np.transpose(eigenschaftsraum)
+population = np.transpose(eigenschaftsraum)
 
-                print population
-
-                [[   2   40  500 5000]
-                 [   1   50  200 1000]
-                 [   4   10  300 3000]
-                 [   3   30  100 2000]
-                 [   5   20  400 4000]]
+print population
+> [[   2   40  500 5000]
+   [   1   50  200 1000]
+   [   4   10  300 3000]
+   [   3   30  100 2000]
+   [   5   20  400 4000]]
 
             \end{minted}
             \end{mdframed}

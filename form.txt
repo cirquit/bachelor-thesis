@@ -1,0 +1,15 @@
+### Formalien:
+
+  * Abstract muss in auch in Englisch vorhanden sein (DONE)
+  * Kapitel beginnen auf der rechten Seite
+  * CD mit allem an JEDEN Ausdruck der Arbeit anhängen
+  * Mindestens ZWEI Exemplare
+  * Mindestens Klebebindung
+  * Name des Autors und Titel der Arbeit auf dem Buchrücken
+  * Abgabe am Freitag, den 9.12.2016 an dem Medieninformatik Lehrstuhl
+
+### Fragen:
+
+  * Einleitung so ok?
+  * LSTM Ebene - Information unterstrichen - warum?
+  

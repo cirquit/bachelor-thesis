@@ -144,7 +144,9 @@
 }
 
 \newcommand{\@lmutitle}{}
+\newcommand{\@lmufulltitle}{}
 \newcommand{\lmutitle}[1]{\renewcommand{\@lmutitle}{#1}}
+\newcommand{\lmufulltitle}[1]{\renewcommand{\@lmufulltitle}{#1}}
 
 \newcommand{\@lmuprofone}{}
 \newcommand{\lmuprofone}[1]{\renewcommand{\@lmuprofone}{\=#1}}
@@ -299,7 +301,7 @@
          \begin{Huge}
          \begin{spacing}{.9}
             %thesis title
-            \lmutitlefont\@lmutitle
+            \lmutitlefont\@lmufulltitle
          \end{spacing}
          \end{Huge}
          \vspace{1.5cm}
