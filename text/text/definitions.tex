@@ -307,9 +307,9 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                 \item \textbf{Eingabeschicht} \\
                     Hier kommt der Ausgangszustand rein, sei es ein kodierter Zustand eines Spiels, RGB Werte von einem Bild, oder der DAX.
                 \item \textbf{Versteckte Schicht(en)} \\
-                    Dieser Teil des Netzes besteht oft aus mehreren Schichten, da er für die Abstraktion und die Lernfähigkeit verantwortlich ist \cite{ANNModeling}. Er bekommt die Signale aus der Eingabeschicht, die er verarbeitet und weiterleitet. Je nachdem, welche Neuronen dabei \textit{feuern}, beeinflusst das Endergebnis stark.
+                    Dieser Teil des Netzes besteht oft aus mehreren Schichten, da er für die Abstraktion und die Lernfähigkeit verantwortlich ist \cite{ANNModeling}. Er bekommt die Signale aus der Eingabeschicht, die er verarbeitet und weiterleitet.
                 \item \textbf{Ausgabeschicht} \\
-                    Die Ausgabeschicht ist oft zum Sammeln der Signale von der vorherigen Schicht zuständig und auf ihren Ergebnissen wird dann eine \textbf{Aktivierungsfunktion} angewendet, die die kumulierten Resultate in eine passende Form bringt. Sie varrieren zwischen einfachen Ja/Nein Aussgagen, oder wie wir später kennen lernen werden, auch Wahrscheinlichkeitsverteilungen.
+                    Die Ausgabeschicht ist zum Sammeln der Signale von der vorherigen Schicht zuständig und auf ihren Ergebnissen wird dann eine \textbf{Aktivierungsfunktion} angewendet, die die kumulierten Resultate in eine passende Form bringt. Sie varrieren zwischen einfachen Ja/Nein Aussgagen, oder wie wir später kennen lernen werden, auch Wahrscheinlichkeitsverteilungen.
 
             \end{itemize}
 
@@ -388,11 +388,35 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
             Um eigene Resultate und zeitliche Abstraktionen einfacher zu berücksichtigen gibt es \textbf{rekurrente Netze} die direkte Zyklen beinhalten.
 
             \subsubsection*{LSTM Ebene}
-                Ein spezielles Neuron aus dem rekurrente Netze bestehen können, ist das \textbf{Long Short Term Memory} (LSTM) Neuron\cite{lstm}. Es zeichnet sich durch die Eigenschaft aus, dass es über lange Zeitfenster Information behalten kann. Der Aufbau basiert auf dem Modell einer Speicherzelle, sodass wir durch verschiedene Eingänge (\textbf{Gates}), die Schreib-,Lese- und Reset-Aktionen nachbauen können \cite{lstm-new}. Einer der wichtigste Aspekte von diesen Neuronen ist jedoch, dass sie ableitbar sind, weil dadurch die Trainingsmethode \textbf{Backpropagation} ermöglicht wird \cite{backprop}.
+                Ein spezielles Neuron aus dem rekurrente Netze bestehen können, ist das \textbf{Long Short Term Memory} (LSTM) Neuron\cite{lstm}. Es zeichnet sich durch die Eigenschaft aus, dass es über lange Zeitfenster Information behalten kann. Der Aufbau basiert auf dem Modell einer Speicherzelle, sodass wir durch verschiedene Eingänge (\textbf{Gates}), die Schreib-,Lese- und Reset-Aktionen nachbauen können \cite{lstm-new}. Einer der wichtigste Aspekte von diesen Neuronen ist jedoch, dass sie ableitbar sind, weil dadurch die Trainingsmethode \textbf{Backpropagation} aus Kapitel \ref{backprop-chapter} ermöglicht wird \cite{backprop}.
 
-\newpage
-            \subsubsection*{Backpropagation}
+            \subsubsection*{Softmax Ebene}
+                Es gibt eine Aktivierungsfunktion der wir besondere Aufmerksamkeit widmen, da sie die Neuronen der Ausgabeschicht zu einem nützlichen Ergebnis zusammenfassen kann. Die generalisierte logistische Funktion, oder auch \textbf{normalisierte Exponentialfunktion} nimmt als Argument einen $k$-dimensionalen Vektor \textbf{z} von reelen Zahlen und gibt uns widerrum den gleichen Vektor zurück, wo alle Werte auf den Bereich [0,1] normalisiert wurden.
+
+            \begin{figure}[H]
+                \begin{mdframed}
+                    Sei $j = 1,2,...,K$: \\
+                    \hspace*{45mm} \Resize{4cm}{$\sigma(\textbf{z})_j = \frac{e^{\textbf{z}_j}}{\sum^{K}_{k = 1} e^{\textbf{z}_k}}$}
+                \end{mdframed}
+                \caption{\label{softmax} Definition der Softmax Funktion}
+            \end{figure}
+
+            \begin{figure}[H]
+                \begin{mdframed}
+                    Sei $t \in \mathbb{R}$:\\
+                    \hspace*{50mm} \Resize{3cm}{$S(t) = \frac{1}{1+e^{-t}}$ }
+                \end{mdframed}
+                \caption{\label{sigmoid} Definition der Sigmoid Funktion}
+            \end{figure}
+
+            \noindent
+            Wir könnten argumentieren, dass sich die einfache Normalisierung ohne die Exponentialfunktion dafür genauso dafür eignet. Wenn wir aber als Aktivierungsfunktion die \textbf{Sigmoid Funktion} (\ref{sigmoid}) und als Kostenfunktion den \textbf{logistic-loss} oder \textbf{cross entropy loss} benutzt, kürzt sich das $e$ beim partiellen Ableiten weg.
+
+
+            \subsection{Backpropagation} \label{backprop-chapter}
                 Um diese Technik zum Trainieren von KNNs zu erklären müssen wir zunächst zeigen wie man den Fehler von einem neuronalen Netz misst. Dafür brauchen wir eine \textbf{Kostenfunktion} die uns die Abweichung zum Soll-Ergebnis gibt. Die Ergebnisse des Netzes für $\widehat{y}$ ist in Abbildung \ref{neuron-math} definiert.
+
+
 
                 \begin{figure}[H]
                     \begin{mdframed}
@@ -433,32 +457,17 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                 \end{figure}
 
 
-                \noindent
-                Diese Technik kann man benutzen, solange das gesamte Netz als Formel dargestellt ableitbar ist, selbst wenn es mehrere versteckte Schichten hat. Leider braucht sie dafür ein Trainingsset von Daten, was in oft aufwendig zu generieren ist. Deshalb benutzen wir eine simulationsbasierte Lernmethode.
-
-
-            \subsubsection*{Softmax Ebene}
-                Es gibt eine Aktivierungsfunktion der wir besondere Aufmerksamkeit widmen, da sie die Neuronen der Ausgabeschicht zu einem nützlichen Ergebnis zusammenfassen kann. Die generalisierte logistische Funktion, oder auch \textbf{normalisierte Exponentialfunktion} nimmt als Argument einen $k$-dimensionalen Vektor \textbf{z} von reelen Zahlen und gibt uns widerrum den gleichen Vektor zurück, wo alle Werte auf den Bereich [0,1] normalisiert wurden.
-
-            \begin{figure}[H]
-                \begin{mdframed}
-                    Sei $j = 1,2,...,K$: \\
-                    \hspace*{45mm} \Resize{4cm}{$\sigma(\textbf{z})_j = \frac{e^{\textbf{z}_j}}{\sum^{K}_{k = 1} e^{\textbf{z}_k}}$}
-                \end{mdframed}
-                \caption{\label{softmax} Definition der Softmax Funktion}
-            \end{figure}
-
             \noindent
-            Aufmerksame Leser fragen sich vielleicht warum man keine einfache Normalisierung vornimmt. Wenn man als Trainingsfunktion bei Backpropagation den logistischen Fehler (\textbf{logistic-loss}) oder \textbf{cross entropy loss} benutzt, kürzt sich das $e$ weg und bietet sich daher an.
+            Diese Technik kann man benutzen, solange das gesamte Netz als Formel dargestellt ableitbar ist, selbst wenn es mehrere versteckte Schichten hat. Leider braucht sie dafür ein Trainingsset von Daten, was in oft aufwendig zu generieren ist. Deshalb benutzen wir eine simulationsbasierte Lernmethode.
 
         \subsection{Verbindung mit genetischen Algorithmen}
             Wenn wir nun zum Trainieren von ANNs genetische Algorithmen benutzen wollen, müssten wir das Netz als Liste von Gewichten kodieren, aus denen es besteht. Ein Beispiel dafür bietet der \textbf{GENITOR}\cite{moriarty1999evolutionary} Algorithmus. Dabei werden die einzelnen Gewichte der Kreuzung und einer speziellen Mutation ausgesetzt die von der Varianz der Gesamtpopulation abhängt. \\
 
             \noindent
-            Ein weiterer Ansatz ist \textbf{SANE}\cite{moriarty1999evolutionary}, der einzelne Neuronen für die \textit{Hidden Ebene} entwickelt und daraus ein Netz generiert. Dadurch wurde die Mobility-Strategie für das Spiel Othello wiederentdeckt. \\
+            Ein weiterer Ansatz ist \textbf{SANE}\cite{moriarty1999evolutionary}, der einzelne Neuronen für die \textit{Hidden Ebene} entwickelt und daraus ein Netz generiert. \\ % Dadurch wurde eine nicht triviale Strategie für das Spiel Othello wiederentdeckt \cite{othello95}. \\
 
             \noindent
-            Leider benutzen neuronale Netze heutzutage je nach Anwendungsgebiet immer aufwendigere Strukturen die extrem viele Gewichte besitzen. Eine naive genetische Suche in so einem hochdimensionalen Zustandsraum dauert zu lange und deshalb gibt es Techniken die uns erlauben zielsicherer und effizienter den Raum aller Möglichkeiten zu durchsuchen.
+            Leider benutzen neuronale Netze heutzutage je nach Anwendungsgebiet immer aufwendigere Strukturen die extrem viele Gewichte besitzen. Eine naive genetische Suche in so einem hochdimensionalen Zustandsraum dauert zu lange und deshalb untersuchen wir Techniken die uns erlauben zielsicherer und effizienter den Raum aller Möglichkeiten zu durchsuchen. 
 
 %            ``Die Verknüpfung findet in der Kodierung von den Individuen statt - wir nehmen eine (naive) Darstellung von allen Gewichten''
 %            ``Problematik -> Folgerung zu DCT''
@@ -467,11 +476,10 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
         % ``Der Suchraum kann durch die sog. DCT auf beliebige Dimensionalität eingeschränkt werden, wenn bestimmte Annahmen getroffen werden können'' \\
         % ``Fouriertransformationen machen folgendes...'' \\
         % ``Es gibt eine Inverse die aus einem n-stelligen liste eine m-stellige macht, wo die Zahlen korelliert sind (Beispiele)''
-
-        Eine dieser Techniken ist die Nutzung der diskreten Kosinustransformation (\textbf{DCT}), die zur Familie der Fouriertransformationen gehört. Eine \textbf{Fouriertransformation} spaltet ein Signal in beliebig viele trigonometrische Funktionen, wie Sinus oder Kosinus und über die Summe dieser Funktionen kann jede mögliche Ausprägung von Daten beschrieben werden. \\
+        Eine Technik zum reduzieren des Suchraums bietet die diskreten Kosinustransformation (\textbf{DCT}), die zur Familie der Fouriertransformationen gehört. Eine \textbf{Fouriertransformation} teilt ein Signal in beliebig viele trigonometrische Funktionen, wie Sinus oder Kosinus auf, und über die Summe dieser Funktionen kann jedes Signal beschrieben werden. \\
 
         \noindent
-        Diese Fouriertransformation liefert uns dadurch ein diskretes Frenquenzenspekturm, das in Form von Koeffizienten dargestellt wird. Dabei wird pro kodierter Datenpunkt ein Koeffizient benutzt. Um die Daten wiederherzustellen gibt es die inverse Kosinustransformation die die Koeffizienten wieder umwandelt.
+        Diese Fouriertransformation liefert uns ein diskretes Frenquenzenspektrum, das in Form von Koeffizienten dargestellt wird. Dabei wird pro Datenpunkt ein Koeffizient erzeugt. Um die Daten wiederherzustellen gibt es die inverse Kosinustransformation die die Koeffizienten wieder umwandelt.
 
         \begin{multicols}{2}
             \begin{figure}[H]
@@ -490,11 +498,11 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
         \end{multicols}
 
         \noindent
-        Wenn wir viele der Koeffizieten nicht benutzen und trotzdem versuchen die Datenpunkte wiederherzustellen, kriegen wir lediglich eine Annäherung, wie man in Abbildung \ref{fig:gazelle-compressed} sieht. Sie ist meistens aber so gut genug, dass wir keinen Unterschied merken. Eine sehr ähnliche Kompressionsmethode kennt man aus dem Bildformat JPEG oder dem Videoformat MPEG.
+        Wenn wir viele der Koeffizieten nicht benutzen und trotzdem versuchen die Datenpunkte wiederherzustellen, kriegen wir lediglich eine Annäherung, wie man in Abbildung \ref{fig:gazelle-compressed} sieht. Sie ist meistens aber so gut genug, sodass wir keinen Unterschied merken. Eine sehr ähnliche Kompressionsmethode wird bei dem Bildformat JPEG oder dem Videoformat MPEG benutzt.
 
         \subsection{Kodierung des Suchraums}
 
-            Diese Technik wenden wir nun auf die Gewichte von unserem neuronalen Netz an. Dafür beschränken wir den Suchraum auf eine kleine Anzahl der Koeffizienten und benutzen die inverse Kosinustransformation um aus ihnen die nötige Anzahl von Gewichten zu erstellen. In Abbildung \ref{fig:dct-pre},\ref{fig:dct-after} sieht man eine Anwendung auf 100 Gewichte die in einem Verhältnis von 1:2 komprimiert wurden. Das bedeutet dass wir den Suchraum mit dem sichtbaren Genauigkeitsverlust halbiert haben.\\
+            Diese Technik wenden wir nun auf die Gewichte von unserem neuronalen Netz an. Dafür beschränken wir den Suchraum auf eine kleine Anzahl der Koeffizienten und benutzen die inverse Kosinustransformation, um aus ihnen die nötige Anzahl von Gewichten zu erstellen. In Abbildung \ref{fig:dct-pre} und \ref{fig:dct-after} sieht man eine Anwendung auf 100 Gewichte, die ein Kompressionsverhältnis von 1:2 haben. Das bedeutet, dass wir den Suchraum mit dem in \ref{fig:dct-after} sichtbaren Genauigkeitsverlust halbiert haben.\\
 
             \noindent
             Bei größeren Verhältnissen bemerken wir eine starke örtliche Korrelation (\ref{fig:dct-my-case}) zwischen den benachbarten Zahlen und diese Eigenschaft passt zu der Annahme dass sich Gewichte in neuronalen Netzen ähnlich verhalten. Eine ausführlichere Erklärung findet sich im Ursprungspaper für die Anwendung in der Neuroevolution.\cite{cosyne1}
@@ -523,10 +531,10 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
         Nachdem wir den Zustandsraum komprimiert haben, sodass ein genetischer Algorithmus ihn in absehbarer Zeit entwickeln und ein neuronales Netz befüllt werden kann, erschließt sich die Verküpfung zu einem mächtigen Werkzeug das viele interessante Eigenschaften besitzt. Dieser Algorithmus wird \textbf{Cooperative Synapsen Neuroevolution}\cite{cosyne2}, oder auch \textbf{CoSyNE} genannt.\\
 
         \noindent
-        Er zeichnet sich speziell dadurch aus, dass er auf kontinuierlichen Zuständen und Aktionen funktioniert und spärliche Fitnessignale interpretieren kann. Das schafft er indem er rekurrente Netze aufbaut und die genetische Suche mit aggresiver Mutation im Zustandsraum beschleunigt. Ein gutes Beispiel dafür ist das Rennspiel \textbf{TORCS}\cite{cosyne3} wo der Algorithmus 993 Gewichte in 33 Koeffizienten kodiert \textit{(Faktor 1:30)} und lediglich durch die Bilddaten ähnlich gute Ergebnisse liefert wie die per Hand programmierten Agenten die die Physik des Spieles kennen.\\
+        Er zeichnet sich speziell dadurch aus, dass er auf kontinuierlichen Zuständen und Aktionen funktioniert und spärliche Fitnessignale interpretieren kann. Das schafft er indem er rekurrente Netze aufbaut und die genetische Suche mit aggressiver Mutation im Zustandsraum beschleunigt. Ein gutes Beispiel dafür ist das Rennspiel \textbf{TORCS}\cite{cosyne3}, wo der Algorithmus 993 Gewichte in 33 Koeffizienten kodiert \textit{(Faktor 1:30)} und lediglich durch die Bilddaten ähnlich gute Ergebnisse liefert wie die per Hand programmierten Agenten, die die Physik des Spieles kennen.\\
 
         \noindent
-        Ein großer Nachteil von genetischen Algorithmen ist das sie oft schnell zu lokalen Maxima konvergieren und sehr schlecht aus diesem Tal rauskommen. Um dieses Problem anzugehen, versucht man die Stellschrauben wie Mutationswahrscheinlichkeit oder Kinderanzahl per Hand zu verändern. CoSyNE benutzt dafür eine ganz eigene \textbf{genetische Methode} um die Suche einfacher zu gestalten. Sie nennt sich Permutation und erzeugt innerhalb der gesamten Population Unterteilungen in kleinere Populationen die in einer \textbf{kooperativen und koevolutionären} Beziehung stehen.
+        Ein großer Nachteil von genetischen Algorithmen ist, das sie oft bei lokalen Maxima feststecken bleiben und lange brauchen um aus diesem Tal rauskommen. Um dieses Problem anzugehen, versucht man die Stellschrauben wie Mutationswahrscheinlichkeit oder Kinderanzahl per Hand zu verändern \cite{grefenstette86}. CoSyNE benutzt dafür eine eigene \textbf{genetische Methode}, um die Suche einfacher zu gestalten. Sie nennt sich Permutation und erzeugt innerhalb der gesamten Population Unterteilungen in kleinere Populationen die in einer \textbf{kooperativen und koevolutionären} Beziehung stehen.
 %          \begin{figure}[H]
 %              \begin{center}
 %                  \includegraphics[scale=0.5]{../pictures/DCT-my-case.png}\\
@@ -571,7 +579,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
             \end{table}
 
             \noindent
-            Wenn wir uns die Population als zweidimensionale Liste vorstellen, wo jedes Indviduum eine eigene Liste mit seinen spezifischen Ausprägungen ist, können wir die Population transponieren, wobei nun jede Eigenschaft eine eigene Liste ist, diese vermischen und wieder zurück transponieren um die neuen Individuen zu bekommen. Der folgende Pythoncode veranschaulicht das Prinzip unter Verwendung der \textit{numpy} Bibliothek.
+            Wenn wir uns die Population als zweidimensionale Liste vorstellen, wo jedes Indviduum eine eigene Liste mit seinen spezifischen Eigenschaften ist, können wir die Population transponieren, wobei nun jede Eigenschaft eine eigene Liste ist, diese zufällig vermischen und wieder zurück transponieren um die neuen Individuen zu bekommen. Der folgende Pythoncode veranschaulicht das Prinzip unter Verwendung der \textit{numpy} Bibliothek.
 
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{python}
@@ -601,17 +609,22 @@ print population
             \end{minted}
             \end{mdframed}
             \noindent
-            Man erkennt leicht, dass keiner der ursprünglichen Individuen erhalten bleibt und wir vollkommen Neue bekommen. Der Sinn hinter dem Verschmischen in der Eigenschaftsebene versteckt sich in der \textbf{Verknüpfungung mit der Kreuzungsmethode}. Wenn wir zwei Individuen kreuzen, werden ihre Kinder sicherlich die gesamte Information von ihren Eltern in der Population übernehmen. Da CoSyNE den Repopulationsschritt nicht ausführt, aber dennoch schlechte Individuen wegwirft, wird irgendwann nur noch die Kodierung von den Kindern übrig bleiben.\\
+            Man erkennt leicht, dass keine der ursprünglichen Individuen erhalten bleibt und wir vollkommen neue bekommen. Der Sinn hinter dem Vermischen in der Eigenschaftsebene basiert auf der \textbf{Verknüpfungung mit der Kreuzungsmethode}. Wenn wir zwei Individuen kreuzen, werden ihre Kinder die gesamte Information von ihren Eltern in der Population übernehmen. Da CoSyNE den Repopulationsschritt nicht ausführt, dafür aber alle restlichen Individuen wegwirft, werden nur die Eigenschaften der Kinder übrig bleiben.\\
 
             \noindent
             Das führt zur Homogenität in den einzelnen Eigenschaften, die zum Beispiel dafür verantworlich ist, dass alle Individuen gleich große Hörner haben. Wenn nun innerhalb der Hornlänge zufällig gemischt wird, bleibt alles gleich, da die gesamte Liste aus dem gleichen Element besteht. \\
 
             \noindent
-            Die Annahme von CoSyNE ist dass die Lösung für das Problem in der Kombination von den Ausprägungen von allen Individuen liegt, die wir am Anfang erstellen. Durch das aggressive Aussortieren durchsuchen wir den Raum aller Möglichkeiten schneller und darin liegt der größte Vorteil von diesem Algorithmus.
+            Die Annahme von CoSyNE ist dass die Lösung für das Problem in der Kombination von den Eigenschaften von allen Individuen liegt, die wir am Anfang erstellen. Durch das aggressive Aussortieren durchsuchen wir den Raum aller Möglichkeiten schneller und darin liegt der größte Vorteil von diesem Algorithmus. Dieser Mechanismus wird als \textbf{kooperative Koevolution} im Eigenschaftsraum interpretiert, da wir jede Eigenschaft als Population betrachten und darin eine genetische Suche abhängig voneinander vollziehen \cite{cosyne2}. \\
+
+            \noindent
+            Wenn diese Annahme nicht stimmt und die Lösung nicht in einem Subset von allen Eigenschaften liegt, hat CoSyNE leider nur die Möglichkeit durch Mutation zum Ziel zu kommen. Deshalb wird dieser Parameter oft hoch gewählt \cite{cosyne1}\cite{cosyne2}\cite{cosyne3}.
+
+
 
 \newpage
     \section{Cross Entropy Method}
-        Eine andere Möglichkeit die Individuen in dem GA zu kodieren stellt die \textbf{Cross Entropy Method} dar. Das ist ein Algorithmus der oft als Vergleichskriterium verwendet wird, da er oft zu suboptimalen Strategien konvergiert\cite{cem}. Die Anwendung in unserem neuroevolutionären Schema basiert darauf, dass wir Individuen nicht als Ansammlung von Zahlen zu speichern, sondern jede Eigenschaft als Normalverteilung dargestellt wird. Diese Abläufe illustrieren wir anhand der Erklärung für eine Normalverteilung ist.
+        Eine andere Möglichkeit die Individuen in dem GA zu kodieren stellt die \textbf{Cross Entropy Method} dar. Das ist ein Algorithmus der oft als Vergleichskriterium verwendet wird, da er oft zu suboptimalen Strategien konvergiert \cite{cem}. Die Anwendung in unserem neuroevolutionären Schema basiert darauf, dass wir Individuen nicht als Ansammlung von Zahlen zu speichern, sondern jede Eigenschaft als Normalverteilung dargestellt wird. Diese Abläufe illustrieren wir anhand der Erklärung für eine Normalverteilung.
 
         \subsection{Normalverteilung}
 
@@ -662,15 +675,15 @@ print population
             \noindent
             Die Wahrscheinlichkeit dass pro Quadratmeter \textit{genau} $2cm$ Regenwasser fällt ist extrem gering, weil nicht ein Yoctometer ($10^{-24})$ mehr oder weniger fallen darf. Wenn wir diese zufällige Ausprägung jedoch als Grenzen definieren, dann steigt die Wahrscheinlichkeit. Die Wahrscheinlichkeit dass zwischen $1cm$ und $3cm$ Regenwasser fällt ist eine viel wertvollere Aussage und ist als Integral zwischen den Grenzen der Dichtefunktion definiert.\\
 
-            \subsubsection*{Kodierung durch Normalverteilungen}
+            \subsection{Kodierung durch Normalverteilungen}
 
             \begin{figure}[H]
                     \begin{center}
-                        \includegraphics[scale=0.49]{../pictures/diagrams/cross-entropy-visualization-ga.png}\\
+                        \includegraphics[scale=0.47]{../pictures/diagrams/cross-entropy-visualization-ga.png}\\
                         \caption{Kodierung der Eigenschaften durch Normalverteilungen}\label{fig:norm-dist-encoding}
                     \end{center}
             \end{figure}
 
             Stellen wir nun die Kodierung der Eigenschaften von jedem Individuum als Normalverteilung dar. Das bedeutet wir haben für jede Eigenschaft, zum Beispiel \textit{Hornlänge}, einen Durchschnitt und eine Standartabweichung. Die Abbilung (\ref{fig:norm-dist-encoding}) zeigt dies beispielhaft für fünf Individuen mit jeweils 4 Eigenschaften dar.\\[3mm]
             \noindent
-            Wenn wir Individuen erstellen wollen, müssen wir aus jeder Normalverteilung eine Stichprobe nehmen. Die Kreuzung und Mutation fällt aus, dafür aktualisieren wir nach jeder Simulation alle Verteilungen aus den Durchschnitten und Standartabweichungen der besten Individuen.
+            Wenn wir Individuen erstellen wollen, müssen wir aus jeder Normalverteilung eine Stichprobe (die Punkte entlang der Graphen in \ref{fig:norm-dist-encoding}) nehmen. Die Kreuzung und Mutation fällen aus, dafür berechnen wir nach jeder Simulation pro Eigenschaft neue Durchschnitte und Standartabweichungen aus den besten Individuen. Damit versuchen wir die Suche auf den vielversprechendsten Raum einzugrenzen.
