@@ -3,14 +3,14 @@
     % ``Was für Ligen gibt es'' \\
     % ``Was für eine Domäne ist es im Vergleich zu anderen'' \\
     % \\
-    RoboCup ist ein Fußball Simulator, der seine Anfänge in 1993 in Japan, Tokyo gefunden hat. Eine Gruppe von Forschern, inklusive Minoru Asada, Yasuo Kuniyoshi und Hiroaki Kitano, haben als einen Wettbewerb unter dem Namen \textbf{Robot J-League} gestartet. Der Name stammt von einer professionellen japanischen Fußball Liga.\\
+    RoboCup ist ein Fußball Simulator, der seine Anfänge in 1993 in Japan, Tokyo gefunden hat. Eine Gruppe von Forschern, inklusive Minoru Asada, Yasuo Kuniyoshi und Hiroaki Kitano, haben als einen Wettbewerb unter dem Namen \textbf{Robot J-League} gestartet. Der Name stammt von einer professionellen japanischen Fußball Liga \cite{hfo-history}.\\
     \\
     Nach einem Monat haben sie jedoch weltweit überwältigendes Feedback bekommen und haben die Initiative als internationales Projekt weitergeführt, daher kam die Umbenennung zur \textbf{Robot World Cup Initiative}, kurz RoboCup. \\
     % \textit {(source: http://www.robocup.org/about-robocup/a-brief-history-of-robocup/)} \\
     \\
-    Die RoboCup Initiative hat betreibt derzeit sechs große Wettbewerbe, die sich jeweils wieder in Ligen und Subligen aufteilen lassen. Darunter fällt \textbf{RoboCup Soccer}, \textbf{RoboCup Rescue Rescue}, \textbf{RoboCup Junior}, \textbf{RoboCup Logistics}, \textbf{RoboCup @ Work} und \textbf{RoboCup @ Home}. Unsere Implementierung fällt in die Subliga \textbf{2D Soccer Simulation}, in der es darum geht in einer zweidimensionalen Welt zwei Fußballmannschaften gegeneinander antreten zu lassen.\\
+    Die RoboCup Initiative betreibt derzeit sechs große Wettbewerbe, die sich jeweils wieder in Ligen und Subligen aufteilen lassen. Darunter fällt \textbf{RoboCup Soccer}, \textbf{RoboCup Rescue Rescue}, \textbf{RoboCup Junior}, \textbf{RoboCup Logistics}, \textbf{RoboCup @ Work} und \textbf{RoboCup @ Home}. Unsere Implementierung fällt in die Subliga \textbf{2D Soccer Simulation}, in der es darum geht in einer zweidimensionalen Welt zwei Fußballmannschaften gegeneinander antreten zu lassen.\\
     \\
-    Die Aufgabe die wir angehen gehört zu einem Fragement von RoboCup2D, genannt \textbf{Half Field Offense}.\\
+    Die Aufgabe, die wir angehen, gehört zu einem Fragement von RoboCup2D, genannt \textbf{Half Field Offense}.\\
 
     \begin{figure}[htbp]
         \includegraphics[width = 1.0\textwidth, center]{../pictures/full-field.png}
@@ -19,53 +19,53 @@
 
     \section{Half Field Offense}
 
-        Die Domäne Half Field Offense grenzt das Spielfeld auf eine Hälfte ein, sodass wir 4 Angreifer und 3 Verteidiger + Torwart haben. Diese Einschränkung vereinfacht den Such- und Zustandsraum immens und erlaubt potenziell eine Wiederverwendbarkeit der Agenten, wenn eine vollständige Mannschaft aufgebaut wird.\\
+        Die Domäne Half Field Offense grenzt das Spielfeld auf eine Hälfte ein, sodass wir 4 Angreifer und 3 Verteidiger + Torwart haben. Diese Einschränkung vereinfacht den Such- und Zustandsraum immens und erlaubt trotzdem noch eine Wiederverwendbarkeit der Agenten, wenn eine vollständige Mannschaft aufgebaut wird.\\
         \\
-        In unserer Implementierung haben wir lediglich ein 1vs1 Szenario, also ein Angreifer gegen ein Torwart. Diese sieht jedoch explizit ein nahtlosen Skalierung auf ein 4vs4 Szenario vor, sodass weitere Parametrisierung ohne viel Aufwand ausprobiert werden können.\\
+        In unserer Implementierung haben wir lediglich ein 1vs1 Szenario, also ein Angreifer gegen ein Torwart. Die Modellierung erlaubt dennoch ein nahtlosen Skalierung auf ein 4vs4 Szenario, sodass weitere Parametrisierung ohne viel Aufwand ausprobiert werden können.\\
 
         \begin{figure}[htbp]
-            \includegraphics[width = 0.5\textwidth,height = 0.4\textheight, center]{../pictures/half-field.png}
+            \includegraphics[width = 0.7\textwidth,height = 0.6\textheight, center]{../pictures/half-field.png}
             \caption{Screenshot von dem Spielfeld für den Subtask HFO \label{fig:somelabel}}
         \end{figure}
         \noindent
         Im Folgenden wird die Domäne samt Zustandsraum und Aktionen erklärt, sowie ihren Einschränkungen für die Anwendung von Machine Learning Algorithmen.\\
         % \cite{ http://www.cs.utexas.edu/users/ai-lab/?hausknecht:aamasws16 }
 \newpage
-        \subsection{Zustandsraum}
+        \subsection{Zustandsraum} \label{statespace-definition}
             % ``Unterschiedliche Zustandsräume, kommt drauf an wie viele Spieler aufm Feld sind (zitat vom HFO Paper)''\\
             % ``Angepasst für Maschinen (zitat HFO)'' \\
             % ``Umrechnung für Menschen'' \\
             % ``Fullstate flag''
-            Der Zustandsraum der HFO Domäne kann in den \textbf{High Level State} und den \textbf{Low Level State} aufgeteilt werden. Der Unterschied ist lediglich in der Dimensionalität, da man aus dem Low Level State den High Level State ableiten kann. Die Zustandsräume werden durch folgende Formeln definiert:\\
+            Der Zustandsraum der HFO Domäne kann in den \textbf{High Level State} und den \textbf{Low Level State} aufgeteilt werden. Der Unterschied liegt in der Dimensionalität, da man aus dem Low Level State den High Level State ableiten kann. Die Zustandsräume werden durch folgende Formeln definiert:\\
             
             \begin{mdframed}
             \textit{Sei T die Anzahl der Teammitglieder, O die Anzahl der Gegner:}
             \begin{center}
-                \textit{High Level State} $ := 10 + 6T + 3O \hspace{10mm} $ \\
-                \textit{Low Level State}  $ := 58 + 8T + 8O \hspace{9mm} $ \\
+                $dim($\textit{High Level State}$)$ $ := 10 + 6T + 3O \hspace{10mm} $ \\
+                $dim($\textit{Low Level State}$)$  $ := 58 + 8T + 8O \hspace{9mm} $ \\
             \end{center}
             \end{mdframed}
 %            \textit{(Frage: Alles vom Paper abschreiben oder referenzieren?)} \\
- %           \\
-            In unserem 1vs1 High Level Setting haben wir damit 13 Zustandsparameter. Vier von diesen Parametern gehören zu dem Torwart, aber da seine Position implizit durch andere Ausprägungen gegeben ist, beachten wir sie nicht. Redundante Information würde den Suchraum unnötig aufblähen und die Suche verlängern. Deshalb wurden nur die folgenden 9 Zustände bereitgestellt:
+            \hfill  \\
+            In unserem 1vs1 High Level Setting haben wir damit 13 Zustandsparameter. Vier von diesen Parametern gehören zu dem Torwart, aber da seine Position implizit durch andere Eigenschaftn gegeben ist, beachten wir sie nicht. Redundante Information würde den Suchraum unnötig aufblähen und die Suche verlängern. Deshalb wurden nur die folgenden 9 Zustände bereitgestellt:
 
             \begin{table}[H]
                 \begin{center}
-                \hspace*{-2cm}
-                \begin{tabular}{ |l|c|c|c|c|c| } 
+                \hspace*{-0.75cm}
+                \begin{tabular}{ |l|c|c|c|c| } 
                     \hline
-                    \hfill Zustandsbeschreibung                          & Wertebereich & Winkel & Boole'sch & Lage & Anderes \\ \hline
-                    x-Koordinaten                                        & $[ -1, +1 ]$ & \hfill & \hfill    &      & X       \\ \hline
-                    y-Koordinaten                                        & $[ -1, +1 ]$ & \hfill & \hfill    &      & X       \\ \hline
-                    Sichtrichtung                                        & $[ -1, +1 ]$ & X      & \hfill    &      & \hfill  \\ \hline
-                    Nähe zum Ball                                        & $[ -1, +1 ]$ & \hfill & \hfill    & X    & \hfill  \\ \hline
-                    Winkel zum Ball                                      & $[ -1, +1 ]$ & X      & \hfill    &      & \hfill  \\ \hline
-                    Kann eine Ballaktion ausgeführt werden               & $[ -1, +1 ]$ & \hfill & X         &      & \hfill  \\ \hline
-                    Winkel zum Mittelpunkt des Tors                      & $[ -1, +1 ]$ & X      & \hfill    &      & \hfill  \\ \hline
-                    Größte offene Winkel zwischen Torwart und Torpfosten & $[ -1, +1 ]$ & X      & \hfill    &      & \hfill  \\ \hline
+                    \hfill Zustandsbeschreibung                          & Winkel & Boole'sch & Lage & Anderes \\ \hline
+                    x-Koordinaten                                        & \hfill & \hfill    &      & X       \\ \hline
+                    y-Koordinaten                                        & \hfill & \hfill    &      & X       \\ \hline
+                    Sichtrichtung                                        & X      & \hfill    &      & \hfill  \\ \hline
+                    Nähe zum Ball                                        & \hfill & \hfill    & X    & \hfill  \\ \hline
+                    Winkel zum Ball                                      & X      & \hfill    &      & \hfill  \\ \hline
+                    Kann eine Ballaktion ausgeführt werden               & \hfill & X         &      & \hfill  \\ \hline
+                    Winkel zum Mittelpunkt des Tors                      & X      & \hfill    &      & \hfill  \\ \hline
+                    Größte offene Winkel zwischen Torwart und Torpfosten & X      & \hfill    &      & \hfill  \\ \hline
                 \end{tabular}
                 \end{center}
-                \caption{Zustandsraum von HFO 1vs1 \label{fig:somelabel}}
+%                \caption{Zustandsraum von HFO 1vs1 \label{fig:somelabel}}
             \end{table}
 
             % \hspace*{-1.5cm}
@@ -73,10 +73,10 @@
             % \hspace*{-1.5cm} Wäre dann eigentlich abschreiben ab 15.1.1 von https://github.com/LARG/HFO/blob/master/doc/manual.pdf)}
             % (src: https://github.com/LARG/HFO/blob/master/doc/manual.pdf ab 15.1.1)
             \noindent
-            Der Zustand kann in 4 Kategorieren unterteilt werden, die auf den Wertebereich von $[ -1, +1 ]$ reduziert wurden.
+            Der Zustand kann in 4 Kategorieren unterteilt werden, die alle auf den Wertebereich von $[ -1, +1 ]$ reduziert wurden.
 
             \subsubsection*{Winkelkodierung}
-                Die Winkel sind im Bereich von $[0, \pi]$ und durch folgende Formel auf den Bereich $[-1, +1]$ transformiert:
+                Die Winkel sind im Bereich von $[0, \pi]$ und durch folgende Formel auf den Bereich $[-1, +1]$ transformiert \footnote[1]{Formel sind aus dem E-Mail Verkehr mit dem Entwickler entstanden}:
 
                 \begin{mdframed}
                     Sei $f : [0,\pi] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
@@ -84,6 +84,7 @@
                     \hspace*{10mm} \Resize{4.5cm}{$f(x) = (\frac{x}{\pi} - 1) \cdot 2$}
                     \hspace*{20mm} \Resize{4.5cm}{$g(x) = (\frac{x}{2} + 1) \cdot \pi$}
                 \end{mdframed}
+                
 
             \subsubsection*{Boole'sche Kodierung}
                 Die boole'schen Werte sind binär und $-1$ entspricht $false$ und $1$ entsprechend $true$.
@@ -101,14 +102,11 @@
             \subsubsection*{Anderes}
                 Unter diese Kategorie fallen nur die x- und y-Koordinaten und sind trivialerweise im Bereich von [-1, +1], weil das die Grenzen des Spielfelds sind.
 
-            \hfill \\[2mm]
-            \noindent
-            Wir wollen an dieser Stelle anmerken dass wir alle Zustände mit normal verteilten Rauschen empfangen haben.
-        \subsection{Aktionsraum}
+\newpage
+        \subsection{Aktionsraum} \label{actionspace-definition}
             % ``Gibt 6 nicht parametrisierte Aktionen, die wir benutzt haben''\\
             % ``Gibt noch andere parametrisierte''
-            Es gibt 8 parametrisierte und 6 nicht parametrisierte Aktionen. Wir haben die Algorithmen über 5 der 6 Aktionen ohne zusätzlichen Argumente trainiert. Die Aktion \textit{CATCH} ist für Angreifer illegal und wurde deshalb weggelassen. Die folgende Aufzählung beschreibt alle Aktionen:
-            \textit{(Genauere Erklärung von benutzen Aktionen kommt noch)}
+            Es gibt 8 parametrisierte und 6 nicht parametrisierte Aktionen. Wir haben die Algorithmen auf 5 der Aktionen trainiert die nicht parametrisiert sind. Die Aktion \textit{CATCH} ist für Angreifer illegal und wurde deshalb weggelassen. Die folgende Aufzählung beschreibt alle Aktionen \cite{hfo}:
 
             \begin{multicols}{2}
                 \textbf{Parametrisierte}
@@ -120,7 +118,8 @@
                     \item Kick\_To(x-coords, y-coords, speed)
                     \item Move\_To(x-coords, y-coords)
                     \item Dribble\_To(x-coords, y-coords)
-                \end{itemize}
+                    \item Pass(playernumber)
+                \end{itemize} \par
                 \textbf{Nicht parametrisierte}
                 \begin{itemize}
                     \item Move
@@ -131,40 +130,61 @@
                     \item No-Op
                 \end{itemize}
             \end{multicols}
-            \noindent
-            Jedes Spiel hatte eine maximale Zeit die in Frames aufgeteilt war und jeder Agent wird zu jedem Frame gefragt ob er eine neue Aktion ausführen will. Wenn ein Timeout von einem festen Zeitabstand kommt, wird pauschal die No-Op Aktion ausgeführt.
+
+            \subsubsection*{Aktion: Move}
+            \textit{Move} repositioniert den Agenten nach der vorprogrammierten Strategie von \textit{Agent2D} und funktioniert nur dann, wenn der Spieler den Ball nicht hat.
+
+            \subsubsection*{Aktion: Shoot}
+            Diese Aktion versucht den Ball mit der besten Parametern für die Aktion \textit{Kick\_To} aufzurufen, sodass ein Tor geschossen wird. 
+
+            \subsubsection*{Aktion: Dribble}
+            Der Agent benutzt kurze \textit{Kick\_To} und \textit{Move} Sequenzen um in die Nähe des Tores zu laufen.
+
+            \subsubsection*{Aktion: Intercept}
+            Der Agent versucht in die Nähe des Balls zu laufen indem er die Geschwindigkeit vom Ball in Betracht zieht. Diese Aktion ist effektiver als \textit{Move}.
+
+            \subsubsection*{Aktion: No-Op}
+            Wenn diese Aktion gewählt wird, macht der Agent nichts.
+
+            \subsubsection*{Abfrage der Aktionen}
+            Jedes Spiel hatte eine maximale Laufzeit die in Frames aufgeteilt wird und jeder Agent pro Frame gefragt, welche Aktion er ausführen will. Wenn über längere Zeit keine Antwort von dem Agenten kommt, wird automatisch die No-Op Aktion ausgeführt.
+
 
         \subsection{Einschränkungen}
             % ``Sparse Fitness''                 \\
             % ``Simulation Learning''            \\
             % ``Hochdimensional Kontinuierlich'' \\
             % ``Auch genannt Black Box RL''
-            Diese Domäne hat viele Einschränkungen wenn man sie mit herkömmlichen Machine Learning Tasks vergleicht \textit{(Vergleich Moonrover, Roboterarm etc.)}. Zum einen erlaubt sie uns wegen der Implementierung nicht in die Zukunft zu propagieren und zu schauen wie gut eine Entscheidung ist. Wir haben eine Simulation die erst nachdem ein Spiel fertig ist ein Fitnesssignal sendet und wir daraufhin abzuleiten müssen ob die lange Aktionsketten die wir ausgeführt haben uns zum Erfolg führten. Diese Eigenschaft nennt sich \textbf{sparse Fitness} und findet sich in Beispielen wie \textit{(Zitat)}
+            Diese Domäne hat besonderen Einschränkungen, die es zu einem schwierigen Problem machen. Zum einen haben wir keine Möglichkeit in die Zukunft zu schauen um herauszufinden wie gut eine Aktion für einen bestimmten Zustand war. Stattdessen müssen wir uns auf das Resultat der Simulation verlassen, dass uns lediglich am Ende sagt ob ein Tor geschossen wurde. \\[2mm]
+            \noindent
+            Zum anderen ist ein Spiel eine Abfolge von mehreren hundert Aktionen die alle gemeinsam bewertet werden und deshalb ist es unmöglich eine Fragmentierung in Teilziele zu schaffen. \\[2mm]
+            \noindent
+            Zusätzlich zum spärlichen Signal ob wir ein Tor geschossen haben, kommt der kontinuierliche 9-dimensionale Zustandsraum den wir mit normalverteiltem Rauschen empfangen haben.
 
-            \begin{center} \textit{(Simulation based learning)} \end{center}
-            \begin{center} \textit{(Kontinuierlicher Zustandsraum, hohe Abstraktion)} \end{center}
+%             enn man sie mit herkömmlichen Machine Learning Tasks vergleicht \textit{(Vergleich Moonrover, Roboterarm etc.)}. Zum einen erlaubt sie uns wegen der Implementierung nicht in die Zukunft zu propagieren und zu schauen wie gut eine Entscheidung ist. Wir haben eine Simulation die erst nachdem ein Spiel fertig ist ein Fitnesssignal sendet und wir daraufhin abzuleiten müssen ob die lange Aktionsketten die wir ausgeführt haben uns zum Erfolg führten. Diese Eigenschaft nennt sich \textbf{sparse Fitness} und findet sich in Beispielen wie \textit{(Zitat)}
+
+%            \begin{center} \textit{(Simulation based learning)} \end{center}
+%            \begin{center} \textit{(Kontinuierlicher Zustandsraum, hohe Abstraktion)} \end{center}
             % (cite https://gym.openai.com/docs/rl#black-box-optimization-and-the-cross-entropy-method)
+\newpage
 
     \section{Implementierung der Algorithmen}
         % ``Server in Haskell, HFOServer in C++, Agenten in Python''
-        Der ausführliche Aufbau der Algorithmen wird näher im Appendix erklärt, hier schauen wir uns die Parametrisierung grobe Funktionsweise an. Die Simulation kann in die folgenden drei Teile unterteilt werden.
+        In diesem Abschnitt schauen wir uns die Parametrisierung der Algorithmen und den Aufbau der Simulation genauer an. Dafür waren die folgenden drei Programme zuständig:
 
         \subsubsection*{Simulationsserver}
-        Der Simulationsserver ist in C++ geschrieben und wurde 1-zu-1 aus \cite{hfo} übernommen. Er wird durch Flags beim Starten parametrisiert.
+        Der Simulationsserver ist in C++ geschrieben und wurde aus \cite{hfo} übernommen. Er wird durch Flags beim Starten parametrisiert.
         % (src: https://github.com/LARG/HFO)
 
         \subsubsection*{Agenten}
         Die Agenten sind in Python geschrieben und stellen eine Erweiterung von einem der Beispielskripte dar\cite{hfo}. Diese Prozesse werden auch mit eigenen Kommandozeilenparametern aufgerufen.
 
         \subsubsection*{Koordinator}
-        Der Koordinator ist für die Umsetzung des GAs und den jeweiligen Kodierungen zuständig, startet den Server und die Agenten Skripte und überwacht die Simulation. Er ist, wie alle folgenden Codebeispiele, in Haskell geschrieben.
+        Der Koordinator ist für die Umsetzung des GAs und den jeweiligen Kodierungen zuständig, startet den Server, die Agenten Skripte und überwacht die Simulation. Er ist, wie alle folgenden Codebeispiele, in Haskell geschrieben.
 
-        \subsubsection*{Simulation}
-        Jedes Team hat pro Generation 25 Spiele gespielt und die gesamte Simulation bestand aus insgesamt 375000 Spielen.
-        Die Episodenzeit wurde auf 500 Echtzeitsekunden beschränkt, da ansonsten die simulierte Zeit pro Spiel nicht praktikabel war. \\
 
-        \noindent
-        Für alle Simulationen galten die folgenden Rahmenbedingungen:
+        \subsubsection*{Rahmenbedingungen für die Simulation}
+        Jede Simulation bestand aus 300 Generationen und jedes Team hat pro Generation 25 Spiele gespielt. Ein Spiel (Episode) war maximal 500 Sekunden lang und wenn der Ball 50 Sekunden lang nicht berührt wurde, zählt das Spiel als verloren. Die Algorithmen die Seketion und Mutation unterstützen, wurden mit folgenden Parametern gestartet:
 
         \begin{center}
             \begin{tabular}{ |c|c| } 
@@ -174,10 +194,12 @@
                 Teamepisoden       & $25$   \\ \hline
                 Episodenzeit       & $500s$ \\ \hline
                 Ball nicht berührt & $50s$  \\ \hline
-                $\alpha$           & 0.25   \\ \hline
-                $\beta$            & 0.10   \\ \hline
+                Selektion $\alpha$ & $25\%$ \\ \hline
+                Mutation $\beta$   & $10\%$ \\ \hline
             \end{tabular}
         \end{center}
+
+\newpage
 
         \subsection{Wahrscheinlichkeitsverteilung von Aktionen}
 
@@ -194,16 +216,16 @@
                 \caption{\label{kodierung} Kodierung der Aktionen als Wahrscheinlichkeitsverteilung}
             \end{figure}
 
-            \subsubsection*{Kreuzung}
-            Die Kreuzung wurde auf zwei verschieden Arten umgesetzt, wobei sie im Vergleich an der vollständige Simulation weder neueartige Lösungen entwickelt haben, noch die Konvergenzzeit beeinflusst wurde.
+%            \subsubsection*{Kreuzung}
+%            Die Kreuzung wurde auf zwei verschieden Arten umgesetzt, wobei sie im Vergleich an der vollständigen Simulation gleich gut abgeschnitten haben.
 
-            \subsubsection*{Generator}
-            Die erste Methode kam aus der Idee wie man mit einer absehbaren Laufzeit eine Wahrscheinlichkeitsverteilung über $n$ Aktionen erstellt. Dafür werden $n-1$ zufällige Zahlen erstellt, als Liste verpackt, sortiert und jeweils eine $0$ von vorne und eine $100$ am Ende angehängt.
+            \subsubsection*{Generierung der Individuen}
+            Für die Generierung von einer Wahrscheinlichkeitsverteilung über $n$ Aktionen werden $n-1$ zufällige Zahlen erstellt, sortiert und es wird jeweils eine $0$ von vorne und eine $100$ am Ende angehängt.
 
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{haskell}
 > let n = 5
-> take (n-1) <$> getRandomRs (0,100)
+> take (n-1) <\$> getRandomRs (0,100)
 [87, 15, 55, 38]
 > sort it
 [15, 38, 55, 87]
@@ -212,7 +234,7 @@
             \end{minted}
             \end{mdframed}
             \noindent
-            Anschließend wird diese Liste dupliziert und um ein Element nach rechts verschoben und paarweise voneinander abgezogen.
+            Um die Verteilung zu erstellen werden die Zahlen dupliziert, um ein Element nach rechts verschoben und nach dem Index voneinander abgezogen.
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{haskell}
 > let l1 = [0, 15, 38, 55, 87, 100]
@@ -231,7 +253,11 @@
             \end{minted}
             \end{mdframed}
             \noindent
-            Damit haben wir eine Wahrscheinlichkeitsverteilung über 5 Aktionen und können uns sicher sein dass sie aufsummiert immer $100$ ergibt. Die Kreuzung von zwei solcher Individuen wurde mit den jeweiligen Listen umgesetzt, aus denen sie generiert wurden. Dafür wurde elementweise der Durchschnitt berechnet und daraus entsteht dann eine neue Generatorliste aus der sich die Verteilung berechnen lässt.
+            Damit haben wir eine Wahrscheinlichkeitsverteilung über 5 Aktionen und können uns sicher sein dass sie aufsummiert immer $100$ ergibt.
+
+            \subsubsection*{Kreuzung Version 1}
+            Wir haben zwei verschiedene Kreuzungsmethoden ausprobiert die sich in unserer Simulation als gleichwertig herausgestellt haben.
+            Die erste Methode wurde mit den Listen umgesetzt, aus denen sie generiert wurden (die jeweils die 0 und 100 angehängt bekommen haben). Dafür wurde elementweise der Durchschnitt berechnet und daraus entsteht dann eine neue Generatorliste aus der sich die Verteilung berechnen lässt.
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{haskell}
 > let individualA = [0, 15, 38, 55, 87, 100]
@@ -240,37 +266,30 @@
 [0, 11, 30, 45, 69, 100]
             \end{minted}
             \end{mdframed}
-            \subsubsection*{Normalisierung}
-            Die zweite Methode hat beide Verteilungen genommen, die Wahrscheinlichkeiten für jeweiligen Aktionen addiert und folgendermaßen normalisiert.\\
+            \subsubsection*{Kreuzung Version 2}
+            Die zweite Methode hat beide Verteilungen genommen, die Wahrscheinlichkeiten für jeweiligen Aktionen addiert und folgendermaßen normalisiert:\\
             \noindent
             \begin{figure}[H]
                 \begin{mdframed}
-                    Seien $\mathcal{A, B}$ die diskreten Wahrscheinlichkeitsverteilungen, $l = |\mathcal{A}|$:\\[4mm]
+                    Seien $\mathcal{A, B}$ diskrete Wahrscheinlichkeitsverteilungen, $l = |\mathcal{A}|$, $i \in \{1 ... l\}$:\\[4mm]
                     \hspace*{40mm}\Resize{6.5cm}{$\mathcal{C} := \{ \frac{(a_i + b_i)}{l} \; | \; a_i \in \mathcal{A}, b_i \in \mathcal{B}\}$} \\[4mm]
                     dann ist $\mathcal{C}$ ist ihre Verknüpfung.
                 \end{mdframed}
-                \caption{\label{norm-prop} Normalisierung von Wahrscheinlichkeitsverteilungen}
+                \caption{\label{norm-prop} Kreuzungsmethode 2 für Wahrscheinlichkeitsverteilungen}
             \end{figure}
 
             \subsubsection*{Mutation}
-            Die Mutation wurde auch mit jeweils dem Generator sowie Normalisierung umgesetzt. Im Kern ist jedoch die Funktion die das $\delta$ benutzt und es mit zufälligen Vorteichen in die Anzahl der Aktionen aufgeteilt. Man kann sich das $\delta$ als Veränderungsfaktor vorstellen, je höher er ist, umso unterschiedlicher wird die Wahrscheinlichkeitsverteilung.
+            Die Mutation wurde auch auf zwei verschiedene Weisen umgesetzt. Im Kern ist jedoch die Funktion die das $\delta$ benutzt und es mit zufälligen Vorzeichen in die Anzahl der Aktionen $n$ aufgeteilt. Man kann sich das $\delta$ als Veränderungsfaktor vorstellen, je höher er ist, umso unterschiedlicher wird die Wahrscheinlichkeitsverteilung.
             \begin{mdframed}
-            \begin{multicols}{2}
                 \begin{minted}[escapeinside=||, linenos]{haskell}
-> let delta = 20
-> splitDelta delta 5
-[-4, +4, +4, -4, -4]
+> let delta = 20                            > let delta = 100
+> splitDelta delta 5                        > splitDelta delta 4
+[-4, +4, +4, -4, -4]                        [-25, +25, +25, -25]
                 \end{minted}
-                \begin{minted}[escapeinside=||]{haskell}
-> let delta = 100
-> splitDelta delta 4
-[-25, +25, +25, -25]
-                \end{minted}
-            \end{multicols}
             \end{mdframed}
-            \subsubsection*{Generator}
 
-            Wir erstellen teilen das $\delta$ in $n-1$ Teile auf, fügen eine $0$ von vorne und $100$ von hinten hinzu und verknüpfen es analog wie in der Kreuzung mit dem Ausgangsgenerator. Diesmal müssen wir jedoch die Zahlen per Hand auf den Bereich von $0 - 100$ begrenzen.
+            \subsubsection*{Mutation Version 1}
+            Wir teilen das $\delta$ in $n-1$ Teile auf, fügen eine $0$ von vorne und $100$ von hinten hinzu und addieren sie zu der Generatorliste der Verteilung. Diesmal müssen wir jedoch die Zahlen per Hand auf den Bereich von $0 - 100$ begrenzen.
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{haskell}
 > let delta = 100
@@ -293,12 +312,10 @@ sort
 [0,0,50,56,74,100]
             \end{minted}
             \end{mdframed}
-
             Aus diesem Generator kann wieder eine Wahrscheinlichkeitsverteilung erstellt werden.
 
-            \subsubsection*{Normalisierung}
-
-            Bei der Lösung mit der Normalisierung generieren wir uns wieder die Liste aus dem $\delta$, summieren sie elementweise mit der Verteilung, überprüfen ob die Grenzen von $[0,100]$ überschritten wurden und normalisieren sie wie in der Kreuzung.
+            \subsubsection*{Mutation Version 2}
+            Für die zweite Variante der Mutation spalten wir das $\delta$ in $n$ Teile, summieren sie elementweise mit der Verteilung, überprüfen auf die Grenzen von [$0,100$] und normalisieren sie wie in Kreuzung Version 2.
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{haskell}
 > let delta = 50
@@ -312,9 +329,49 @@ sort
 [5,20,48,12,15]
             \end{minted}
             \end{mdframed}
-            Damit bekommen wir wieder eine veränderte diskrete Verteilung zurück.
+            Damit bekommen wir die mutierte Wahrscheinlichkeitsverteilung zurück.
+
+\newpage
+
+        \subsection{Agentenstrategie als KNN mit DCT} \label{knn-dct-impl}
+        Für alle folgenden Algorithmen haben wir ein neuronales Netz mit 9 Eingaben, 12 LSTM (\ref{lstm-definition}) Neuronen und 5 Dense Ausgaben benutzt, wo ein Softmax (\ref{softmax-definition}) drübergelegt wurde. Damit wird der Zustand aus (\ref{statespace-definition}) dem Netz gegeben und er gibt uns eine Wahrscheinlichkeitsverteilung über 5 Aktionen aus (\ref{actionspace-definition}) zurück.\\[2mm]
+        \noindent
+        Wenn der Agent spielt, wird jedes Frame der aktuelle (verrauschte) Zustand dem Netz gegeben und wir samplen aus der Wahrscheinlichkeitsverteilung die Aktion raus, die dann ausgeführt wird. \\[2mm]
+        \noindent
+        Das KNN besitzt 1108 Gewichte und wir reduzieren es mithilfe von DCT (\ref{dct-definition}) auf 20 Koeffizienten, was eine Komprimierungsverhältnis von \textit{1:55} ist. Die Abbildung \ref{fig:dct-my-case} zeigt diese Kompressionsrate.\\
+
+        \begin{figure}[H]
+            \begin{center}
+                \includegraphics[scale=0.35]{../pictures/DCT-my-case-cropped.png}\\
+                \caption{Kompressionsrate 1:55 mit DCT}\label{fig:dct-my-case}
+            \end{center}
+        \end{figure}
+
+        \noindent
+        Man erkennt eine extreme Korrelation zwischen benachbarten Gewichten die der Reihe nach das KNN befüllt haben. Die folgenden drei Algorithmen benutzen die Kompression:
+
+        \begin{itemize}
+            \setlength\itemsep{1em}
+            \item \textbf{Cross Entropy} (\ref{cross-entropy-definition}) \\
+            Hier haben wir die 20 Koeffizienten als Normalverteilung kodiert, $25\%$ der Population als Eltern gewählt und die restlichen $75\%$ aus den neu berechneten Normalverteilungen der Eltern gesamplet. Die Grenzen zum Erstellen der Normalverteilung waren $\mu = 0$ und $\sigma \in [-1.5,1.5]$.
+
+            \item \textbf{Neuroevolution} (\ref{neural-evo-definition}) \\
+            Bei der naiven Neuroevolution hat jedes Individuum die 20 Koeffizienten als Zahlen gespeichert. $25\%$ der Population wurden als Eltern gewählt die $50\%$ Kinder erzeugen und die restlichen $25\%$ wurden völlig neu erstellt. Die Grenzen zur Erstellung der Koeffizienten war $c \in [-3,3]$.
+
+            \item \textbf{CoSyNE} (\ref{cosyne-definition}) \\
+            Der CoSyNE Algorithmus benutzt die gleichen Ablauf wie Neuroevolution, mit der Ausnahme, dass er statt neue Individuen zu erstellen, genug Kinder erstellt und dann die gesamte Population im Eigenschaftsraum zufällig vermischt.
+
+
+
+        \end{itemize}
+
         \subsection{Cross Entropy mit DCT}
-            1108 Gewichte für das 9-12-5 LSTM Netz in 20 Koeffizienten kodiert (1:55)
+
+            Der zweite Algorithmus benutzt 
+
+            Der zweite Algorithmus benutzt ein neuronales Netz mit 9 Eingaben, 12 LSTM Neuronen und 5 Dense A als Kodierung der Individuen die Cross Entropy Methode (\ref{cross-entropy-definition}) und DCT (\ref{dct-definition}) um den Suchraum auf 20 Koeffizienten zu verringer
+
+%            1108 Gewichte für das 9-12-5 LSTM Netz in 20 Koeffizienten kodiert (1:55)
         \subsection{Neuroevolution mit DCT}
             1108 Gewichte für das 9-12-5 LSTM Netz in 20 Koeffizienten kodiert (1:55)
         \subsection{CoSyNE mit DCT}

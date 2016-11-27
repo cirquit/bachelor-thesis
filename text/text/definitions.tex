@@ -276,7 +276,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                 In unserer Implementierung haben wir uns für das Nachfüllen von völlig neuen Individuen entschieden, da dadurch die Varianz der Population angehoben wird und dadurch mehr Lösungen möglich sind. Ein Nachteil ist dabei sind die potenziellen Kinder die  keinen Platz bekommen, aber da dadurch keine Information verloren geht, können wir es vernachlässigen.
 \newpage
 
-    \section{Neuroevolution}
+    \section{Neuroevolution} \label{neural-evo-definition}
 %        ``Neuroevolution beschäftigt sich mit der Verknüpfung von Genetischen Algorithmen und Neuronalen Netzn''
         Der Begriff der Neuroevolution wurde im Jahre 1988 von D. Whiteley \cite{whiteley88} als alternative Möglichkeit zum Trainieren von künstlichen neuronalen Netzen (\textbf{KNNs}) vorgeschlagen. Dabei wird versucht aus der Synergie von dem \textbf{selbstlernenden Charakter} von KNNs und der \textbf{explorativen Suche} eines GAs eine Taktik oder ein Klassifikator zu entwickeln der völlig neue Lösungen finden kann. Den Beweis dafür hat man bereits im Jahr 1995 am Spiel \textit{Othello} festgestellt. \cite{othello95} \\[2mm]
         \noindent
@@ -387,10 +387,10 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
             \noindent
             Um eigene Resultate und zeitliche Abstraktionen einfacher zu berücksichtigen gibt es \textbf{rekurrente Netze} die direkte Zyklen beinhalten.
 
-            \subsubsection*{LSTM Ebene}
+            \subsubsection*{LSTM Ebene} \label{lstm-definition}
                 Ein spezielles Neuron aus dem rekurrente Netze bestehen können, ist das \textbf{Long Short Term Memory} (LSTM) Neuron\cite{lstm}. Es zeichnet sich durch die Eigenschaft aus, dass es über lange Zeitfenster Information behalten kann. Der Aufbau basiert auf dem Modell einer Speicherzelle, sodass wir durch verschiedene Eingänge (\textbf{Gates}), die Schreib-,Lese- und Reset-Aktionen nachbauen können \cite{lstm-new}. Einer der wichtigste Aspekte von diesen Neuronen ist jedoch, dass sie ableitbar sind, weil dadurch die Trainingsmethode \textbf{Backpropagation} aus Kapitel \ref{backprop-chapter} ermöglicht wird \cite{backprop}.
 
-            \subsubsection*{Softmax Ebene}
+            \subsubsection*{Softmax Ebene} \label{softmax-definition}
                 Es gibt eine Aktivierungsfunktion der wir besondere Aufmerksamkeit widmen, da sie die Neuronen der Ausgabeschicht zu einem nützlichen Ergebnis zusammenfassen kann. Die generalisierte logistische Funktion, oder auch \textbf{normalisierte Exponentialfunktion} nimmt als Argument einen $k$-dimensionalen Vektor \textbf{z} von reelen Zahlen und gibt uns widerrum den gleichen Vektor zurück, wo alle Werte auf den Bereich [0,1] normalisiert wurden.
 
             \begin{figure}[H]
@@ -472,7 +472,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
 %            ``Die Verknüpfung findet in der Kodierung von den Individuen statt - wir nehmen eine (naive) Darstellung von allen Gewichten''
 %            ``Problematik -> Folgerung zu DCT''
 
-    \section{Diskrete Kosinus Transformation}
+    \section{Diskrete Kosinus Transformation} \label{dct-definition}
         % ``Der Suchraum kann durch die sog. DCT auf beliebige Dimensionalität eingeschränkt werden, wenn bestimmte Annahmen getroffen werden können'' \\
         % ``Fouriertransformationen machen folgendes...'' \\
         % ``Es gibt eine Inverse die aus einem n-stelligen liste eine m-stellige macht, wo die Zahlen korelliert sind (Beispiele)''
@@ -522,7 +522,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                 \end{figure}
             \end{multicols}
 
-    \section{Cooperative Synapsen Neuroevolution}
+    \section{Cooperative Synapsen Neuroevolution} \label{cosyne-definition}
 %         ``CoSyNE wurde vom Prof.Dr.Schmidhuber an der ETH Zürich entwickelt und hat damit sehr viele anderen Algorithmen in den Schatten gestellt''\\
 %        ``Methodik, ist wie GA bloß mit einer Aktion mehr die statt spielbare `Policies', nur im Koeffizientraum entwickle'' \\
 %        ``Dies erlaubt eine (zitat) Kooperative Entwicklung von Koeffizienten für die nachfolgenden Inv.DCT'' \\
@@ -623,7 +623,7 @@ print population
 
 
 \newpage
-    \section{Cross Entropy Method}
+    \section{Cross Entropy Method} \label{cross-entropy-definition}
         Eine andere Möglichkeit die Individuen in dem GA zu kodieren stellt die \textbf{Cross Entropy Method} dar. Das ist ein Algorithmus der oft als Vergleichskriterium verwendet wird, da er oft zu suboptimalen Strategien konvergiert \cite{cem}. Die Anwendung in unserem neuroevolutionären Schema basiert darauf, dass wir Individuen nicht als Ansammlung von Zahlen zu speichern, sondern jede Eigenschaft als Normalverteilung dargestellt wird. Diese Abläufe illustrieren wir anhand der Erklärung für eine Normalverteilung.
 
         \subsection{Normalverteilung}
