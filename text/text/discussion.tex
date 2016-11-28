@@ -15,27 +15,31 @@
     \section{Ausblick}
         Diese Arbeit hat leider einen festen Zeitrahmen gehabt und wir konnten vieles nicht ausprobieren. Wir sprechen mögliche Verbesserungen an, die man in zukünftigen Arbeiten beachtet werden können.
 
-        \subsection{Genetische Algorithmen}
+        \subsection*{Genetische Algorithmen}
             Die genetische Suche wurde mit ausgewogenen Parametern durchgeführt, die jedoch keine besondere Spezialisierung für die Anwendung bekommen haben. Darunter fällt der Mutationsparamter in CoSyNE, der im Urpsrungspaper sehr hoch gewählt war \cite{cosyne2} und die Begrenzung der Koeffizienten auf [-3,3] die wir gewählt haben, weil es keine Quellen dafür gab. 
-        \subsection{Aufbau des neuronalen Netzes}
-            Der Aufbau des KNNs kann mit von der Schicht aus LSTM Neuronen in Tiefe und Größe verändert werden, da wir potenziell bessere Lernfähigkeiten bekommen können. Vorallem in der Kombination mit der DCT Kompression besteht die Möglichkeit Netze mit über 1 Million Gewichten erfolgreich zu kodieren \cite{cosyne4}.
-        \subsection{Cross Entropy Method}
-            Die Cross Entropy Method Lösung wurde lediglich in der einfachsten Form umgesetzt und es fand weder Repopulation mit neuen Individuen statt, noch haben wir einen Mutationsschritt gehabt. Das Hinzufügen von diesen Methoden würde wahrscheinlich zu besseren Lösungen führen.
-        \subsection{Aktionsraum}
+        \subsection*{Aufbau des neuronalen Netzes}
+            Der Aufbau des KNNs kann mit von der Schicht aus LSTM Neuronen in Tiefe und Größe verändert werden, da wir potenziell bessere Lernfähigkeiten bekommen können. Vorallem in der Kombination mit der DCT Kompression besteht die Möglichkeit Netze mit über 1 Million Gewichten erfolgreich zu kodieren \cite{cosyne4}. \\[2mm]
+            \noindent
+            Ausser DCT gibt es noch eine andere Suchraumverringerung die auf Wavelets basiert und vielversprechendere Ergebinsse in vielen Arcade Learning Environments geschafft hat \cite{wavelet}. Die Wavelets kodieren den Zustandsraum auch in hochfrequenten Domänen, behalten aber im Gegensatz zu Fouriertransformationen die Stetigkeit in der Ordnung der Daten, was zu schnelleren Lösungen in der Octopusarm Aufgabe geführt hat.
+
+        \subsection*{Cross Entropy Method}
+            Die Cross Entropy Method Lösung wurde lediglich in der einfachsten Form umgesetzt und es fand weder Repopulation mit neuen Individuen statt, noch haben wir einen Mutationsschritt gehabt. Das Hinzufügen von diesen Methoden würde wahrscheinlich zu besseren Lösungen führen. Viele Verberbesserungen finden sich auch in \cite{cem}.
+
+        \subsection*{Aktionsraum}
             Der High-Level Aktionsraum wurde während der Arbeit im Urpsrungspaper erweitert, sodass wir Aktionen wie \textit{Go\_To\_Ball} oder \textit{Reduce\_Angle\_To\_Ball} nicht benutzt haben. Da die Dokumentation der übrigen Aktionen sehr spärlich ausgefallen ist, würden eigene Aktionen eine bessere Möglichkeit bieten über die Effektivität der Algorithmen zu argumentieren. Sie würden auch sehr wahrscheinlich mehr Taktiken zulassen.
-        \subsection{Multi-Agenten Systeme}
+        \subsection*{Multi-Agenten Systeme}
             Da die Simulation skalierend modelliert wurde, erlaubt sie uns einfaches Testen mit mehreren Agenten, wie 2vs1, oder 4vs4. Leider haben wir keine Möglichkeit gehabt diese Domänen ausführlich zu testen.
 
 \newpage
 
     \section{Schlusswort}
 
-        \subsection{Implementierung für OpenAI Gym}
+        \subsection*{Implementierung für OpenAI Gym}
             Während der Entwicklung dieser Arbeit gab es eine Implementierung der HFO Domäne für das 1vs1 Szenario in der OpenAI Gym, das ein bekanntes machine learning Framework in Python ist. Die Umsetzung von unseren Algorithmen dafür wäre der nächste logische Schritt.
 
-        \subsection{ConvNet und CoSyNE}
+        \subsection*{ConvNet und CoSyNE}
             In \cite{cosyne4} wird CoSyNE und DCT für die Komprimierung von über 1 Million Gewichten in einem Convolutional Neural Network benutzt und hat beeindruckende Ergebnisse für die Steuerung von einem Auto ausschließlich durch Bilddaten erzielt. Deshalb würde es sich anbieten die Verknüpfung von CoSyNE und DCT auf anderen Aufgaben, die auf hochdimensinalen korrelierten Daten basieren, anzuwenden.
 
-        \subsection{Backpropagation und Neuroevolution}
+        \subsection*{Backpropagation und Neuroevolution}
             Dass Neuroevolution in Aufgaben ohne vorher vorbereiteten Daten funktioniert, wurde gezeigt. Die interessantere Frage wäre wie gut diese Trainingsmethode gegenüber Backpropagation abschneidet, wenn Daten bereitgestellt werden. Der Vergleich in Geschwindkeit der Konvergenz und das Finden von neuen Lösungen, lässt Rückschlüsse über Vorteile und Nachteile der jeweiligen Algorithmen zu.
 

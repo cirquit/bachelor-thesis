@@ -1,12 +1,6 @@
 % pdflatex -shell-escape -interaction=nonstopmode main.tex && pdflatex -shell-escape -interaction=nonstopmode main.tex
 
-\chapter{Definitionen}
-
-% \begin{itemize}
-%     \item Einführung in ML Algorithmen
-%     \item ``Im folgenden werden wir ein paar Möglichkeiten in Betracht ziehen wie man Genetische Algorithmen für Black Box Optimierung benutzen kann''
-%    \item ``Ausserdem verknüpfen wir diese mit einer Reduzierung vom Suchraum durch Fouriertransformationen und verwenden verschiedene Kodierung der Individuen, durch Normalverteilungen und direkt durch Zahlen''
-% \end{itemize}
+\chapter{Grundlagen}
 
 Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} (Kap. 2.1) im Zusammenhang mit \textbf{neuronalen Netzen} (Kap 2.2.1) und der \textbf{Cross Entropy Method} (Kap. 2.5). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fouriertransformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
 
@@ -640,20 +634,22 @@ print population
             \end{figure}
 
             \noindent
-            Die Abbildung (\ref{fig:norm-dist-pdf}) zeigt beispielhafte Ausprägungen der Dichtefunktion, an denen man erkennen kann, dass die Standardabweichung für die Amplitute und der Durchschnitt für die Phase verantwortlich ist. Um die Wahrscheinlichkeit zu berechnen, dass eine zufällige Variable $\mathcal{X}$  mit den Grenzen $a \leq \mathcal{X} \leq b$ eintritt ist:
+            Die Abbildung (\ref{fig:norm-dist-pdf}) zeigt beispielhafte Ausprägungen der Dichtefunktion, an denen man erkennen kann, dass die Standardabweichung für die Amplitute und der Durchschnitt für die Phase verantwortlich ist. Um die Wahrscheinlichkeit zu berechnen, dass eine zufällige Variable $\mathcal{X}$  mit den Grenzen $a \leq \mathcal{X} \leq b$ eintritt ist das Integral zwischen den Grenzen der Dichtefunktion:
+            \begin{align}
+                P(a \leq \mathcal{X} \leq b) = \int_a^{b} \; \mathcal{N} (\mu, \sigma^2)
+            \end{align}
 
-            \begin{figure}[H]
-                \begin{mdframed}
-                    \hspace*{40mm} \Resize{6cm}{$P(a \leq \mathcal{X} \leq b) = \int_a^{b} \; \mathcal{N} (\mu, \sigma^2)$}
-                \end{mdframed}
-                \caption{Wahrscheinlichkeit der Ausprägung $a \leq \mathcal{X} \leq b$}
-            \end{figure}
+%            \begin{figure}[H]
+%                \begin{mdframed}
+%                    \hspace*{40mm} \Resize{6cm}{$P(a \leq \mathcal{X} \leq b) = \int_a^{b} \; \mathcal{N} (\mu, \sigma^2)$}
+%                \end{mdframed}
+%                \caption{Wahrscheinlichkeit der Ausprägung $a \leq \mathcal{X} \leq b$}
+%            \end{figure}
 
             \noindent
             Diese Formel lässt sich an dem Beispiel von Regenfall pro Quadratmeter veranschaulichen:
 
             \begin{figure}[H]
-
                     \begin{center}
                         \hspace{-1cm}
                         \includegraphics[scale=0.5]{../pictures/diagrams/rainfall-pdf.png}\\
@@ -661,7 +657,7 @@ print population
                     \end{center}
             \end{figure}
             \noindent
-            Die Wahrscheinlichkeit dass pro Quadratmeter \textit{genau} $2cm$ Regenwasser fällt ist extrem gering, weil nicht ein Yoctometer ($10^{-24})$ mehr oder weniger fallen darf. Wenn wir diese zufällige Ausprägung jedoch als Grenzen definieren, dann steigt die Wahrscheinlichkeit. Die Wahrscheinlichkeit dass zwischen $1cm$ und $3cm$ Regenwasser fällt ist eine viel wertvollere Aussage und ist als Integral zwischen den Grenzen der Dichtefunktion definiert.\\
+            Die Wahrscheinlichkeit, dass pro Quadratmeter \textit{genau} $2\;cm$ Regenwasser fällt ist extrem gering, weil nicht ein Yoctometer ($10^{-24})$ mehr oder weniger fallen darf. Wenn wir diese zufällige Ausprägung jedoch als Grenzen definieren, dann steigt die Wahrscheinlichkeit. Die Wahrscheinlichkeit dass zwischen $1\;cm$ und $3\;cm$ Regenwasser fällt ist eine viel wertvollere Aussage und ist als Integral zwischen den Grenzen der Dichtefunktion definiert.\\
 
             \subsection{Kodierung durch Normalverteilungen}
 
@@ -673,5 +669,21 @@ print population
             \end{figure}
 
             Stellen wir nun die Kodierung der Eigenschaften von jedem Individuum als Normalverteilung dar. Das bedeutet wir haben für jede Eigenschaft, zum Beispiel \textit{Hornlänge}, einen Durchschnitt und eine Standartabweichung. Die Abbilung (\ref{fig:norm-dist-encoding}) zeigt dies beispielhaft für fünf Individuen mit jeweils 4 Eigenschaften dar.\\[3mm]
+
+            \newpage
             \noindent
-            Wenn wir Individuen erstellen wollen, müssen wir aus jeder Normalverteilung eine Stichprobe (die Punkte entlang der Graphen in \ref{fig:norm-dist-encoding}) nehmen. Die Kreuzung und Mutation fällen aus, dafür berechnen wir nach jeder Simulation pro Eigenschaft neue Durchschnitte und Standartabweichungen aus den besten Individuen. Damit versuchen wir die Suche auf den vielversprechendsten Raum einzugrenzen.
+            Wenn wir Individuen erstellen wollen, müssen wir aus jeder Normalverteilung eine Stichprobe (die Punkte entlang der Graphen in \ref{fig:norm-dist-encoding}) nehmen. Die Kreuzung und Mutation fallen aus, dafür berechnen wir nach jeder Simulation pro Eigenschaft neue Durchschnitte und Standartabweichungen aus den besten Individuen. Damit versuchen wir die Suche auf den vielversprechendsten Raum einzugrenzen. Der Ablauf der Cross Entropy Method sieht daher folgendermaßen aus:\\
+
+                \begin{mdframed}
+                    Sei $d$ die Anzahl der Eigenschaften,\\
+                    \hspace*{5mm} $n$ die Anzahl der Individuen,\\
+                    \hspace*{5mm} $\mu$, $\sigma$ jeweils ein Vektor der Form $\mathbb{R}^{d}$,\\
+                    \hspace*{5mm} dann führen wir pro Iteration die folgenden Schritte durch: \\
+
+                    \hspace*{8mm} 1. Wir nehmen $n$ Stichproben $\theta_i$ aus $\mathcal{N}(\mu, \sigma^{2})$ \\
+                    \hspace*{12mm} 2. Evaluiere $\theta_i, i \in [1..n]$ in der Simulation\\
+                    \hspace*{12mm} 3. Wähle die besten $p\%$ Prozent der Stichproben, wir nennen sie Eliteset\\
+                    \hspace*{12mm} 4. Berechne aus den dem Eliteset neue $\mu$ und $\sigma$
+                \end{mdframed}
+            \hfill \\
+            Eine viel detaillierte Erklärung zu diesem Thema findet sich am Beispiel von Tetris im dem Paper von István Szita \cite{cem}.

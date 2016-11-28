@@ -11,7 +11,6 @@
     Die RoboCup Initiative betreibt derzeit sechs große Wettbewerbe, die sich jeweils wieder in Ligen und Subligen aufteilen lassen. Darunter fällt \textbf{RoboCup Soccer}, \textbf{RoboCup Rescue Rescue}, \textbf{RoboCup Junior}, \textbf{RoboCup Logistics}, \textbf{RoboCup @ Work} und \textbf{RoboCup @ Home}. Unsere Implementierung fällt in die Subliga \textbf{2D Soccer Simulation}, in der es darum geht in einer zweidimensionalen Welt zwei Fußballmannschaften gegeneinander antreten zu lassen.\\
     \\
     Die Aufgabe, die wir angehen, gehört zu einem Fragement von RoboCup2D, genannt \textbf{Half Field Offense}.\\
-
     \begin{figure}[htbp]
         \includegraphics[width = 1.0\textwidth, center]{../pictures/full-field.png}
         \caption{Screenshot von dem gesamten Spielfeld von RoboCup2D \label{fig:somelabel}}
@@ -90,7 +89,7 @@
                 Die boole'schen Werte sind binär und $-1$ entspricht $false$ und $1$ entsprechend $true$.
 
             \subsubsection*{Lagekodierung}
-                Die Lagekodierung ist normalisiert auf der maximale diagonale Länge des Spielfelds die durch $max_{l} = \sqrt{l^2 + w^2}$ gegeben ist, wobei $l$ die Länge und $w$ die Breite ist. In dem Fall für HFO, entspricht sie $sqrt(2^2 + 2^2) ~= 2.82$.\\
+                Die Lagekodierung ist normalisiert auf der maximale diagonale Länge des Spielfelds die durch $max_{l} = \sqrt{l^2 + w^2}$ gegeben ist, wobei $l$ die Länge und $w$ die Breite ist. In dem Fall für HFO, entspricht sie $sqrt(2^2 + 2^2) ~= 2.82$. Die folgenden Formeln sind \\
 
                 \begin{mdframed}
                 Sei $f : [-max_{l}, max_{l}] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
@@ -100,7 +99,7 @@
                 \end{mdframed}
 
             \subsubsection*{Anderes}
-                Unter diese Kategorie fallen nur die x- und y-Koordinaten und sind trivialerweise im Bereich von [-1, +1], weil das die Grenzen des Spielfelds sind.
+                Unter diese Kategorie fallen nur die x- und y-Koordinaten und sind trivialerweise im Bereich von $[-1, +1]$, weil das die Grenzen des Spielfelds sind.
 
 \newpage
         \subsection{Aktionsraum} \label{actionspace-definition}
@@ -155,7 +154,7 @@
             % ``Simulation Learning''            \\
             % ``Hochdimensional Kontinuierlich'' \\
             % ``Auch genannt Black Box RL''
-            Diese Domäne hat besonderen Einschränkungen, die es zu einem schwierigen Problem machen. Zum einen haben wir keine Möglichkeit in die Zukunft zu schauen um herauszufinden wie gut eine Aktion für einen bestimmten Zustand war. Stattdessen müssen wir uns auf das Resultat der Simulation verlassen, dass uns lediglich am Ende sagt ob ein Tor geschossen wurde. \\[2mm]
+            Diese Domäne hat besondere Einschränkungen, die es zu einem schwierigen Problem machen. Zum einen haben wir keine Möglichkeit in die Zukunft zu schauen um herauszufinden wie gut eine Aktion für einen bestimmten Zustand war. Stattdessen müssen wir uns auf das Resultat der Simulation verlassen, dass uns lediglich am Ende sagt ob ein Tor geschossen wurde. \\[2mm]
             \noindent
             Zum anderen ist ein Spiel eine Abfolge von mehreren hundert Aktionen die alle gemeinsam bewertet werden und deshalb ist es unmöglich eine Fragmentierung in Teilziele zu schaffen. \\[2mm]
             \noindent
@@ -169,23 +168,21 @@
 \newpage
 
     \section{Implementierung der Algorithmen}
-        % ``Server in Haskell, HFOServer in C++, Agenten in Python''
         In diesem Abschnitt schauen wir uns die Parametrisierung der Algorithmen und den Aufbau der Simulation genauer an. Dafür waren die folgenden drei Programme zuständig:
 
         \subsubsection*{Simulationsserver}
-        Der Simulationsserver ist in C++ geschrieben und wurde aus \cite{hfo} übernommen. Er wird durch Flags beim Starten parametrisiert.
-        % (src: https://github.com/LARG/HFO)
+        Der Simulationsserver ist in C++ geschrieben und wurde aus \cite{hfo} übernommen. Er wird durch Flags beim Starten parametrisiert. 
 
         \subsubsection*{Agenten}
-        Die Agenten sind in Python geschrieben und stellen eine Erweiterung von einem der Beispielskripte dar\cite{hfo}. Diese Prozesse werden auch mit eigenen Kommandozeilenparametern aufgerufen.
+        Die Agenten sind in Python geschrieben und stellen eine Erweiterung von einem der Beispielskripte dar \cite{hfo}. Diese Prozesse werden mit eigenen Kommandozeilenparametern, die ihnen sagen welcher Spieler sie sind, wie sie die Kodierung des KNNs benutzen, um damit das Netz zu befüllen.
 
         \subsubsection*{Koordinator}
         Der Koordinator ist für die Umsetzung des GAs und den jeweiligen Kodierungen zuständig, startet den Server, die Agenten Skripte und überwacht die Simulation. Er ist, wie alle folgenden Codebeispiele, in Haskell geschrieben.
 
 
         \subsubsection*{Rahmenbedingungen für die Simulation}
-        Jede Simulation bestand aus 300 Generationen und jedes Team hat pro Generation 25 Spiele gespielt. Ein Spiel (Episode) war maximal 500 Sekunden lang und wenn der Ball 50 Sekunden lang nicht berührt wurde, zählt das Spiel als verloren. Die Algorithmen die Seketion und Mutation unterstützen, wurden mit folgenden Parametern gestartet:
-
+        Jede Simulation bestand aus 300 Generationen und jedes Team hat pro Generation 25 Spiele gespielt. Ein Spiel (Episode) war maximal 500 Sekunden lang und wenn der Ball 50 Sekunden lang nicht berührt wurde, zählt das Spiel als verloren. Die Algorithmen die Selektion und Mutation unterstützen, wurden mit folgenden Parametern gestartet:
+        \hfill \\
         \begin{center}
             \begin{tabular}{ |c|c| } 
                 \hline
@@ -365,10 +362,10 @@ sort
 
 \newpage
 
-    \section{Resultate}
-        Im folgenden Teil beschreiben wir die Resultate und versuchen diese zu begründen. Durchschnittlich hat eine Trainigsphase mit 300 Generationen, Population der Größe 50 und 25 Episoden pro Team 30 Stunden gedauert. Der Suchraum für die Neuroevolution wurde von 1108Gewichten auf 20 Koeffizienten reduziert, welches einer Kompressionsrate 1:55 entspricht. Die Simulationen wurden auf einem Laptop mit einem Intel i5 mit Dual Core 2.9GHz und 4GB Arbeitsspeicher ausgeführt.\\[2mm]
-        \noindent
-        Nachdem wir pro Algorithmus die besten 5 Individuen ermittelt haben, ließen wir sie jeweils 10000 Spiele spielen, um die erfasste Fitness auf ihre Stabilität zu testen. Wir haben sie wie folgt quantifiziert:\\[2mm]
+\chapter{Resultate}
+    Im folgenden Teil beschreiben wir die Resultate und versuchen diese zu begründen. Durchschnittlich hat eine Trainigsphase mit 300 Generationen, Population der Größe 50 und 25 Episoden pro Team 30 Stunden gedauert. Der Suchraum für die Neuroevolution wurde von 1108Gewichten auf 20 Koeffizienten reduziert, welches einer Kompressionsrate 1:55 entspricht. Die Simulationen wurden auf einem Laptop mit einem Intel i5 mit Dual Core 2.9GHz und 4GB Arbeitsspeicher ausgeführt.\\[2mm]
+    \noindent
+    Nachdem wir pro Algorithmus die besten 5 Individuen ermittelt haben, ließen wir sie jeweils 10000 Spiele spielen, um die erfasste Fitness auf ihre Stabilität zu testen. Wir haben sie wie folgt quantifiziert:\\[2mm]
 %        \noindent
 %        Sei $F_{Training}$ die entwickelte Fitness und $F_{Test}$ die neu getestete Fitness. Die Stabilität wird danach gemessen wie gering die Abweichung von $F_{Test}$ zu $F_{Entwicklung}$ ist. Je kleiner die Abweichung, umso stabiler und sicherer spielt das Individuum.\\
 
@@ -384,13 +381,13 @@ sort
         \noindent
         Je kleiner die Abweichung zwischen dem Training und dem Test, umso kleiner ist der Fehler und daher können wir schließen, dass das Individuum sicherer seine versprochene Leistung bringt.\\
 
-        \subsection{1vs1}
+        \section{1vs1}
             Unser Lernziel für die HFO Domäne war einen offensiven Spieler zu trainieren der gegen einen vom Server gesteuerten Torwart so gut es geht Tore schießt. Das haben wir mit vier in Kapitel 2 angesprochenend Algorithmen getestet und stellen die Resultate vor. \\[2mm]
 
             \noindent
             Als stabilster und bester Algorithmus ist die naive Neuroevolution mit einer durchschnittlichen Gewinnrate von \textbf{42\%} im Training und \textbf{20\%} im Test. Auf Platz 2 kam CoSyNE mit $37\%$ im Training und $12\%$ im Test. Cross Entropy und die Wahrscheinlichkeitsverteilung der Aktionen haben zwar beide im Training $30\%$ erreicht, aber im Test nur knapp $6\%$ und sind damit extren instabil.
 \newpage
-            \subsubsection*{Wahrscheinlichkeitsverteilung der Aktionen}
+            \subsection{Wahrscheinlichkeitsverteilung der Aktionen}
                 \begin{multicols}{2}
                     \noindent
                     Die Wahrscheinlichkeitsverteilung war der erste Ansatz um zu überprüfen ob die Domäne bereits durch eine einfache Kodierung lösbar ist. Leider ging die Varianz in der Population nach der $10$ Generation gegen $0$ und die Verteilung sah folgendermaßen aus:
@@ -439,10 +436,19 @@ sort
                 Die durchschnittliche Gewinnwahrscheinlichkeit liegt bei 5.72\% und wenn man den Spieler beobachtet, kann man sich beim besten Willen nicht erklären, wie er es überhaupt schafft Tore zu schießen, da er meistens versucht ins Tor zu laufen während ihm der Ball abgenommen wird. Das ist aber auch nicht verwunderlich, da der Spieler weder weiß, wo der Torwart ist, noch ob er den Ball hat, oder wo er sich auf dem Spielfeld befindet. \\
 
 \newpage
-                \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
-                \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für den Actiondist algorithmus} \end{center}
+        \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
+        \begin{figure}[H]
+            \begin{center}
+                \includegraphics[scale=0.85]{../pictures/games/actiondist-gameplay.png}\\
+                \caption{\label{fig:actiondist-gameplay}}
+            \end{center}
+        \end{figure}
+
+        In Abbildung \ref{fig:actiondist-gameplay} sehen wir einen vielversprechenden Torversuch von dem Individuum. Leider läuft er einfach nur in den Torwart rein und ihm wird sein Ball abgenommen. Es passiert auch sehr oft, dass 
+
+
 \newpage
-            \subsubsection*{Cross Entropy}
+            \section{Cross Entropy}
                 \begin{multicols}{2}
                     \noindent
                     \\[5mm]
@@ -478,7 +484,7 @@ sort
                 \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
                 \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für den Cross Entropy Method} \end{center}
 \newpage
-            \subsubsection*{Neuroevolution}
+            \section{Neuroevolution}
                 \begin{multicols}{2}
                     \noindent
                     \\[5mm]
@@ -511,10 +517,16 @@ sort
                 \noindent
                 Wenn er mal verliert, ist es weil er sofort zum Beginn des Spieles sich ins Aus schießt, oder zu nah am Tor ist, sodass ihm der Ball abgenommen wird. Die Tendenz am Ende des Graphen deutet darauf hin, dass bei längeren Laufzeiten noch bessere Ergebnisse möglich wären.% Die stichprobenartigen Aufnahmen von diesen Agenten haben dennoch Gewinnserien von 3-4 Spielen hintereinander gezeigt, obwohl die die Wahrscheinlichkeit dafür 
 \newpage
-                \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
-                \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für Neuroevolution} \end{center}
+        \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
+        \begin{figure}[H]
+            \begin{center}
+                \includegraphics[scale=0.85]{../pictures/games/neural-evo-gameplay.png}\\
+                \caption{\label{fig:actiondist-gameplay}}
+            \end{center}
+        \end{figure}
+
 \newpage
-            \subsubsection*{CoSyNE}
+            \section{CoSyNE}
                 \begin{multicols}{2}
                     \noindent
                     \\[5mm]
