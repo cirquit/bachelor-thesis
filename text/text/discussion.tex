@@ -1,36 +1,41 @@
 \addtocontents{toc}{\protect\newpage}
 \chapter{Diskussion}
-    ``Im Folgenden bespreche ich die Nützlichkeit der Ergebnisse''
+    In diesem Kapitel schauen wir uns die Ergebnisse im Bezug zur Problemstellung und dessen Einschränkungen an, erwägen den potenziellen Nutzen für ähnliche Probleme und stellen Verbesserungsvorschläge dar. Das Schlusswort umfasst verwandte Felder die im Bezug zu unseren Algorithmen stehen.
     \section{Anwendungsmöglichkeiten}
-        ``Wenn starke Einschränkungen bestehen sind, waren diese Algorithmen zielführend''
-    \section{Coevolutionärer Aspekt}
-        ``Die Annahmen für Netze zu treffen ist interessant gewesen, hat anscheinend auch für 30k Gewichte geklappt, sollte man später zum checken''
+        Unsere Aufgabe hat Einschränkungen, die für viele Probleme aus der realen Welt zutreffen, wie seltene Fitnesssignale, kontinuierliche und verrauschte Zustandsräume, sowie aufeinander aufbauende Aktionsketten. Daher glauben wir dass die potenziellen Anwendungsgebiete wie Kontrolle von Robotern, sowie die Nutzung in Multi-Agenten Systemen möglich sind.\\
+
+        \noindent
+        Vorallem war es interessant zu sehen, dass KNNs entwickelt werden können, die lediglich aus 20 Koeffizienten bestehen, extrem korellierte Gewichte produzieren und trotzdem lernen können. Ohne die Tests könnten man aus Abbildung \ref{fig:dct-my-case} ableiten, dass es extrem unwahrscheinlich ist, dass das befüllte Netz in irgendeiner Art Nutzen bringt. Deshalb können wir die Annahme, dass Gewichte in neuronalen Netzen keine große Abweichung zueinander haben müssen, bestätigen. Es wäre interessant zu schauen, ob bei Netzen die viel größer sind ähnliche Ergebnisse möglich wären. \\
+
+        \noindent
+        CoSyNE wirft mit der treppenförmigen Fitnesskurve die Idee auf, ob damit eine stetige Verbesserung, oder explizit keine Verschlechterung als Garantie gegeben werden kann. Diese Eigenschaft wurde bisher in keinem der Ursprungspaper untersucht.
+
+\newpage
 
     \section{Ausblick}
-        ``Im Folgenden gebe ich meinen Senf zu den Parametrisierungen an und wenn die Welt perfekt wäre, was ich dann machen würde''
-        \subsection{Genetische Algorithmen}
-            ``Hab nicht an den Parameteren gespielt''
-        \subsection{Aufbau des neuronalen Netzes}
-            ``Hab nicht verschiedene Netze ausprobiert''
-        \subsection{Cross Entropy}
-            ``Hab die naivste Implementierung genommen, könnte viel viel besser werden, wenn man Grips reinsteckt''
-        \subsection{Aktionsraum}
-            ``Hätte bessere Aktionen definieren können, die schlauere Spielzüge erlauben, da ich die Vermutung habe dass die jetzigen ein Hardcap an Qualität bieten''
-        \subsection{Multi-Agenten Systeme}
-            ``Hatte noch keine Möglichkeit in diese Domäne ausführlich zu testen''
+        Diese Arbeit hat leider einen festen Zeitrahmen gehabt und wir konnten vieles nicht ausprobieren. Wir sprechen mögliche Verbesserungen an, die man in zukünftigen Arbeiten beachtet werden können.
 
-    \section{Verwandte Felder}
-        ``Folgende Reads sind nice''
+        \subsection{Genetische Algorithmen}
+            Die genetische Suche wurde mit ausgewogenen Parametern durchgeführt, die jedoch keine besondere Spezialisierung für die Anwendung bekommen haben. Darunter fällt der Mutationsparamter in CoSyNE, der im Urpsrungspaper sehr hoch gewählt war \cite{cosyne2} und die Begrenzung der Koeffizienten auf [-3,3] die wir gewählt haben, weil es keine Quellen dafür gab. 
+        \subsection{Aufbau des neuronalen Netzes}
+            Der Aufbau des KNNs kann mit von der Schicht aus LSTM Neuronen in Tiefe und Größe verändert werden, da wir potenziell bessere Lernfähigkeiten bekommen können. Vorallem in der Kombination mit der DCT Kompression besteht die Möglichkeit Netze mit über 1 Million Gewichten erfolgreich zu kodieren \cite{cosyne4}.
+        \subsection{Cross Entropy Method}
+            Die Cross Entropy Method Lösung wurde lediglich in der einfachsten Form umgesetzt und es fand weder Repopulation mit neuen Individuen statt, noch haben wir einen Mutationsschritt gehabt. Das Hinzufügen von diesen Methoden würde wahrscheinlich zu besseren Lösungen führen.
+        \subsection{Aktionsraum}
+            Der High-Level Aktionsraum wurde während der Arbeit im Urpsrungspaper erweitert, sodass wir Aktionen wie \textit{Go\_To\_Ball} oder \textit{Reduce\_Angle\_To\_Ball} nicht benutzt haben. Da die Dokumentation der übrigen Aktionen sehr spärlich ausgefallen ist, würden eigene Aktionen eine bessere Möglichkeit bieten über die Effektivität der Algorithmen zu argumentieren. Sie würden auch sehr wahrscheinlich mehr Taktiken zulassen.
+        \subsection{Multi-Agenten Systeme}
+            Da die Simulation skalierend modelliert wurde, erlaubt sie uns einfaches Testen mit mehreren Agenten, wie 2vs1, oder 4vs4. Leider haben wir keine Möglichkeit gehabt diese Domänen ausführlich zu testen.
+
+\newpage
+
+    \section{Schlusswort}
+
         \subsection{Implementierung für OpenAI Gym}
-            ``Update für OpenAI Gym, meine Impementierung wird folgen'' \\
-            ``Keine Multi-Agenten Setting möglich, dsw ist meine Arbeit nicht umsonst gewesen''
-        \subsection{Bestärkendes Lernen - Black Box RL}
-            ``Wenn man die Netze als Policy betrachtet ist meine Arbeit eine Anwendung im Reinforcement Learning Bereich gewesen''
-        \subsection{Convolutional neuronale Netze und CoSyNE}
-            ``Warum ist die Annahme für homogene Netzstrukturen besser für Convolutional Networks'' \\
-            ``Evtl ist CoSyNE dort richtig geil''
-            \subsubsection*{Roboterarm}
-                ``Bilder, Graphen und Parametrisierung zeigen + Link + Zitat''
-            \subsubsection*{Rennspiel}
-                ``Bilder, Graphen und Parametrisierung zeigen + Link + Zitat''
+            Während der Entwicklung dieser Arbeit gab es eine Implementierung der HFO Domäne für das 1vs1 Szenario in der OpenAI Gym, das ein bekanntes machine learning Framework in Python ist. Die Umsetzung von unseren Algorithmen dafür wäre der nächste logische Schritt.
+
+        \subsection{ConvNet und CoSyNE}
+            In \cite{cosyne4} wird CoSyNE und DCT für die Komprimierung von über 1 Million Gewichten in einem Convolutional Neural Network benutzt und hat beeindruckende Ergebnisse für die Steuerung von einem Auto ausschließlich durch Bilddaten erzielt. Deshalb würde es sich anbieten die Verknüpfung von CoSyNE und DCT auf anderen Aufgaben, die auf hochdimensinalen korrelierten Daten basieren, anzuwenden.
+
+        \subsection{Backpropagation und Neuroevolution}
+            Dass Neuroevolution in Aufgaben ohne vorher vorbereiteten Daten funktioniert, wurde gezeigt. Die interessantere Frage wäre wie gut diese Trainingsmethode gegenüber Backpropagation abschneidet, wenn Daten bereitgestellt werden. Der Vergleich in Geschwindkeit der Konvergenz und das Finden von neuen Lösungen, lässt Rückschlüsse über Vorteile und Nachteile der jeweiligen Algorithmen zu.
 

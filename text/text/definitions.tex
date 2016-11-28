@@ -523,11 +523,6 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
             \end{multicols}
 
     \section{Cooperative Synapsen Neuroevolution} \label{cosyne-definition}
-%         ``CoSyNE wurde vom Prof.Dr.Schmidhuber an der ETH Zürich entwickelt und hat damit sehr viele anderen Algorithmen in den Schatten gestellt''\\
-%        ``Methodik, ist wie GA bloß mit einer Aktion mehr die statt spielbare `Policies', nur im Koeffizientraum entwickle'' \\
-%        ``Dies erlaubt eine (zitat) Kooperative Entwicklung von Koeffizienten für die nachfolgenden Inv.DCT'' \\
-%        ``Kein Crossover, geringe Mutation'' \\
-%        ``Beispiele vom Erfolg'' \\
         Nachdem wir den Zustandsraum komprimiert haben, sodass ein genetischer Algorithmus ihn in absehbarer Zeit entwickeln und ein neuronales Netz befüllt werden kann, erschließt sich die Verküpfung zu einem mächtigen Werkzeug das viele interessante Eigenschaften besitzt. Dieser Algorithmus wird \textbf{Cooperative Synapsen Neuroevolution}\cite{cosyne2}, oder auch \textbf{CoSyNE} genannt.\\
 
         \noindent
@@ -535,15 +530,8 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
 
         \noindent
         Ein großer Nachteil von genetischen Algorithmen ist, das sie oft bei lokalen Maxima feststecken bleiben und lange brauchen um aus diesem Tal rauskommen. Um dieses Problem anzugehen, versucht man die Stellschrauben wie Mutationswahrscheinlichkeit oder Kinderanzahl per Hand zu verändern \cite{grefenstette86}. CoSyNE benutzt dafür eine eigene \textbf{genetische Methode}, um die Suche einfacher zu gestalten. Sie nennt sich Permutation und erzeugt innerhalb der gesamten Population Unterteilungen in kleinere Populationen die in einer \textbf{kooperativen und koevolutionären} Beziehung stehen.
-%          \begin{figure}[H]
-%              \begin{center}
-%                  \includegraphics[scale=0.5]{../pictures/DCT-my-case.png}\\
-%                  \caption{1024 Gewichte auf 23 Koeffizienten reduziert}\label{fig:dct-my-case}
-%              \end{center}
-%          \end{figure}
 % \newpage
         \subsection{Permutation}
-            % ``Wir transponieren, shuffeln und transponieren zurück''
             Der Permutationsschritt wird ganz am Ende von dem genetischen Algorithmus statt der Repopulation aufgerufen und vermischt jeden \colorbox{green!25}{Eigenschaftsraum} der Gesamtpopulation. 
 
             \begin{table}[H]

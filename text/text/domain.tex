@@ -439,6 +439,7 @@ sort
                 Die durchschnittliche Gewinnwahrscheinlichkeit liegt bei 5.72\% und wenn man den Spieler beobachtet, kann man sich beim besten Willen nicht erklären, wie er es überhaupt schafft Tore zu schießen, da er meistens versucht ins Tor zu laufen während ihm der Ball abgenommen wird. Das ist aber auch nicht verwunderlich, da der Spieler weder weiß, wo der Torwart ist, noch ob er den Ball hat, oder wo er sich auf dem Spielfeld befindet. \\
 
 \newpage
+                \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
                 \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für den Actiondist algorithmus} \end{center}
 \newpage
             \subsubsection*{Cross Entropy}
@@ -472,16 +473,16 @@ sort
                 Von den Werten sieht man kaum einen Unterschied zu der Wahrscheinlichkeitsverteilung, aber in der Simulation merkt man ein extrem aggressives Verhalten vom Spieler. Der Agent schießt den Ball sehr oft und versucht bereits nachdem er die Mitte des Spielfeldes überquert hat ein Tor zu schießen, unabhängig davon ob er in einer guten Position ist. Das führt natürlich dazu dass er öfter ins Aus schießt, ist aber wesentlich interessanter anzuschauen, da er jedes Spiel unberechenbar ist. \\[2mm]
 
                 \noindent
-                Es ist zu beachten dass dieser Algorithmus die \textbf{schnellste Lernkurve} von den drei Algorithmen hatte, die im komprimierten DCT arbeiten.
+                Es ist zu beachten, dass dieser Algorithmus die \textbf{schnellste Lernkurve} von den drei Algorithmen hatte, die im komprimierten DCT Raum arbeiten.
 \newpage
+                \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
                 \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für den Cross Entropy Method} \end{center}
-\newpage
 \newpage
             \subsubsection*{Neuroevolution}
                 \begin{multicols}{2}
                     \noindent
                     \\[5mm]
-                    Der Ansatz die Gewichte naiv als DCT Koeffizienten darzustellen führte zu den besten Ergebnissen. Das stärkste Individuum hat knapp \textbf{jedes zweite Spiel gewonnen} und ist mehr als 3-mal stabiler als die Cross-Entropy Lösung. Die Fitness hat sich nach ungefähr 150 Generationen im Bereich von $[30,45]$ eingependelt.
+                    Der Ansatz die Gewichte naiv als DCT Koeffizienten darzustellen, führte zu den besten Ergebnissen. Das stärkste Individuum hat knapp \textbf{jedes zweite Spiel gewonnen} und ist mehr als 3-mal stabiler als die Cross-Entropy Lösung. Die Fitness hat sich nach ungefähr 150 Generationen im Bereich von $[30,45]$ eingependelt.
                     \begin{figure}[H]
                        \includegraphics[scale=0.5]{../pictures/summary/neural-fitness.png}
                        \caption{Fitness Graph für Cross Entropy}\label{fig:graph-ne}
@@ -501,16 +502,19 @@ sort
                           Mean &  \textbf{42.00\%} & \textbf{20.13\%} & \textbf{51.93\%}  \\ \hline
                     \end{tabular}
                     \end{center}
-                    \caption{Stabilität der besten 5 Neurevolution Individuen \label{fig:neuroevotable}}
+                    \caption{Stabilität der besten 5 Individuen \label{fig:neuroevotable}}
                 \end{table}
 
                 \noindent
-                Die stabile Fitness ist bei knapp 20\% und damit gewinnen diese Individuen durchschnittliche jedes fünfte Spiel. Die Spielweise von diesem Ansatz könnte man \textit{geplant} erklären, da der Spieler oft zum Tor rennt, kurz vor dem Strafraum stehen bleibt und von Ecke zu Ecke pendelt bis er den Torwart etwas aus dem Tor gelockt hat um ein Tor zu schießen. Wenn er mal verliert, ist es weil er sofort zum Beginn des Spieles sich ins Aus schießt, oder zu nah am Tor ist, sodass ihm der Ball abgenommen wird.\\
+                Die stabile Fitness ist bei knapp 20\% und damit gewinnen diese Individuen durchschnittliche jedes fünfte Spiel. Hier haben wir bereits starke Anzeichen für eine Taktik gesehen. Der Agent rennt von Anfang an zum Tor, bleibt kurz vor dem Strafraum stehen und pendelt von Ecke zu Ecke bis der Torwart weiter rausgeht um ein Tor zu schießen.\\
 
-                \begin{center} \textit{(Link zum Video)} \end{center}
+                \noindent
+                Wenn er mal verliert, ist es weil er sofort zum Beginn des Spieles sich ins Aus schießt, oder zu nah am Tor ist, sodass ihm der Ball abgenommen wird. Die Tendenz am Ende des Graphen deutet darauf hin, dass bei längeren Laufzeiten noch bessere Ergebnisse möglich wären.% Die stichprobenartigen Aufnahmen von diesen Agenten haben dennoch Gewinnserien von 3-4 Spielen hintereinander gezeigt, obwohl die die Wahrscheinlichkeit dafür 
+\newpage
+                \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
+                \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für Neuroevolution} \end{center}
 \newpage
             \subsubsection*{CoSyNE}
-%                ``Graph zeigen, Interpretation bzw. Erklärung''
                 \begin{multicols}{2}
                     \noindent
                     \\[5mm]
@@ -537,11 +541,17 @@ sort
                     \caption{Stabilität der besten 5 Neurevolution Individuen \label{fig:neuroevotable}}
                 \end{table}
                 \noindent
-                Die beste Individuen haben lediglichlich nur knapp 12\% ihrer Spiele gewonnen und man kann eine ähnliche Taktik wie die Neuroevolution Agenten erahnen, nur wesentlich schlechter umgesetzt. Es passiert häufig, dass der Agent kurz vor dem Strafraum stehen bleibt und sich für eine sehr lange Zeit nicht bewegt. Da der Torwart nicht zu weit von dem Tor rausgeht, befinden sie sich im Deadlock bis der Agent versucht ein Tor zu schießen. Das Schießen am Anfang des Spiels tritt hier auf gehäuft auf.
+                Die beste Individuen haben lediglichlich nur knapp 12\% ihrer Spiele gewonnen und man kann eine ähnliche Taktik wie die Neuroevolution Agenten erahnen, nur wesentlich schlechter umgesetzt. Es passiert häufig, dass der Agent kurz vor dem Strafraum stehen bleibt und sich für eine sehr lange Zeit nicht bewegt. Da der Torwart nicht zu weit von dem Tor rausgeht, befinden sie sich im Deadlock bis der Agent versucht ein Tor zu schießen. Das Schießen ins Aus am Anfang des Spiels tritt hier gehäuft auf.\\
 
-                \begin{center} \textit{(Link zum Video)} \end{center}
+                \noindent
+                Eine interessante Eigenschaft von CoSyNE ist das stufenartige Entwickeln der Fitness die ab bestimmten Generationen nie wieder schlechter wird.
+
 \newpage
-        \subsection{Vergleich}
+                \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
+                \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für CoSyNE} \end{center}
+\newpage
+
+        \subsection{Vergleich} \label{algo-comparisson}
 %            ``Sicherheit <-> Aggressivität steht im Kontra zur Stabilität der Algorithmen''\\
 %            ``Wenn Zeit ein Faktor wäre'' \\
 %            ``Wenn Sicherheit ein Faktor wäre'' \\
@@ -563,7 +573,7 @@ sort
                 \end{table}
 
             \noindent
-            Neuroevolution gewinnt eindeutig in allen getesteten Merkmalen und hat während den Aufnahmen den raffiniertesten Eindruck gemacht. Wir sehen pauschale Aggressivität wie bei Cross-Entropy zwar interessante Züge macht, jedoch nicht tauglich ist für den Einsatz auf dem echten Spielfeld. \\[2mm]
+            Neuroevolution gewinnt eindeutig in allen getesteten Merkmalen und hat während den Aufnahmen den raffiniertesten Eindruck gemacht. Wir sehen, dass die Aggressivität bei der Cross-Entropy Method zwar interessante Züge macht, jedoch nicht tauglich für den Einsatz auf dem echten Spielfeld ist. \\[2mm]
 
             \noindent
             Sicherheit und die \textit{Planung} machen auf lange Sicht viel mehr Sinn und sollten verstärkt werden. Der CoSyNE Algorithmus unterstützt diese Art von Entwicklung in dieser Dimensionalität schlechter als die naive Suche über alle Parameter. Es ist zu überprüfen ob diese Aussage für gleichzeitiges Lernen in einem 2v1 Setting übereinstimmt.\\[2mm]
