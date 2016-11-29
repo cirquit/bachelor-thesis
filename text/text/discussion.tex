@@ -27,19 +27,25 @@
 
         \subsection*{Aktionsraum}
             Der High-Level Aktionsraum wurde während der Arbeit im Urpsrungspaper erweitert, sodass wir Aktionen wie \textit{Go\_To\_Ball} oder \textit{Reduce\_Angle\_To\_Ball} nicht benutzt haben. Da die Dokumentation der übrigen Aktionen sehr spärlich ausgefallen ist, würden eigene Aktionen eine bessere Möglichkeit bieten über die Effektivität der Algorithmen zu argumentieren. Sie würden auch sehr wahrscheinlich mehr Taktiken zulassen.
+
         \subsection*{Multi-Agenten Systeme}
-            Da die Simulation skalierend modelliert wurde, erlaubt sie uns einfaches Testen mit mehreren Agenten, wie 2vs1, oder 4vs4. Leider haben wir keine Möglichkeit gehabt diese Domänen ausführlich zu testen.
+            Da die Simulation skalierend modelliert wurde, erlaubt sie uns einfaches Testen mit mehreren Agenten, wie 2vs1, oder 4vs4. Leider haben wir keine Möglichkeit gehabt diese Domänen ausführlich zu testen. 
 
 \newpage
 
     \section{Schlusswort}
 
         \subsection*{Implementierung für OpenAI Gym}
-            Während der Entwicklung dieser Arbeit gab es eine Implementierung der HFO Domäne für das 1vs1 Szenario in der OpenAI Gym, das ein bekanntes machine learning Framework in Python ist. Die Umsetzung von unseren Algorithmen dafür wäre der nächste logische Schritt.
+            Während der Entwicklung dieser Arbeit gab es eine Implementierung der HFO Domäne für das 1vs1 Szenario in der OpenAI Gym, das ein bekanntes machine learning Framework in Python ist. Die Umsetzung von unseren Algorithmen dafür wäre der nächste logische Schritt um die neuroevolutionären Methoden mehr in den Fokus zu Rücken. Diese spezielle Implementierung erlaubt uns Schritte vorzusimulieren, da der Torwart deterministisch ist. Damit können andere Trainingstechniken, wie Backpropagation, benutzt werden, die einen interessanten Vergleich anstellen.
 
-        \subsection*{ConvNet und CoSyNE}
-            In \cite{cosyne4} wird CoSyNE und DCT für die Komprimierung von über 1 Million Gewichten in einem Convolutional Neural Network benutzt und hat beeindruckende Ergebnisse für die Steuerung von einem Auto ausschließlich durch Bilddaten erzielt. Deshalb würde es sich anbieten die Verknüpfung von CoSyNE und DCT auf anderen Aufgaben, die auf hochdimensinalen korrelierten Daten basieren, anzuwenden.
+        \subsection*{ConvNet, CoSyNE, DCT und Wavelets}
+            In \cite{cosyne4} wird CoSyNE und DCT für die Komprimierung von über 1 Million Gewichten in einem Convolutional Neural Network benutzt und hat beeindruckende Ergebnisse für die Steuerung von einem Auto mit Bilddaten erzielt. Deshalb würde es sich anbieten die Verknüpfung von CoSyNE und DCT auf anderen Aufgaben, die auf hochdimensinalen korrelierten Daten basieren, anzuwenden. \\
 
-        \subsection*{Backpropagation und Neuroevolution}
-            Dass Neuroevolution in Aufgaben ohne vorher vorbereiteten Daten funktioniert, wurde gezeigt. Die interessantere Frage wäre wie gut diese Trainingsmethode gegenüber Backpropagation abschneidet, wenn Daten bereitgestellt werden. Der Vergleich in Geschwindkeit der Konvergenz und das Finden von neuen Lösungen, lässt Rückschlüsse über Vorteile und Nachteile der jeweiligen Algorithmen zu.
+            \noindent
+            Wavelets, die von Jürgen Schmidhuber als als logischer Nachfolger für die DCT Transformation im Gewichtssuchraum entwickelt wurden \cite{wavelet}, sollten auch einem Vergleich mit naiven GAs und CoSyNE unterzogen werden, da bei unseren Beispielen der naive GA bessere Individuen entwickelt hat.
 
+        \subsection*{RoboCup}
+            RoboCup hat sich als Ziel gesetzt echte Roboter gegen die Fußballweltmeister im Jahr 2050 antreten zu lassen und ich bin nach dieser Arbeit der Ansicht, dass es gar nicht so unwahrscheinlich ist. Wenn wir die aktuellen Robotikfortschritte anschauen, wie Atlas von Boston Dynamics \cite{robot}, der bereits externe Krafteinwirkungen abfangen kann, ist der Weg nicht mehr weit zu gemeinsamen sportlichen Aktivitäten.\\
+
+            \noindent
+            Man muss sich vor Augen führen, dass die Entwicklung von Machine Learning in den letzten 12 Jahren einen extremen Sprung gemacht hat, was Bilderkennung \cite{NIPS2012_4824}, eine Go KI, Stimmsynthese und allgemeine Spieler für das Atari Arcade Learning Environment \cite{Naddaf2010}, angeht. Wir sind heute noch ganze 34 Jahre von der Deadline entfernt und wenn wir mit ähnlicher Effektivität diese Zeit nutzen werden wie die letzten Jahre, bin ich überzeugt davon, dass Fußball eine eigene Roboter Liga bekommen wird.
