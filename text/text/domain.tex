@@ -89,7 +89,7 @@
                 Die boole'schen Werte sind binär und $-1$ entspricht $false$ und $1$ entsprechend $true$.
 
             \subsubsection*{Lagekodierung}
-                Die Lagekodierung ist normalisiert auf der maximale diagonale Länge des Spielfelds die durch $max_{l} = \sqrt{l^2 + w^2}$ gegeben ist, wobei $l$ die Länge und $w$ die Breite ist. In dem Fall für HFO, entspricht sie $sqrt(2^2 + 2^2) ~= 2.82$. Die folgenden Formeln sind \\
+                Die Lagekodierung ist normalisiert auf der maximale diagonale Länge des Spielfelds die durch $max_{l} = \sqrt{l^2 + w^2}$ gegeben ist, wobei $l$ die Länge und $w$ die Breite ist. In dem Fall für HFO, entspricht sie $sqrt(2^2 + 2^2) ~= 2.82$. Die dafür Formeln sind: \\
 
                 \begin{mdframed}
                 Sei $f : [-max_{l}, max_{l}] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
@@ -200,7 +200,7 @@
 
         \subsection{Wahrscheinlichkeitsverteilung von Aktionen}
 
-            Der erste Algorithmus hat als Kodierung der Individuen eine diskrete Wahrscheinlichkeitsverteilung über 5 Aktionen benutzt. Wenn der Agent gestartet wurde samplet er jeden Zeitschritt ohne Wissen über jeglichen Zustand aus dieser Verteilung raus.
+            Der erste Algorithmus hat als Kodierung der Individuen eine diskrete Wahrscheinlichkeitsverteilung über 5 Aktionen benutzt. Wenn der Agent gestartet wurde samplet er jeden Zeitschritt ohne Wissen über jeglichen Zustand aus dieser Verteilung raus. 
 
             \subsubsection*{Kodierung}
 
@@ -210,7 +210,8 @@
                     $P(x)$ die Wahrscheinlichkeit dass $x$ eintrifft, dann gilt: \\[2mm]
                     \hspace*{25mm} \Resize{8cm}{$\forall x \in X: P(x) \geq 0 \;\;\land\;\; \sum_{x \in X}^{} P(x) = 1$}
                 \end{mdframed}
-                \caption{\label{kodierung} Kodierung der Aktionen als Wahrscheinlichkeitsverteilung}
+                \renewcommand{\figurename}{Lemma}
+                \caption{\label{kodierung} Regeln für die Wahrscheinlichkeitsverteilung der Aktionen}
             \end{figure}
 
 %            \subsubsection*{Kreuzung}
@@ -272,6 +273,7 @@
                     \hspace*{40mm}\Resize{6.5cm}{$\mathcal{C} := \{ \frac{(a_i + b_i)}{l} \; | \; a_i \in \mathcal{A}, b_i \in \mathcal{B}\}$} \\[4mm]
                     dann ist $\mathcal{C}$ ist ihre Verknüpfung.
                 \end{mdframed}
+                \renewcommand{\figurename}{Definition}
                 \caption{\label{norm-prop} Kreuzungsmethode 2 für Wahrscheinlichkeitsverteilungen}
             \end{figure}
 
@@ -375,19 +377,19 @@ sort
                 \hspace*{4mm} $F_{Test}$ die neu getestete Fitness, dann ist der Fehler definiert als:\\[4mm]
                 \hspace*{40mm} \Resize{5cm}{$Fehler = \frac{F_{Entwicklung} - F_{Test}}{F_{Entwicklung}}$}
             \end{mdframed}
+            \renewcommand{\figurename}{Definition}
             \caption{Berechnung des Fehlers für ein Individuum}
         \end{figure}
 
         \noindent
         Je kleiner die Abweichung zwischen dem Training und dem Test, umso kleiner ist der Fehler und daher können wir schließen, dass das Individuum sicherer seine versprochene Leistung bringt.\\
 
-        \section{1vs1}
-            Unser Lernziel für die HFO Domäne war einen offensiven Spieler zu trainieren der gegen einen vom Server gesteuerten Torwart so gut es geht Tore schießt. Das haben wir mit vier in Kapitel 2 angesprochenend Algorithmen getestet und stellen die Resultate vor. \\[2mm]
+        Unser Lernziel für die HFO Domäne war einen offensiven Spieler zu trainieren der gegen einen vom Server gesteuerten Torwart so gut es geht Tore schießt. Das haben wir mit vier in Kapitel 2 angesprochenend Algorithmen getestet und stellen die Resultate vor. \\[2mm]
 
-            \noindent
-            Als stabilster und bester Algorithmus ist die naive Neuroevolution mit einer durchschnittlichen Gewinnrate von \textbf{42\%} im Training und \textbf{20\%} im Test. Auf Platz 2 kam CoSyNE mit $37\%$ im Training und $12\%$ im Test. Cross Entropy und die Wahrscheinlichkeitsverteilung der Aktionen haben zwar beide im Training $30\%$ erreicht, aber im Test nur knapp $6\%$ und sind damit extren instabil.
+        \noindent
+        Als stabilster und bester Algorithmus ist die naive Neuroevolution mit einer durchschnittlichen Gewinnrate von \textbf{42\%} im Training und \textbf{20\%} im Test. Auf Platz 2 kam CoSyNE mit $37\%$ im Training und $12\%$ im Test. Cross Entropy und die Wahrscheinlichkeitsverteilung der Aktionen haben zwar beide im Training $30\%$ erreicht, aber im Test nur knapp $6\%$ und sind damit extren instabil.
 \newpage
-            \subsection{Wahrscheinlichkeitsverteilung der Aktionen}
+            \section{Wahrscheinlichkeitsverteilung der Aktionen}
                 \begin{multicols}{2}
                     \noindent
                     Die Wahrscheinlichkeitsverteilung war der erste Ansatz um zu überprüfen ob die Domäne bereits durch eine einfache Kodierung lösbar ist. Leider ging die Varianz in der Population nach der $10$ Generation gegen $0$ und die Verteilung sah folgendermaßen aus:
@@ -439,12 +441,12 @@ sort
         \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
         \begin{figure}[H]
             \begin{center}
-                \includegraphics[scale=0.85]{../pictures/games/actiondist-gameplay.png}\\
+                \includegraphics[scale=0.83]{../pictures/games/actiondist-gameplay.png}\\
                 \caption{\label{fig:actiondist-gameplay}}
             \end{center}
         \end{figure}
 
-        In Abbildung \ref{fig:actiondist-gameplay} sehen wir einen vielversprechenden Torversuch von dem Individuum. Leider läuft er einfach nur in den Torwart rein und ihm wird sein Ball abgenommen. Es passiert auch sehr oft, dass 
+        In Abbildung \ref{fig:actiondist-gameplay} sehen wir einen vielversprechenden Torversuch von dem Individuum. Leider läuft er einfach nur in den Torwart rein und ihm wird sein Ball abgenommen. Es passiert auch sehr oft, dass er vor dem Tor stehen bleibt, oder einfach nur wild um sich herumschießt, egal in welcher Position er steht. Aus der Tabelle der Verteilungen kann man nur bestätigen dass sich sein Verhalten zufällig beschreiben lässt.
 
 
 \newpage
@@ -520,11 +522,11 @@ sort
         \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
         \begin{figure}[H]
             \begin{center}
-                \includegraphics[scale=0.85]{../pictures/games/neural-evo-gameplay.png}\\
-                \caption{\label{fig:actiondist-gameplay}}
+                \includegraphics[scale=0.83]{../pictures/games/neural-evo-gameplay.png}\\
+                \caption{\label{fig:neural-evo-gameplay}}
             \end{center}
         \end{figure}
-
+        In Abbildung \ref{fig:neural-evo-gameplay} sehen wir die bisher interessanteste Bewegung, da der Agent versucht sich zuerst in die untere Ecke zu positionieren, dabei den Torwart etwas rauslockt, um dann haarfein das Tor zu schießen. Diese Taktik ist die ausgereifteste, da sie die Reaktion des Torwarts, der Abhängigkeit des größsten offenen Winkels zum Tor und der damit in Beziehung stehende Torchancen in Betracht zieht. Aus anderen Visualisierungen haben wir auch Tore außerhalb des Strafraums fallen sehen, was bedeutet dass der Agent nicht nur eine einzelne Gewinnstrategie gelernt hat, sondern wirklich \textit{abwägt}, welche Aktion gerade am nützlichsten ist.
 \newpage
             \section{CoSyNE}
                 \begin{multicols}{2}
@@ -563,11 +565,7 @@ sort
                 \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für CoSyNE} \end{center}
 \newpage
 
-        \subsection{Vergleich} \label{algo-comparisson}
-%            ``Sicherheit <-> Aggressivität steht im Kontra zur Stabilität der Algorithmen''\\
-%            ``Wenn Zeit ein Faktor wäre'' \\
-%            ``Wenn Sicherheit ein Faktor wäre'' \\
-
+        \section{Vergleich} \label{algo-comparisson}
              Im Vergleich zwischen allen Algorithmen sieht das Ranking folgendermaßen aus:
 
                 \begin{table}[H]

@@ -291,7 +291,8 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                     \hspace*{4.5mm}    $\sigma(x) = max(x,0)$ als Aktivierungsfunktion:\\[4mm]
                     \hspace*{50mm} \Resize{4.5cm}{$\widehat{y} = \sigma(\sum^{n}_{i = 0} x_i \cdot w_i)$}
                 \end{mdframed}
-                \caption{\label{neuron-math} Formel zur Berechnung des Ergebnisses eines Neurons}
+                \formforfigure
+                \caption{\label{neuron-math} Berechnung des Ergebnisses von einem Neuron}
             \end{figure}
 
             \noindent
@@ -392,6 +393,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                     Sei $j = 1,2,...,K$: \\
                     \hspace*{45mm} \Resize{4cm}{$\sigma(\textbf{z})_j = \frac{e^{\textbf{z}_j}}{\sum^{K}_{k = 1} e^{\textbf{z}_k}}$}
                 \end{mdframed}
+\formforfigure
                 \caption{\label{softmax} Definition der Softmax Funktion}
             \end{figure}
 
@@ -400,6 +402,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                     Sei $t \in \mathbb{R}$:\\
                     \hspace*{50mm} \Resize{3cm}{$S(t) = \frac{1}{1+e^{-t}}$ }
                 \end{mdframed}
+\formforfigure
                 \caption{\label{sigmoid} Definition der Sigmoid Funktion}
             \end{figure}
 
@@ -421,10 +424,11 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                         \hspace*{30mm} \Resize{7cm}{cost$(Y, \widehat{Y}) = \frac{1}{m} \cdot \sum_{j = 0}^{m} \; (y_j - \widehat{y}_j)^2$}\\[4mm]
                         die mittlere quadratische Abweichung.
                     \end{mdframed}
-                    \caption{\label{cost-math} Formel zur Berechnung des \textit{MSE} Fehlers von einem KNN}
+    \formforfigure
+                    \caption{\label{cost-math}Berechnung des \textit{MSE} Fehlers von einem KNN}
                 \end{figure}
                 \noindent
-                Eine der möglichen Kostenfunktionen sieht man in Abbildung \ref{cost-math}, die \textbf{mittlere quadratische Abweichung} (MSE). Je kleiner diese Kostenfunktion ist, umso besser kann unser KNN die Ergebnisse nachahmen. Um die Kosten zu minimieren, müssen wir die gesamte Funktion samt der Berechnung vom $\widehat{y}$ partiell nach den Gewichten ableiten. \\[2mm]
+                Eine der möglichen Kostenfunktionen sieht man in Formel \ref{cost-math}, die \textbf{mittlere quadratische Abweichung} (MSE). Je kleiner diese Kostenfunktion ist, umso besser kann unser KNN die Ergebnisse nachahmen. Um die Kosten zu minimieren, müssen wir die gesamte Funktion samt der Berechnung vom $\widehat{y}$ partiell nach den Gewichten ableiten. \\[2mm]
                 Mit dem resultierenden Gradienten verändern wir die Gewichte, sodass der Fehler möglichst verringert wird. Dafür leiten wir die Anpassungsformel für jedes Gewicht her:
 
 %                 Damit finden wir heraus, wie wir jedes einzelne Gewicht verändern müssen damit am Ende das richtige Ergebnis rauskommt, sodass alles gegen 0 geht. Dafür leiten wir die Anpassungsformel für jedes Gewicht her:
@@ -447,6 +451,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                                                                                -2 \cdot x_i & \sum_{i = 0}^{n} x_i \cdot w_i > 0 \\
                                                                              \end{cases}$}
                     \end{mdframed}
+    \formforfigure
                     \caption{\label{derivative} Berechnung der Anpassungsregel für jedes Gewicht nach MSE}
                 \end{figure}
 
@@ -610,11 +615,9 @@ print population
 
         \subsection{Normalverteilung}
 
-            Eine Normalverteilung ist eine sehr bekannte stetige Wahrscheinlichkeitsverteilung. Ihre Wahrscheinlichkeitsdichtefunktion wird oft Gauß-Kurve oder Glockenkurve genannt und findet Anwendung in verschiedensten Anwendungsgebieten, weil sie natürliche Vorgänge exakt oder ähnlich genug modelliert. Bekannte Beispiele dafür sind die Streuung von Messfehlern oder die irreguläre Bewegung von Partikeln in einer Flüssigkeit (\textbf{Brownsche Bewegung}).\\
-
+            Eine Normalverteilung ist eine sehr bekannte stetige Wahrscheinlichkeitsverteilung. Ihre Wahrscheinlichkeitsdichtefunktion wird oft Gauß-Kurve oder Glockenkurve genannt und findet Anwendung in verschiedensten Anwendungsgebieten, weil sie natürliche Vorgänge exakt oder ähnlich genug modelliert. Bekannte Beispiele dafür sind die Streuung von Messfehlern oder die irreguläre Bewegung von Partikeln in einer Flüssigkeit (\textbf{Brownsche Bewegung}).\\[2mm]
             \noindent
             Die Wahrscheinlichkeitsdichtefunktion der Normalverteilung ist von zwei Parametern abhängig, dem Durchschnitt und der Standardabweichung:
-
             \begin{figure}[H]
                 \begin{mdframed}
                     \noindent
@@ -623,12 +626,13 @@ print population
                     \hspace*{50mm} \Resize{6cm}{$\mathcal{N}(x\;|\;\mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \cdot e^{-\frac{(x - \mu)^2}{2\sigma^2}} $} \\[4mm]
                     \hspace*{4.5mm} die Wahrscheinlichkeitsdichtefunktion der Normalverteilung.
                 \end{mdframed}
-%                \caption{\label{norm-dist-pdf-formel} Definition der Wahrscheinlichkeitsdichtefunktion der Normalverteilung}
+                \formforfigure
+                \caption{\label{norm-dist-pdf-formel} Definition der Wahrscheinlichkeitsdichtefunktion der Normalverteilung}
             \end{figure}
 
             \begin{figure}[H]
                     \begin{center}
-                        \includegraphics[scale=0.4]{../pictures/diagrams/normal-dist-example.png}\\
+                        \includegraphics[scale=0.38]{../pictures/diagrams/normal-dist-example.png}\\
                         \caption{Dichtefunktionen von Normalverteilungen}\label{fig:norm-dist-pdf}
                     \end{center}
             \end{figure}
@@ -652,7 +656,7 @@ print population
             \begin{figure}[H]
                     \begin{center}
                         \hspace{-1cm}
-                        \includegraphics[scale=0.5]{../pictures/diagrams/rainfall-pdf.png}\\
+                        \includegraphics[scale=0.6]{../pictures/diagrams/rainfall-pdf.png}\\
 %                        \caption{Kodierung der Eigenschaften durch Normalverteilungen}\label{fig:norm-dist-encoding}
                     \end{center}
             \end{figure}
