@@ -2,15 +2,15 @@
 
 \chapter{Grundlagen}
 
-Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} (Kap. 2.1) im Zusammenhang mit \textbf{neuronalen Netzen} (Kap 2.2.1) und der \textbf{Cross Entropy Method} (Kap. 2.5). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fouriertransformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
+Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} (Kap. \ref{ga-my-definition}) im Zusammenhang mit \textbf{neuronalen Netzen} (Kap. \ref{neural-evo-definition}) und der \textbf{Cross Entropy Method} (Kap. \ref{cross-entropy-definition}). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fouriertransformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
 
-    \section{Genetische Algorithmen}
+    \section{Genetische Algorithmen} \label{ga-my-definition}
         % ``Die Motivation von Genetischen Algorithmen kam aus der Natur bla blubb''\\
         % ``Im Folgenden behandeln wir die grundlegenden Operationen die einen GA ausmachen''
 
         % Ein Genetischer Algorithmus gehört zu den \textbf{unsupervised Learning} Methoden, die sich als Ziel setzen eine verborgene Struktur zu analysieren, ohne zu gekenntzeichnete Daten zu haben. John Holland
 
-        Ein genetischer Algorithmus, im folgenden als \textbf{GA} abgekürzt, ist ein Optimierungsverfahren, das von der natürlichen Selektion und Evolution inspiriert ist. Ein formaler Leitfaden findet sich im Fundamentalwerk zu Genetischen Algorithmen \cite{ga}.\\[2mm]
+        Ein genetischer Algorithmus (\textit{genetic algorithm}), im folgenden als \textbf{GA} abgekürzt, ist ein Optimierungsverfahren, das von der natürlichen Selektion und Evolution inspiriert ist. Ein formaler Leitfaden findet sich im Fundamentalwerk zu genetischen Algorithmen \cite{ga}.\\[2mm]
         Stellen wir uns anschaulicher Weise eine Gruppe Gazellen und einen Geparden vor.\\
 
         \begin{figure}[htbp]
@@ -35,7 +35,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 
         \subsection{Individuen}
 
-            Ein Individuum besteht aus einer Kodierung, auch \textbf{Zustandsraum} genannt, die die aussagekräftigen Eigenschaften von ihm ausmachen. Für eine Gazelle wäre beispielweise die folgende Kodierung möglich.
+            Ein Individuum besteht aus einer Kodierung, auch \textbf{Zustandsraum} genannt, die die aussagekräftigen Eigenschaften von ihm ausmachen. Für eine Gazelle wäre beispielweise die Kodierung aus \ref{tab:gaz-encoding} möglich.
 
             \begin{multicols}{2}
                 \hfill \\[-10mm]
@@ -49,14 +49,14 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                         Hornlänge                & $ 12\; cm          $   \\ \hline
                     \end{tabular}
                     \end{center}
-                    \caption{Kodierung einer Gazelle \label{fig:gaz-encoding}}
+                    \caption{Kodierung einer Gazelle \label{tab:gaz-encoding}}
                 \end{table}
 
                 \noindent
                 Die Aufgabe von unserem GA ist ein oder mehrere Individuen zu finden, die es schaffen vor dem Geparden wegzulaufen. Da wir aber nicht wissen, ob die vorgeschlagene Kodierung gut oder schlecht ist, müssen wir Gazellen mit zufälligen Eigenschaften erstellen und dann den Algorithmus arbeiten lassen.
             \end{multicols}
             \noindent
-            Das schaffen wir, indem wir Grenzen für die Kodierung festlegen und später zufällige Werte in diesen Rahmen ausprobieren.
+            Das schaffen wir, indem wir Grenzen für die Kodierung festlegen (Tabelle \ref{tab:gazelle-bounds}) und später zufällige Werte in diesen Rahmen ausprobieren.
 
             \begin{table}[H]
                 \begin{center}
@@ -69,7 +69,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     Hornlänge                & $  0\; cm          $  & $ 35\; cm          $ \\ \hline
                 \end{tabular}
                 \end{center}
-                \caption{Grenzen für die Kodierung \cite{wiki:gazelle} \cite{blog:gazelle}\label{fig:gazelle-bounds}}
+                \caption{Grenzen für die Kodierung \cite{wiki:gazelle} \cite{blog:gazelle}\label{tab:gazelle-bounds}}
             \end{table}
             \noindent
             % Für die Kodierung unseres Individuums eignet sich ein Array von Zahlen. Um die gesamte Population darzustellen würde ein 2-dimensionales Array reichen, wobei jedes Element ein einzelnes Individuum darstellt. \textit{(evtl Grafik)}
@@ -82,7 +82,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             Nachdem die Evaluation vorbei ist, bekommen wir die Rückmeldung welche Gazellen überlebt haben. Aus dieser Menge können wir nun einen prozentualen Betrag wählen, die Eltern sein werden. In unserer Implementierung nennen wir diesen Parameter $\alpha$. Damit versichern wir, dass nur die erfolgreichen Eigenschaften weiter in der Population erhalten bleiben und der Rest wegfällt.
 
         \subsection{Kreuzung}
-            Die erfolgreichen Individuen wurden ausgewählt und können sich nun fortpflanzen. Dafür nehmen wir jeweils zwei Individuen und vertauschen zufällig ihre Ausprägungen.
+            Die erfolgreichen Individuen wurden ausgewählt und können sich nun fortpflanzen. Dafür nehmen wir jeweils zwei Individuen und vertauschen zufällig ihre Ausprägungen. Dieses Verfahren haben wir in den Tabellen \ref{fig:enc-dad}, \ref{fig:enc-mom}, \ref{fig:child-1}, \ref{fig:child-2} dargestellt.
             \\[8mm]
             \begin{multicols}{2}
                 \begin{table}[H]
@@ -146,7 +146,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                 \end{table}
             \end{multicols}
             \noindent
-            Das können wir nun sooft machen wie wir Eltern finden, oder bis wir genug Kinder produziert haben.
+            Das können wir nun sooft wiederholen, wie wir Eltern finden, oder bis wir genug Kinder produziert haben.
 
             \newpage
             In unserem Beispiel haben wir die Kinder mit dem folgenden Python-Code konstruiert:
@@ -175,7 +175,7 @@ for i in range(kodierung.length):
             Diese Art und Weise zwei Individuen zu kreuzen nennt sich \textbf{n-point crossover}, weil wir die Kodierung an zufällig vielen Stellen unterbrechen. Es gibt noch andere Kreuzungsmethoden die eine eine feste Anzahl von Aufteilungen benutzen, wie \textbf{one-} oder \textbf{two-point crossover}. \\
             \\
             \noindent
-            Um einen Unterschied zwischen diesen Methoden zu erkennen, stellen wir uns vor dass die Beinlänge im Zusammenhang mit der Höchstgeschwindigkeit steht, weil längere Beine eine größere Sprungweite ermöglichen. Wenn nun ein Kind gezeugt wird, dass lange Beine vererbt, wird die Höchstgeschwindigkeit dadurch nicht automatisch angepasst. Deshalb wäre es besser, wenn diese Ausprägungen zusammen übernommen werden, weil dadurch eine höhere Fitness garantiert werden kann. Kreuzungsmethoden wie n-point-crossover verletzen diese Eigenschaft eher als wie one-point-crossover.\\
+            Um einen Unterschied zwischen diesen Methoden zu erkennen, stellen wir uns vor dass die Beinlänge im Zusammenhang mit der Höchstgeschwindigkeit steht, weil längere Beine eine größere Sprungweite ermöglichen. Wenn nun ein Kind gezeugt wird, dass lange Beine vererbt, wird die Höchstgeschwindigkeit dadurch nicht automatisch angepasst. Deshalb wäre es besser, wenn diese Ausprägungen zusammen übernommen werden, weil dadurch eine höhere Fitness garantiert werden kann. Kreuzungsmethoden wie \textit{n-point crossover} verletzen diese Eigenschaft eher als wie \textit{one-point crossover}.\\
             \\
             \noindent
             Je nach Implementierung verwendet man nur eins der beiden Kinder, weil das die Varianz der Gesamtpopulation weniger beeinflusst und trotzdem keinerlei Information verloren geht, weil die Eltern die Kodierung weiter tragen.
@@ -183,7 +183,7 @@ for i in range(kodierung.length):
 \newpage
         \subsection{Mutation}
 %            ``Mutation ist hilfreich um die Varianz der Population etwas zu erhöhen'' \\
-            Nachdem die Kinder erstellt wurden, müssen wir die Kodierung der Individuen etwas verändern, damit die Varianz in der Gesamtpopulation erhöht wird. Das machen wir indem wir durch die Kodierung der Kinder durchgehen und jede Ausprägung mit einer geringen Wahrscheinlichkeit verändern. Diese nennen wir $\beta$.
+            Nachdem die Kinder erstellt wurden, müssen wir die Kodierung der Individuen etwas verändern, damit die Varianz in der Gesamtpopulation erhöht wird. Das machen wir indem wir durch die Kodierung der Kinder durchgehen und jede Ausprägung mit einer geringen Wahrscheinlichkeit verändern. Diese nennen wir $\beta$. Die Tabellen \ref{fig:child-enc} und \ref{fig:mut-child-enc} zeigen diese Veränderung am Beispiel des Kindes aus Tabelle \ref{fig:child-2}.
 
             \hspace*{-2cm}
             \begin{multicols}{2}
@@ -258,7 +258,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
             \end{mdframed}
             \hfill \\
             \noindent
-            Wir sehen dass uns zwei Individuen weniger als zu Anfang haben können deshalb die Evaluation nicht neu starten. Dieses Problem kann man auf viele Weisen angehen, die ihre eigenen Vorteile und Nachteile haben. 
+            Wir sehen, dass in der neuen Population zwei Individuen fehlen und können die Simulation deshalb nicht neu starten. Dieses Problem kann man auf viele Weisen angehen, die ihre eigenen Vorteile und Nachteile haben. 
 
             \subsubsection*{Mehr Kinder erstellen}
                 Es ist möglich während der Kreuzung solange Kinder zu erzeugen, bis die Population wieder ihre Ausgangsgröße angenommen hat. Ein Vorteil wäre, dass diese Individuen mit wahrscheinlich besseren Ausgangskodierungen starten als Neue. Der Nachteil ist jedoch die gesenkte Varianz in der Population und die erhöhte Wahrscheinlichkeit zum Feststecken in einem suboptimalen Lösungen.
@@ -272,15 +272,15 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
 
     \section{Neuroevolution} \label{neural-evo-definition}
 %        ``Neuroevolution beschäftigt sich mit der Verknüpfung von Genetischen Algorithmen und Neuronalen Netzn''
-        Der Begriff der Neuroevolution wurde im Jahre 1988 von D. Whiteley \cite{whiteley88} als alternative Möglichkeit zum Trainieren von künstlichen neuronalen Netzen (\textbf{KNNs}) vorgeschlagen. Dabei wird versucht aus der Synergie von dem \textbf{selbstlernenden Charakter} von KNNs und der \textbf{explorativen Suche} eines GAs eine Taktik oder ein Klassifikator zu entwickeln der völlig neue Lösungen finden kann. Den Beweis dafür hat man bereits im Jahr 1995 am Spiel \textit{Othello} festgestellt. \cite{othello95} \\[2mm]
+        Der Begriff der Neuroevolution wurde im Jahre 1988 von D. Whiteley \cite{whiteley88} als alternative Möglichkeit zum Trainieren von künstlichen neuronalen Netzen (\textit{artificial neural network}, \textbf{ANNs}) vorgeschlagen. Dabei wird versucht aus der Synergie von dem \textbf{selbstlernenden Charakter} von ANNs und der \textbf{explorativen Suche} eines GAs eine Taktik oder ein Klassifikator zu entwickeln der völlig neue Lösungen finden kann. Den Beweis dafür hat man bereits im Jahr 1995 am Spiel \textit{Othello} gebracht \cite{othello95}. \\[2mm]
         \noindent
-        Wir versuchen in diesem Kapitel einen groben Überblick über die Funktionsweise von KNNs zu verschaffen und stellen den Bezug zu genetischen Algorithmen dar. Eine weitaus formalere Erklärung findet sich im Paper von ....
+        Wir versuchen in diesem Kapitel einen groben Überblick über die Funktionsweise von ANNs zu verschaffen und stellen den Bezug zu genetischen Algorithmen dar. Eine weitaus formalere Erklärung findet sich im Paper von Derrick H. Nguyen und Berndard Widrow \cite{neuralnetwork-overview}.
 
         \subsection{Künstliche neuronale Netze}
 
-            Die Idee hinter künstlichen neuronalen Netzen ist der Versuch die Struktur vom menschliche Gehirn nachzuahmen. Ein übliches KNN besteht jedoch aus vielfach weniger Neuronen, meist hundert bis mehrere tausend, wobei unser Gehirn 86 Milliarden\cite{brainsize} besitzt.\\
+            Die Idee hinter künstlichen neuronalen Netzen ist der Versuch die Struktur vom menschliche Gehirn nachzuahmen. Ein übliches ANN besteht jedoch aus vielfach weniger Neuronen, meist hundert bis mehrere tausend, wobei unser Gehirn 86 Milliarden\cite{brainsize} besitzt.\\
             \noindent
-            Ein künstliches Neuron kann man sich anschaulich als eine Formel vorstellen, die \textbf{eine oder mehrere Eingaben} über \textbf{gewichtete Pfade} bekommt, sie \textbf{aufsummiert} und eine Aktivierungsfunktion auf das Ergebnis anwendet, die auf den Bereich $[0,\infty]$, $[0,1]$, oder $[-1,1]$ abbildet. Dieses Resultat nennen wir $\hat{y}$:
+            Ein künstliches Neuron kann man sich anschaulich als eine Formel vorstellen, die \textbf{eine oder mehrere Eingaben} über \textbf{gewichtete Pfade} bekommt, sie \textbf{aufsummiert} und eine \textbf{Aktivierungsfunktion} auf das Ergebnis anwendet, die es auf den Bereich $[0,\infty]$, $[0,1]$, oder $[-1,1]$ abbildet. Dieses Resultat nennen wir $\hat{y}$:
 
             \begin{figure}[H]
                 \begin{mdframed}
@@ -288,11 +288,11 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                     Sei $n$ die Anzahl der Eingaben,\\
                     \hspace*{4.5mm}    $X = \{x_0,x_1,...,x_n\}$ die Eingabe,\\
                     \hspace*{4.5mm}    $W = \{w_0, w_1,...,w_n\}$ die jeweiligen Gewichte, \\
-                    \hspace*{4.5mm}    $\sigma(x) = max(x,0)$ als Aktivierungsfunktion:\\[4mm]
+                    \hspace*{4.5mm}    $\sigma(x) = max(x,0)$ die Aktivierungsfunktion:\\[4mm]
                     \hspace*{50mm} \Resize{4.5cm}{$\widehat{y} = \sigma(\sum^{n}_{i = 0} x_i \cdot w_i)$}
                 \end{mdframed}
                 \formforfigure
-                \caption{\label{neuron-math} Berechnung des Ergebnisses von einem Neuron}
+                \caption{\label{neuron-math} Formel zur Berechnung der Ausgabe eines Neurons}
             \end{figure}
 
             \noindent
@@ -360,17 +360,32 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                     \foreach \l [count=\i] in {1,k}
                         \draw [->] (output-\i) -- ++(1,0)
                             node [above, midway] {$y_\l$};
-                    \foreach \i [count=\n] in {1,...,4}
-                        \foreach \j [count=\m] in {1,...,2}
-                            \draw [->] (input-\i) -- node [sloped, above] {$w_{\n,\m}$} (hidden-\j);
-%                            \ifthenelse{\n=1}{
-%                                \draw [->] (input-\i) -- node [midway, sloped, above=0.3mm] {$w_{\n,\m}$} (hidden-\j);
-%                            }{
-%                                \draw [->] (input-\i) -- (hidden-\j);
-%                            }
-                    \foreach \i [count=\n] in {1,...,2}
-                        \foreach \j [count=\m] in {1,...,2}
-                            \draw [line width = 0.0mm, ->] (hidden-\i) -- node [midway, sloped, above=0.3mm] {$v_{\n, \m}$} (output-\j);
+%                    \foreach \i [count=\n] in {1,...,4}
+%                        \foreach \j [count=\m] in {1,...,2}
+%                            \draw [->] (input-\i) -- node [sloped, above, near start] {$w_{\n,\m}$} (hidden-\j); 
+
+                    \draw [->] (input-1) -- node [sloped, above]           {$w_{1,1}$} (hidden-1);
+                    \draw [->] (input-1) -- node [sloped, above, near end] {$w_{1,2}$} (hidden-2);
+
+                    \draw [->] (input-2) -- node [sloped, above] {$w_{2,1}$} (hidden-1);
+                    \draw [->] (input-2) -- node [sloped, above, very near start] {$w_{2,2}$} (hidden-2);
+
+                    \draw [->] (input-3) -- node [sloped, above, near end] {$w_{3,1}$} (hidden-1);
+                    \draw [->] (input-3) -- node [sloped, above, near start] {$w_{3,2}$} (hidden-2);
+
+                    \draw [->] (input-4) -- node [sloped, above, near start] {$w_{4,1}$} (hidden-1);
+                    \draw [->] (input-4) -- node [sloped, above] {$w_{4,2}$} (hidden-2);
+
+%                    \foreach \i [count=\n] in {1,2}
+%                        \foreach \j [count=\m] in {1,2}
+%                            \draw [line width = 0.0mm, ->] (hidden-\i) -- node [midway, sloped, above=0.3mm] {$v_{\n, \m}$} (
+%                            output-\j);
+
+                \draw [line width = 0.0mm, ->] (hidden-1) -- node [midway, sloped, above=0.3mm] {$v_{1, 1}$} (output-1);
+                \draw [line width = 0.0mm, ->] (hidden-1) -- node [midway, sloped, above=0.3mm, near end] {$v_{1, 2}$} (output-2);
+                \draw [line width = 0.0mm, ->] (hidden-2) -- node [midway, sloped, above=0.3mm, near end] {$v_{1, 1}$} (output-1);
+                \draw [line width = 0.0mm, ->] (hidden-2) -- node [midway, sloped, above=0.3mm] {$v_{1, 2}$} (output-2);
+
                     \foreach \l [count=\x from 0] in {Eingabe, Versteckte, Ausgabe}
                         \node [align=center, above] at (\x*2,2) {\l \\ Ebene};
                 \end{tikzpicture}
@@ -411,7 +426,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
 
 
             \subsection{Backpropagation} \label{backprop-chapter}
-                Um diese Technik zum Trainieren von KNNs zu erklären müssen wir zunächst zeigen wie man den Fehler von einem neuronalen Netz misst. Dafür brauchen wir eine \textbf{Kostenfunktion} die uns die Abweichung zum Soll-Ergebnis gibt. Die Ergebnisse des Netzes für $\widehat{y}$ ist in Abbildung \ref{neuron-math} definiert.
+                Um diese Technik zum Trainieren von ANNs zu erklären müssen wir zunächst zeigen wie man den Fehler von einem neuronalen Netz misst. Dafür brauchen wir eine \textbf{Kostenfunktion} die uns die Abweichung zum Soll-Ergebnis gibt. Die Ergebnisse des Netzes für $\widehat{y}$ ist in Abbildung \ref{neuron-math} definiert.
 
 
 
@@ -420,15 +435,15 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                         \noindent
                         Sei $m$ die Größe des Trainingssets,\\
                         \hspace*{4.5mm} $Y = \{y_0, y_1,...,y_m\}$ ein Vektor von Soll-Ergebnissen, \\
-                        \hspace*{4.5mm} $\widehat{Y} = \{\widehat{y}_0, \widehat{y}_1,...,\widehat{y}_m\}$ ein Vektor von Resultaten des KNNs, dann ist:\\[4mm]
+                        \hspace*{4.5mm} $\widehat{Y} = \{\widehat{y}_0, \widehat{y}_1,...,\widehat{y}_m\}$ ein Vektor von Resultaten des ANNs, dann ist:\\[4mm]
                         \hspace*{30mm} \Resize{7cm}{cost$(Y, \widehat{Y}) = \frac{1}{m} \cdot \sum_{j = 0}^{m} \; (y_j - \widehat{y}_j)^2$}\\[4mm]
                         die mittlere quadratische Abweichung.
                     \end{mdframed}
     \formforfigure
-                    \caption{\label{cost-math}Berechnung des \textit{MSE} Fehlers von einem KNN}
+                    \caption{\label{cost-math}Berechnung des \textit{MSE} Fehlers von einem ANN}
                 \end{figure}
                 \noindent
-                Eine der möglichen Kostenfunktionen sieht man in Formel \ref{cost-math}, die \textbf{mittlere quadratische Abweichung} (MSE). Je kleiner diese Kostenfunktion ist, umso besser kann unser KNN die Ergebnisse nachahmen. Um die Kosten zu minimieren, müssen wir die gesamte Funktion samt der Berechnung vom $\widehat{y}$ partiell nach den Gewichten ableiten. \\[2mm]
+                Eine der möglichen Kostenfunktionen sieht man in Formel \ref{cost-math}, die \textbf{mittlere quadratische Abweichung} (MSE). Je kleiner diese Kostenfunktion ist, umso besser kann unser ANN die Ergebnisse nachahmen. Um die Kosten zu minimieren, müssen wir die gesamte Funktion samt der Berechnung vom $\widehat{y}$ partiell nach den Gewichten ableiten. \\[2mm]
                 Mit dem resultierenden Gradienten verändern wir die Gewichte, sodass der Fehler möglichst verringert wird. Dafür leiten wir die Anpassungsformel für jedes Gewicht her:
 
 %                 Damit finden wir heraus, wie wir jedes einzelne Gewicht verändern müssen damit am Ende das richtige Ergebnis rauskommt, sodass alles gegen 0 geht. Dafür leiten wir die Anpassungsformel für jedes Gewicht her:
@@ -475,7 +490,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
         % ``Der Suchraum kann durch die sog. DCT auf beliebige Dimensionalität eingeschränkt werden, wenn bestimmte Annahmen getroffen werden können'' \\
         % ``Fouriertransformationen machen folgendes...'' \\
         % ``Es gibt eine Inverse die aus einem n-stelligen liste eine m-stellige macht, wo die Zahlen korelliert sind (Beispiele)''
-        Eine Technik zum reduzieren des Suchraums bietet die diskreten Kosinustransformation (\textbf{DCT}), die zur Familie der Fouriertransformationen gehört. Eine \textbf{Fouriertransformation} teilt ein Signal in beliebig viele trigonometrische Funktionen, wie Sinus oder Kosinus auf, und über die Summe dieser Funktionen kann jedes Signal beschrieben werden. \\
+        Eine Technik zum reduzieren des Suchraums bietet die diskreten Kosinustransformation (discrete cosine transformation, \textbf{DCT}), die zur Familie der Fouriertransformationen gehört. Eine \textbf{Fouriertransformation} teilt ein Signal in beliebig viele trigonometrische Funktionen, wie Sinus oder Kosinus auf, und über die Summe dieser Funktionen kann jedes Signal beschrieben werden. \\
 
         \noindent
         Diese Fouriertransformation liefert uns ein diskretes Frenquenzenspektrum, das in Form von Koeffizienten dargestellt wird. Dabei wird pro Datenpunkt ein Koeffizient erzeugt. Um die Daten wiederherzustellen gibt es die inverse Kosinustransformation die die Koeffizienten wieder umwandelt.
