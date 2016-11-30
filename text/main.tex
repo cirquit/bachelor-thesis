@@ -93,12 +93,15 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage[export]{adjustbox}
-\usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+
+% \usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}% http://ctan.org/pkg/xcolor
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{pgf}
+\usepackage{booktabs} % commands for table rules
 \usepackage{tikz}
-\usetikzlibrary{arrows,automata, positioning}
+\usetikzlibrary{arrows,automata, positioning, calc, shadings, patterns, tikzmark}
 
 \setcounter{tocdepth}{3}                          % sectioning depth in toc
 \setcounter{secnumdepth}{3}                       % sectioning depth in text

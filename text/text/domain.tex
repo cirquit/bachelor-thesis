@@ -8,12 +8,12 @@
     Nach einem Monat haben sie jedoch weltweit überwältigendes Feedback bekommen und haben die Initiative als internationales Projekt weitergeführt, daher kam die Umbenennung zur \textbf{Robot World Cup Initiative}, kurz RoboCup. \\
     % \textit {(source: http://www.robocup.org/about-robocup/a-brief-history-of-robocup/)} \\
     \\
-    Die RoboCup Initiative betreibt derzeit sechs große Wettbewerbe, die sich jeweils wieder in Ligen und Subligen aufteilen lassen. Darunter fällt \textbf{RoboCup Soccer}, \textbf{RoboCup Rescue Rescue}, \textbf{RoboCup Junior}, \textbf{RoboCup Logistics}, \textbf{RoboCup @ Work} und \textbf{RoboCup @ Home}. Unsere Implementierung fällt in die Subliga \textbf{2D Soccer Simulation}, in der es darum geht in einer zweidimensionalen Welt zwei Fußballmannschaften gegeneinander antreten zu lassen.\\
+    Die RoboCup Initiative betreibt derzeit sechs große Wettbewerbe, die sich jeweils wieder in Ligen und Subligen aufteilen lassen. Darunter fällt \textbf{RoboCup Soccer} (\ref{fig:robocup-screenshot}), \textbf{RoboCup Rescue Rescue}, \textbf{RoboCup Junior}, \textbf{RoboCup Logistics}, \textbf{RoboCup @ Work} und \textbf{RoboCup @ Home}. Unsere Implementierung fällt in die Subliga \textbf{2D Soccer Simulation}, in der es darum geht in einer zweidimensionalen Welt zwei Fußballmannschaften gegeneinander antreten zu lassen.\\
     \\
-    Die Aufgabe, die wir angehen, gehört zu einem Fragement von RoboCup2D, genannt \textbf{Half Field Offense}.\\
+    Die Aufgabe, die wir angehen, gehört zu einem Fragement von RoboCup2D, genannt \textbf{Half Field Offense} (\ref{fig:hfo-screenshot}).\\
     \begin{figure}[htbp]
         \includegraphics[width = 1.0\textwidth, center]{../pictures/full-field.png}
-        \caption{Screenshot von dem gesamten Spielfeld von RoboCup2D \label{fig:somelabel}}
+        \caption{Screenshot von dem gesamten Spielfeld von RoboCup2D \label{fig:robocup-screenshot}}
     \end{figure}
 
     \section{Half Field Offense}
@@ -24,7 +24,7 @@
 
         \begin{figure}[htbp]
             \includegraphics[width = 0.7\textwidth,height = 0.6\textheight, center]{../pictures/half-field.png}
-            \caption{Screenshot von dem Spielfeld für den Subtask HFO \label{fig:somelabel}}
+            \caption{Screenshot von dem Spielfeld für den Subtask HFO \label{fig:hfo-screenshot}}
         \end{figure}
         \noindent
         Im Folgenden wird die Domäne samt Zustandsraum und Aktionen erklärt, sowie ihren Einschränkungen für die Anwendung von Machine Learning Algorithmen.\\
@@ -48,20 +48,22 @@
             \hfill  \\
             In unserem 1vs1 High Level Setting haben wir damit 13 Zustandsparameter. Vier von diesen Parametern gehören zu dem Torwart, aber da seine Position implizit durch andere Eigenschaftn gegeben ist, beachten wir sie nicht. Redundante Information würde den Suchraum unnötig aufblähen und die Suche verlängern. Deshalb wurden nur die folgenden 9 Zustände bereitgestellt:
 
+
+
             \begin{table}[H]
                 \begin{center}
                 \hspace*{-0.75cm}
                 \begin{tabular}{ |l|c|c|c|c| } 
                     \hline
                     \hfill Zustandsbeschreibung                          & Winkel & Boole'sch & Lage & Anderes \\ \hline
-                    x-Koordinaten                                        & \hfill & \hfill    &      & X       \\ \hline
-                    y-Koordinaten                                        & \hfill & \hfill    &      & X       \\ \hline
-                    Sichtrichtung                                        & X      & \hfill    &      & \hfill  \\ \hline
-                    Nähe zum Ball                                        & \hfill & \hfill    & X    & \hfill  \\ \hline
-                    Winkel zum Ball                                      & X      & \hfill    &      & \hfill  \\ \hline
-                    Kann eine Ballaktion ausgeführt werden               & \hfill & X         &      & \hfill  \\ \hline
-                    Winkel zum Mittelpunkt des Tors                      & X      & \hfill    &      & \hfill  \\ \hline
-                    Größte offene Winkel zwischen Torwart und Torpfosten & X      & \hfill    &      & \hfill  \\ \hline
+                    x-Koordinaten                                        & \hfill & \hfill    &      & \cellcolor{black!65}       \\ \hline
+                    y-Koordinaten                                        & \hfill & \hfill    &      & \cellcolor{black!65}       \\ \hline
+                    Sichtrichtung                                        & \cellcolor{black!65}      & \hfill    &      & \hfill  \\ \hline
+                    Nähe zum Ball                                        & \hfill & \hfill    & \cellcolor{black!65}    & \hfill  \\ \hline
+                    Winkel zum Ball                                      & \cellcolor{black!65}      & \hfill    &      & \hfill  \\ \hline
+                    Kann eine Ballaktion ausgeführt werden               & \hfill & \cellcolor{black!65}         &      & \hfill  \\ \hline
+                    Winkel zum Mittelpunkt des Tors                      & \cellcolor{black!65}      & \hfill    &      & \hfill  \\ \hline
+                    Größte offene Winkel zwischen Torwart und Torpfosten & \cellcolor{black!65}      & \hfill    &      & \hfill  \\ \hline
                 \end{tabular}
                 \end{center}
 %                \caption{Zustandsraum von HFO 1vs1 \label{fig:somelabel}}
@@ -75,11 +77,11 @@
             Der Zustand kann in 4 Kategorieren unterteilt werden, die alle auf den Wertebereich von $[ -1, +1 ]$ reduziert wurden.
 
             \subsubsection*{Winkelkodierung}
-                Die Winkel sind im Bereich von $[0, \pi]$ und durch folgende Formel auf den Bereich $[-1, +1]$ transformiert \footnote[1]{Formel sind aus dem E-Mail Verkehr mit dem Entwickler entstanden}:
+                Die Winkel sind im Bereich von $[0, \pi]$ und durch folgende Formel auf den Bereich $[-1, +1]$ transformiert \footnote[1]{Formel laut dem E-Mail-Verkehr mit dem Entwickler}:
 
                 \begin{mdframed}
                     Sei $f : [0,\pi] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
-                    \hspace*{5mm} $g : [-1, +1] \rightarrow [0, \pi]$, die Inverse: \\[4mm]
+                    \hspace*{5mm} $g : [-1, +1] \rightarrow [0, \pi]$, die inverse Dekodierungsfunktion: \\[4mm]
                     \hspace*{10mm} \Resize{4.5cm}{$f(x) = (\frac{x}{\pi} - 1) \cdot 2$}
                     \hspace*{20mm} \Resize{4.5cm}{$g(x) = (\frac{x}{2} + 1) \cdot \pi$}
                 \end{mdframed}
@@ -89,13 +91,13 @@
                 Die boole'schen Werte sind binär und $-1$ entspricht $false$ und $1$ entsprechend $true$.
 
             \subsubsection*{Lagekodierung}
-                Die Lagekodierung ist normalisiert auf der maximale diagonale Länge des Spielfelds die durch $max_{l} = \sqrt{l^2 + w^2}$ gegeben ist, wobei $l$ die Länge und $w$ die Breite ist. In dem Fall für HFO, entspricht sie $sqrt(2^2 + 2^2) ~= 2.82$. Die dafür Formeln sind: \\
+                Die Lagekodierung ist normalisiert auf der maximale diagonale Länge des Spielfelds die durch $max_{\text{L}} = \sqrt{l^2 + w^2}$ gegeben ist, wobei $l$ die Länge und $w$ die Breite ist. In dem Fall für HFO, entspricht sie $sqrt(2^2 + 2^2) ~= 2.82$. Die Formeln dafür sind: \\
 
                 \begin{mdframed}
-                Sei $f : [-max_{l}, max_{l}] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
-                    \hspace*{5mm} $g : [-1, +1] \rightarrow [-max_{l}, max_{l}]$, die Inverse: \\[4mm]
-                    \hspace*{25mm} \Resize{3.5cm}{$f(x) = \frac{x}{max_{l}}$}
-                    \hspace*{20mm} \Resize{3.5cm}{$g(x) = x \cdot max_{l}$}
+                Sei $f : [-max_{\text{L}}, max_{\text{L}}] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
+                    \hspace*{5mm} $g : [-1, +1] \rightarrow [-max_{\text{L}}, max_{\text{L}}]$, die inverse Dekodierungsfunktion: \\[4mm]
+                    \hspace*{25mm} \Resize{3.5cm}{$f(x) = \frac{x}{max_{\text{L}}}$}
+                    \hspace*{20mm} \Resize{3.5cm}{$g(x) = x \cdot max_{\text{L}}$}
                 \end{mdframed}
 
             \subsubsection*{Anderes}
@@ -154,11 +156,11 @@
             % ``Simulation Learning''            \\
             % ``Hochdimensional Kontinuierlich'' \\
             % ``Auch genannt Black Box RL''
-            Diese Domäne hat besondere Einschränkungen, die es zu einem schwierigen Problem machen. Zum einen haben wir keine Möglichkeit in die Zukunft zu schauen um herauszufinden wie gut eine Aktion für einen bestimmten Zustand war. Stattdessen müssen wir uns auf das Resultat der Simulation verlassen, dass uns lediglich am Ende sagt ob ein Tor geschossen wurde. \\[2mm]
+            Die Domäne HFO hat besondere Einschränkungen, die sie zu einem schwierigen Problem machen. Zum einen haben wir keine Möglichkeit in die Zukunft zu schauen, um herauszufinden wie gut eine Aktion für einen bestimmten Zustand war. Stattdessen müssen wir uns auf das Resultat der Simulation verlassen, das uns lediglich am Ende sagt ob ein Tor geschossen wurde. \\[2mm]
             \noindent
-            Zum anderen ist ein Spiel eine Abfolge von mehreren hundert Aktionen die alle gemeinsam bewertet werden und deshalb ist es unmöglich eine Fragmentierung in Teilziele zu schaffen. \\[2mm]
+            Zum anderen ist ein Spiel eine Abfolge von mehreren hundert Aktionen die alle gemeinsam bewertet werden, und deshalb ist es unmöglich eine Fragmentierung in Teilziele zu schaffen. \\[2mm]
             \noindent
-            Zusätzlich zum spärlichen Signal ob wir ein Tor geschossen haben, kommt der kontinuierliche 9-dimensionale Zustandsraum den wir mit normalverteiltem Rauschen empfangen haben.
+            Zusätzlich zum spärlichen Signal, ob wir ein Tor geschossen haben, kommt der kontinuierliche 9-dimensionale Zustandsraum, den wir mit normalverteiltem Rauschen empfangen haben.
 
 %             enn man sie mit herkömmlichen Machine Learning Tasks vergleicht \textit{(Vergleich Moonrover, Roboterarm etc.)}. Zum einen erlaubt sie uns wegen der Implementierung nicht in die Zukunft zu propagieren und zu schauen wie gut eine Entscheidung ist. Wir haben eine Simulation die erst nachdem ein Spiel fertig ist ein Fitnesssignal sendet und wir daraufhin abzuleiten müssen ob die lange Aktionsketten die wir ausgeführt haben uns zum Erfolg führten. Diese Eigenschaft nennt sich \textbf{sparse Fitness} und findet sich in Beispielen wie \textit{(Zitat)}
 
