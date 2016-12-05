@@ -2,7 +2,7 @@
 
 \chapter{Grundlagen} \label{basics}
 
-Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} (Kap. \ref{ga-my-definition}) im Zusammenhang mit \textbf{neuronalen Netzen} (Kap. \ref{neural-evo-definition}) und der \textbf{Cross Entropy Method} (Kap. \ref{cross-entropy-definition}). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fourier-Transformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
+Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{genetischen Algorithmen} (Kap. \ref{ga-my-definition}) im Zusammenhang mit \textbf{neuronalen Netzen} (Kap. \ref{neural-evo-definition}) und der \textbf{Cross Entropy Method} (Kap. \ref{cross-entropy-definition}). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fourier-Transformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
 
     \section{Genetische Algorithmen} \label{ga-my-definition}
         % ``Die Motivation von Genetischen Algorithmen kam aus der Natur bla blubb''\\
@@ -10,7 +10,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
 
         % Ein Genetischer Algorithmus gehört zu den \textbf{unsupervised Learning} Methoden, die sich als Ziel setzen eine verborgene Struktur zu analysieren, ohne zu gekenntzeichnete Daten zu haben. John Holland
 
-        Ein genetischer Algorithmus (\textit{genetic algorithm}), im folgenden als \textbf{GA} abgekürzt, ist ein Optimierungsverfahren, das von der natürlichen Selektion und Evolution inspiriert ist. Ein formaler Leitfaden findet sich im Fundamentalwerk zu genetischen Algorithmen \cite{ga}.\\[2mm]
+        Ein genetischer Algorithmus (\textit{genetic algorithm}), im Folgenden als \textbf{GA} abgekürzt, ist ein Optimierungsverfahren, das von der natürlichen Selektion und Evolution inspiriert ist. Ein formaler Leitfaden findet sich im Fundamentalwerk zu genetischen Algorithmen \cite{ga}.\\[2mm]
         Stellen wir uns anschaulicher Weise eine Gruppe Gazellen und einen Geparden vor.\\
 
         \begin{figure}[htbp]
@@ -23,37 +23,39 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             \caption{Illustration eines Geparden und einer Gazelle \label{fig:gazelleAndGepard}}
         \end{figure}
         \noindent
-        Sei unser Gepard durch seine Geschwindigkeit den Gazellen überlegen, dann wird die Gazellenherde über Zeit in ihrer Anzahl sinken. Dabei werden die langsamen Gazellen dem Geparden erliegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Die Überlebenden werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Gazellen-Babies bekommen die ähnlich schnell sind. Diesen Vorgang bezeichnen wir als \textbf{Kreuzung}. Mit welcher Wahrscheinlichkeit jedes einzelne Tier vor dem Geparden entwischen kann nennen wir \textbf{Fitness}.\\
+        Sei unser Gepard durch seine Geschwindigkeit den Gazellen überlegen, dann wird die Gazellenherde über Zeit in ihrer Anzahl sinken. Dabei werden die langsamen Gazellen dem Geparden erliegen und die Schnelleren überleben. Dieser Schritt wird als \textbf{Selektion} bezeichnet. Die Überlebenden werden sich fortpflanzen und mit hoher Wahrscheinlichkeit Gazellen-Babies bekommen, die ähnlich schnell sind. Diesen Vorgang bezeichnen wir als \textbf{Kreuzung}. Mit welcher Wahrscheinlichkeit jedes einzelne Tier vor dem Geparden entwischen kann, nennen wir \textbf{Fitness}.\\
+
+\newpage
+        \noindent
+        Jede Gazelle, oder auch \textbf{Individuum} genannt, hat eine eigene Fitness, die es bei der Geburt noch nicht weiß, da sie noch nie vor einem Geparden weglaufen musste. Erst nachdem sie einmal erfolgreich entwischt ist, kennen wir ihre Fitness.\\
         \\
-        Jede Gazelle, oder auch \textbf{Individuum} genannt, hat eine eigene Fitness, die es aber bei Geburt noch nicht weiß, da sie noch nie vor einem Geparden weglaufen musste. Erst nachdem sie einmal erfolgreich entwischt ist, können wir uns vorstellen, was ihre Fitness ist.\\
+        Ganz selten wird ein Gazellen-Baby geboren, das ein etwas längere Beine hat als alle anderen, dabei hatte keiner dieses Merkmal vor ihr. Das erlaubt ihr schneller zu laufen, was erstmal positiv ist. Diese Ausprägung hat jedoch den Nachteil, dass die Standhaftigkeit darunter leidet. Diese unerwartete Veränderung bei den Kindern heißt \textbf{Mutation}.\\
         \\
-        Ganz selten wird ein Gazellen-Baby geboren, das ein etwas längere Beine hat als alle anderen, dabei hatte keiner dieses Merkmal vor ihr. Das erlaubt ihr schneller zu laufen, was für sie erstmal positiv ist. Diese Ausprägung hat jedoch den Nachteil, dass die Standhaftigkeit darunter leidet. Diese unerwartete Veränderung bei den Kindern heißt \textbf{Mutation}.\\
-        \\
-        Fassen wir zusammen: Nachdem jede überlebte Gazelle sich fortgepflanzt hat, bekommen wir hoffentlich wieder eine vollzähliges Herde, die wir \textbf{Population} nennen. Nach all diesen Schritten fängt der Kampf um das Überleben wieder an und geht solange, bis sich entweder Gazellen entwickeln, die dem Gepard ständig entkommen können, oder bis die gesamte Population ausstirbt.\\
+        Fassen wir zusammen: Nachdem die überlebenden Gazellen sich fortgepflanzt haben, bekommen wir hoffentlich wieder eine vollzähliges Herde, die wir \textbf{Population} nennen. Nach all diesen Schritten fängt der Kampf um das Überleben wieder an und geht solange, bis sich entweder Gazellen entwickeln, die dem Gepard ständig entkommen können, oder bis die gesamte Population ausstirbt.\\
         \\
         Damit haben wir die wichtigsten Begrifflichkeiten von einem genetischen Algorithmus erklärt und kommen zur Umsetzung der einzelnen Schritte.
 
         \subsection{Individuen}
 
-            Ein Individuum besteht aus einer Kodierung, auch \textbf{Zustandsraum} genannt, die die aussagekräftigen Eigenschaften von ihm ausmachen. Für eine Gazelle wäre beispielweise die Kodierung aus \ref{tab:gaz-encoding} möglich.
+            Ein Individuum besteht aus einer Kodierung, auch \textbf{Zustandsraum} genannt, die aussagekräftigen Eigenschaften von ihm ausmachen. Für eine Gazelle wäre beispielweise die Kodierung aus Tabelle \ref{tab:gaz-encoding} möglich.
 
             \begin{multicols}{2}
                 \hfill \\[-10mm]
                 \begin{table}[H]
                     \begin{center}
-                    \begin{tabular}{ |l|r| } 
+                    \begin{tabular}{ |l|l| } 
                         \hline
-                        Höchstgeschwindigkeit    & $ 95\; \frac{km}{h}$   \\ \hline
-                        Beinlänge                & $ 86\; cm          $   \\ \hline
-                        Gewicht                  & $ 43\; kg          $   \\ \hline
-                        Hornlänge                & $ 12\; cm          $   \\ \hline
+                        Höchstgeschwindigkeit    &$95\; \frac{km}{h}$   \\ \hline
+                        Beinlänge                &$86\; cm          $   \\ \hline
+                        Gewicht                  &$43\; kg          $   \\ \hline
+                        Hornlänge                &$12\; cm          $   \\ \hline
                     \end{tabular}
                     \end{center}
                     \caption{Kodierung einer Gazelle \label{tab:gaz-encoding}}
                 \end{table}
 
                 \noindent
-                Die Aufgabe von unserem GA ist ein oder mehrere Individuen zu finden, die es schaffen vor dem Geparden wegzulaufen. Da wir aber nicht wissen, ob die vorgeschlagene Kodierung gut oder schlecht ist, müssen wir Gazellen mit zufälligen Eigenschaften erstellen und dann den Algorithmus arbeiten lassen.
+                Die Aufgabe von unserem GA ist ein, oder mehrere Individuen zu finden, die es schaffen vor dem Geparden wegzulaufen. Da wir aber nicht wissen, ob die vorgeschlagene Kodierung gut oder schlecht ist, müssen wir Gazellen mit zufälligen Eigenschaften erstellen und dann den Algorithmus anwenden.
             \end{multicols}
             \noindent
             Das schaffen wir, indem wir Grenzen für die Kodierung festlegen (Tabelle \ref{tab:gazelle-bounds}) und später zufällige Werte in diesen Rahmen ausprobieren.
@@ -75,15 +77,15 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
             % Für die Kodierung unseres Individuums eignet sich ein Array von Zahlen. Um die gesamte Population darzustellen würde ein 2-dimensionales Array reichen, wobei jedes Element ein einzelnes Individuum darstellt. \textit{(evtl Grafik)}
 
         \subsection{Evaluation}
-            Nachdem wir unsere Gazellenpopulation erstellt haben, müssen wir sie der Natur überlassen. Dann ist es unsere Aufgabe nach einer festen Zeitspanne und sie alle wieder aufzusammeln. Dadurch finden wir heraus wie viele Gazellen überlebet haben und können diese Information den nächsten genetischen Methoden übergeben.
+            Nachdem wir unsere Gazellenpopulation erstellt haben, müssen wir sie der Natur überlassen. Nach einer festen Zeitspanne ist es unsere Aufgabe alle Gazellen wieder aufzusammeln. Dadurch finden wir heraus wie viele überlebet haben und können diese Information den nächsten genetischen Methoden übergeben.
 
         \subsection{Selektion}
 
-            Nachdem die Evaluation vorbei ist, bekommen wir die Rückmeldung welche Gazellen überlebt haben. Aus dieser Menge können wir nun einen prozentualen Betrag wählen, die Eltern sein werden. In unserer Implementierung nennen wir diesen Parameter $\alpha$. Damit versichern wir, dass nur die erfolgreichen Eigenschaften weiter in der Population erhalten bleiben und der Rest wegfällt.
+            Nachdem die Evaluation vorbei ist, bekommen wir die Rückmeldung, welche Gazellen überlebt haben. Aus dieser Menge können wir nun einen prozentualen Betrag wählen, die Eltern sein werden. In unserer Implementierung nennen wir diesen Parameter $\alpha$. Damit versichern wir, dass nur die erfolgreichen Eigenschaften weiter in der Population erhalten bleiben und der Rest wegfällt.
 
         \subsection{Kreuzung}
             Die erfolgreichen Individuen wurden ausgewählt und können sich nun fortpflanzen. Dafür nehmen wir jeweils zwei Individuen und vertauschen zufällig ihre Ausprägungen. Dieses Verfahren haben wir in den Tabellen \ref{fig:enc-dad}, \ref{fig:enc-mom}, \ref{fig:child-1}, \ref{fig:child-2} dargestellt.
-            \\[8mm]
+            \\[4mm]
             \begin{multicols}{2}
                 \begin{table}[H]
                     \begin{center}
@@ -145,14 +147,17 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorit
                     \caption{Kodierung vom Kind Nr.2 \label{fig:child-2}}
                 \end{table}
             \end{multicols}
+            \hfill \\[4mm]
             \noindent
             Das können wir nun sooft wiederholen, wie wir Eltern finden, oder bis wir genug Kinder produziert haben.
 
-            \newpage
+\newpage
+            \noindent
             In unserem Beispiel haben wir die Kinder mit dem folgenden Python-Code konstruiert:
             \hfill \\
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{python}
+import random
 vater  = [56,42,51,10]
 mutter = [62,55,49,8]
 kind1  = []
@@ -169,16 +174,16 @@ for i in range(kodierung.length):
             \end{mdframed}
             \hfill \\[4mm]
             \noindent
-            In \textit{Z.1-2} definieren wir die Eigenschaften der Mutter und des Vaters. Dann iterieren wir durch die Länge der Kodierung (\textit{Z.5}) und wählen mit einer 50\% Wahrscheinlichkeit (\textit{Z.6-7}) aus für jedes Kind aus, ob die gewählte Eigenschaft vom Vater oder von der Mutter kommt.\\
+            In \textit{Z.2-3} definieren wir die Eigenschaften der Mutter und des Vaters. Dann iterieren wir durch die Länge der Kodierung (\textit{Z.6}) und wählen mit einer 50\% Wahrscheinlichkeit (\textit{Z.7-8}) für jedes Kind aus, ob die gewählte Eigenschaft vom Vater, oder von der Mutter kommt.\\
 
             \noindent
-            Diese Art und Weise zwei Individuen zu kreuzen nennt sich \textbf{n-point crossover}, weil wir die Kodierung an zufällig vielen Stellen unterbrechen. Es gibt noch andere Kreuzungsmethoden die eine eine feste Anzahl von Aufteilungen benutzen, wie \textbf{one-} oder \textbf{two-point crossover}. \\
+            Diese Art und Weise zwei Individuen zu kreuzen nennt sich \textbf{n-point crossover}, weil wir die Kodierung an zufällig vielen Stellen unterbrechen. Es gibt noch andere Kreuzungsmethoden, die eine feste Anzahl von Aufteilungen benutzen, wie \textbf{one-} oder \textbf{two-point crossover}. \\
             \\
             \noindent
-            Um einen Unterschied zwischen diesen Methoden zu erkennen, stellen wir uns vor dass die Beinlänge im Zusammenhang mit der Höchstgeschwindigkeit steht, weil längere Beine eine größere Sprungweite ermöglichen. Wenn nun ein Kind gezeugt wird, dass lange Beine vererbt, wird die Höchstgeschwindigkeit dadurch nicht automatisch angepasst. Deshalb wäre es besser, wenn diese Ausprägungen zusammen übernommen werden, weil dadurch eine höhere Fitness garantiert werden kann. Kreuzungsmethoden wie \textit{n-point crossover} verletzen diese Eigenschaft eher als wie \textit{one-point crossover}.\\
+            Um einen Unterschied zwischen diesen Methoden zu erkennen, stellen wir uns vor, dass die Beinlänge im Zusammenhang mit der Höchstgeschwindigkeit steht, weil längere Beine eine größere Sprungweite ermöglichen. Wenn nun ein Kind gezeugt wird, dass lange Beine vererbt bekommt, wird die Höchstgeschwindigkeit dadurch nicht automatisch angepasst. Deshalb wäre es besser, wenn diese Ausprägungen zusammen übernommen werden, weil dadurch eine höhere Fitness garantiert werden kann. Kreuzungsmethoden wie \textit{n-point crossover} verletzen diese Eigenschaft eher, als wie \textit{one-point crossover}.\\
             \\
             \noindent
-            Je nach Implementierung verwendet man nur eins der beiden Kinder, weil das die Varianz der Gesamtpopulation weniger beeinflusst und trotzdem keinerlei Information verloren geht, weil die Eltern die Kodierung weiter tragen.
+            Je nach Implementierung verwendet man nur eins der beiden Kinder, weil die Varianz der Gesamtpopulation damit weniger beeinflusst wird und trotzdem keinerlei Information verloren geht, weil die Eltern die Kodierung weiterhin behalten.
 
 \newpage
         \subsection{Mutation}

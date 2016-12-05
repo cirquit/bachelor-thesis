@@ -219,16 +219,13 @@
                 \caption{\label{kodierung} Regeln für die Wahrscheinlichkeitsverteilung der Aktionen}
             \end{figure}
 
-%            \subsubsection*{Kreuzung}
-%            Die Kreuzung wurde auf zwei verschieden Arten umgesetzt, wobei sie im Vergleich an der vollständigen Simulation gleich gut abgeschnitten haben.
-
             \subsubsection*{Generierung der Individuen}
             Für die Generierung von einer Wahrscheinlichkeitsverteilung über $n$ Aktionen werden $n-1$ zufällige Zahlen erstellt, sortiert und es wird jeweils eine $0$ von vorne und eine $100$ am Ende angehängt.
 
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{haskell}
 > let n = 5
-> take (n-1) <\$> getRandomRs (0,100)
+> take (n-1) <$> getRandomRs (0,100)
 [87, 15, 55, 38]
 > sort it
 [15, 38, 55, 87]
@@ -604,4 +601,3 @@ sort
             \noindent
             Sicherheit und die \textit{Planung} machen auf lange Sicht viel mehr Sinn und sollten verstärkt werden. Der CoSyNE Algorithmus unterstützt diese Art von Entwicklung in dieser Dimensionalität schlechter als die naive Suche über alle Parameter. Es ist zu überprüfen ob diese Aussage für gleichzeitiges Lernen in einem 2v1 Setting übereinstimmt.\\[2mm]
 
-            \begin{center} \textit{(Link zur Best-Of-Compilation Video)} \end{center}

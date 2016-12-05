@@ -9,45 +9,27 @@
 Die Relevanz von Machine Learning Algorithmen und \textbf{Deep Learning} \cite{dloverview} hat in den letzten Jahren seit der Weiterentwicklung von \textbf{GPUs} (Graphics Processing Unit) stark zugenommen. Das Training wird dabei durch die Optimierungsmethode \textbf{SGD} (Stochastic Gradient Descend) durchgeführt, die uns erlaubt durch das Ableiten einer multidimensionalen Funktion zu einer Lösung zu konvergieren. Damit wurden bemerkenswerte Maßstäbe in der Beschreibung von Bildern in \textbf{ImageNet} \cite{NIPS2012_4824}, dem Lernen einer Strategie für das Brettspiel \textbf{Go} \cite{go} oder der Nachahmung der menschlichen Sprache durch \textbf{WaveNet} \cite{wavenet} gesetzt. \\
 
 \noindent
-Leider sind dadurch andere Methoden zur Entwicklung von neuronalen Netzen aus dem Fokus gefallen, die zu der Familie von \textbf{unsupervised Learning} gehören. Sie können umfangreicher eingesetzt werden, weil sie weniger Einschränkungen für die Anwendungsdomäne haben. Sie benötigen keine vorher beschriftete Daten und unterstützen simulationbasiertes Training. \\
+Leider sind dadurch andere Methoden zur Entwicklung von neuronalen Netzen aus dem Fokus gefallen, die zu der Familie von \textbf{unsupervised Learning} gehören. Sie können vielseitiger eingesetzt werden, weil sie weniger Einschränkungen für die Anwendungsdomäne haben. Sie benötigen keine vorher beschriftete Daten und eignen sich für simulationbasiertes Training mit seltenen Fitnesssignalen.\\
 
 \noindent
-Insbesondere untersuchen wir den \textbf{CoSyNE} Algorithmus der verschiedene Techniken verknüpft um die Suche im Raum von neuronalen Netzen zu beschleunigen. Dabei zeigen wir einen bisher nicht gesehenen Vergleich mit dem \textbf{Neuroevolutionsalgorithmus} ohne den zusätzlichen Permutationsschritt. Hinzu kommt der \textbf{Kompressionsfaktor von 1:55} im Gewichtsraum für ein größeres rekurrenten Netz als im Ursprungspaper \cite{cosyne1}.
-
-% [dloverview] 1-s2.0-S0893608014002135-main.pdf
-%              http://www.sciencedirect.com/science/article/pii/S0893608014002135
-% [NIPS2012_4824] https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
-%                 4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
-% [go] http://airesearch.com/wp-content/uploads/2016/01/deepmind-mastering-go.pdf
-%      deepmind-mastering-go.pdf
-% [wavenet] https://arxiv.org/pdf/1609.03499.pdf
-%           1609.03499.pdf
+Insbesondere untersuchen wir den \textbf{CoSyNE} Algorithmus, der verschiedene Techniken verknüpft, um die Suche im Raum von neuronalen Netzen zu beschleunigen. Dabei zeigen wir einen bisher nicht gesehenen Vergleich mit dem \textbf{Neuroevolutionsalgorithmus} ohne den zusätzlichen Permutationsschritt. Hinzu kommt der \textbf{Kompressionsfaktor von 1:55} im Gewichtsraum für ein größeres rekurrenten Netz als in der Literatur \cite{cosyne1}.
 
 \section{Aufgabenstellung}
-% \begin{itemize}
-%     \item Verschiedene Techniken auf multi agenten systeme anzuwenden
-%     \item Kooperation und homogenität von Gewichten im Netz untersuchen
-%     \item Schauen ob ichs hinkriege
-% \end{itemize}
 
-In dieser Arbeit beschäftigen wir uns mit der Entwicklung von neuronalen Netzen mithilfe von genetischen Algorithmen für die Fußballdomäne \textbf{Half Field Offense} \cite{hfo}. Sie hat ein \textbf{spärliches Fitnesssignal}, ein hochdimensionalen kontinuierlichen Zustandsraum und keine Möglichkeit für jede Situation eine perfekte Aktion festzulegen. Damit bietet sie Parallelen zu echte-welt Problemen für die man entweder nicht genug Wissen sammeln konnte, oder wollte.  \\
+In dieser Arbeit beschäftigen wir uns mit der Entwicklung von neuronalen Netzen mithilfe von genetischen Algorithmen für die Fußballdomäne \textbf{Half Field Offense} \cite{hfo}. Sie hat ein \textbf{spärliches Fitnesssignal} ohne Gradient, ein hochdimensionalen kontinuierlichen Zustandsraum und keine Möglichkeit für jede Situation eine perfekte Aktion festzulegen. Damit bietet sie Parallelen zu echte-welt Problemen für die man entweder nicht genug Wissen sammeln konnte, oder wollte.  \\
 
 \noindent
 Wir untersuchen verschiedene Kodierungen und Implementierungen für neuroevolutionäre Algorithmen und versuchen den Nutzen für andere Domänen mit ähnlichen Einschränkungen zu erahnen.\\
 
 
-% [4] http://www.cs.utexas.edu/~pstone/Papers/bib2html-links/ALA16-hausknecht.pdf
-%     ALA16-hausknecht.pdf
 \newpage
 \section{Motivation}
 
-Die Industrie interessiert sich für allgemeine Problemlösungen, die in kurzer Zeit, mit wenig Daten und am besten automatisch zu einem akzeptablen Ergebniss kommt. Leider steht das den üblichen \textbf{Deep Learning} Techniken gegenüber, die lange Trainigszeiten haben, viele nicht homogene Daten in normalisierter Form brauchen und von Hand angepasste Fitness Funktionen benötigen die für das Ziel optimiert wurden. \\
+Die Industrie interessiert sich für allgemeine Problemlösungen, die in kurzer Zeit, mit wenig Daten und am besten automatisch zu einem akzeptablen Ergebniss kommt. Leider steht das den üblichen \textbf{Deep Learning} Techniken gegenüber, die lange Trainigszeiten haben, viele nicht homogene Daten in normalisierter Form brauchen und Fitness Funktionen benötigen, die von Hand für das Ziel angepasst wurden. \\
 
 \noindent
-Deshalb betrachten verschiedene Möglichkeiten mithilfe eines GAs neuronalen Netzen zu entwickeln die als Fitnessignal lediglich das Ziel bekommen und sich in einem hochdimensionalen, stetig verändernden, kontinuierlichen Zustandsraum mit mehreren Akteuren bewegen.
+Deshalb betrachten wir verschiedene Möglichkeiten mithilfe eines genetischen Algorithmus neuronalen Netze zu entwickeln, die als Fitnessignal lediglich das Ziel bekommen und sich in einem hochdimensionalen, stetig verändernden, kontinuierlichen Zustandsraum mit mehreren Akteuren bewegen.
 
-
-% Viele Domänen mit denen man sich in der Industrie auseinandersetzt benutzen Deep Learning Methoden die darauf basieren dass man eine Policy oder einen Klassifikator trainiert. Leider hat man nicht oft den Luxus genug Daten zu besitzen, genug Zeit zu haben um diese zu sammeln, oder man kann keine geeignete Abstraktion finden die für die gesamte Problemstellung gut genug funktioniert. Als Teillösung \textbf{Fitness Engineering} betrieben, also die Anpassung des Rewardsignals wenn die Aufgaben von vielen Zeitschritten und kontinuierlichen Aktionsketten abhängen. Deshalb habe ich mich alternative Techniken zur Entwicklung von neuronalen Netzen untersucht.
 \section{Aufbau der Arbeit}
 
-Im Rahmen dieser Arbeit werden im Kapitel 2 die Grundlagen von Genetischen Algorithen und deren Verknüpfung zu neuronalen Netzen und der Cross Entropy Method erklärt und anschaulich dargestellt. Kapitel 3 beschäftigt sich mit der Domäne und der Parametrisierung der Algorithmen. Im Kapitel 4 beschreiben wir die Resultate und vergleichen sie. Das Kapitel 5 gibt einen Ausblick in weitere Verbesserungsmöglichkeiten, stellt Vergleiche zu bisherigen Resultaten von CoSyNE dar und behandelt verwandte Felder.
+Im Rahmen dieser Arbeit erklären wir im Kapitel 2 die Grundlagen von genetischen Algorithmen, die Hinführung zur Entwicklung von neuronalen Netzen, den CoSyNE Algorithmus und die Cross Entropy Method. Kapitel 3 beschäftigt sich mit der Domäne und der Parametrisierung aller getesteten Algorithmen. Im Kapitel 4 beschreiben wir die Resultate und vergleichen sie untereinander. Das Kapitel 5 gibt einen Ausblick in weitere Verbesserungsmöglichkeiten, stellt Vergleiche zu bisherigen Resultaten von CoSyNE dar und behandelt verwandte Felder.
