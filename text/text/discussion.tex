@@ -1,22 +1,22 @@
 \addtocontents{toc}{\protect\newpage}
 \chapter{Diskussion}
-    In diesem Kapitel schauen wir uns die Ergebnisse im Bezug zur Problemstellung und dessen Einschränkungen an, erwägen den potenziellen Nutzen für ähnliche Probleme und stellen Verbesserungsvorschläge dar. Das Schlusswort umfasst verwandte Felder die im Bezug zu unseren Algorithmen stehen.
+    In diesem Kapitel schauen wir uns die Ergebnisse aus dem Vergleich zwischen den verschiedenen Algorithmen und deren Einschränkungen an, erwägen den potenziellen Nutzen für ähnliche Probleme und stellen Verbesserungsvorschläge dar. Das Schlusswort umfasst verwandte Felder die im Bezug zu unseren Algorithmen stehen.
     \section{Anwendungsmöglichkeiten}
-        Unsere Aufgabe hat Einschränkungen, die für viele Probleme aus der realen Welt zutreffen, wie seltene Fitnesssignale, kontinuierliche und verrauschte Zustandsräume, sowie aufeinander aufbauende Aktionsketten. Daher glauben wir dass die potenziellen Anwendungsgebiete wie Kontrolle von Robotern, sowie die Nutzung in Multi-Agenten Systemen möglich sind.\\
+        Unsere Aufgabe hat Einschränkungen, die für viele Probleme aus der realen Welt zutreffen, wie seltene Fitnesssignale, kontinuierliche und verrauschte Zustandsräume, sowie aufeinander aufbauende Aktionsketten. Daher glauben wir dass die Anwendungsgebiete, wie autonomes Verhalten voneinander abhängigen Robotern, selbstfahrende Autos oder das Entdecken von neuen Lösungswegen mithilfe von simplen Fitnessfunktionen, mit diesen Techniken weitergebracht werden kann. \\
 
         \noindent
-        Vorallem war es interessant zu sehen, dass KNNs entwickelt werden können, die lediglich aus 20 Koeffizienten bestehen, extrem korellierte Gewichte produzieren und trotzdem lernen können. Ohne die Tests könnten man aus Abbildung \ref{fig:dct-my-case} ableiten, dass es extrem unwahrscheinlich ist, dass das befüllte Netz in irgendeiner Art Nutzen bringt. Deshalb können wir die Annahme, dass Gewichte in neuronalen Netzen keine große Abweichung zueinander haben müssen, bestätigen \cite{cosyne1}. Es wäre interessant zu schauen, ob bei Netzen die viel größer sind ähnliche Ergebnisse möglich wären. \\
+        Vorallem war es interessant zu sehen, dass KNNs entwickelt werden können, die lediglich aus 20 Koeffizienten bestehen, extrem korellierte Gewichte produzieren und trotzdem lernen können. Ohne die Tests könnten man aus Abbildung \ref{fig:dct-my-case} ableiten, dass es extrem unwahrscheinlich ist, dass das befüllte Netz in irgendeiner Art Nutzen bringt. Deshalb können wir die Annahme, dass Gewichte in neuronalen Netzen keine große Abweichung zueinander haben müssen, bestätigen \cite{cosyne1}. Es wäre interessant zu schauen, ob bei Netzen die viel größer sind, ähnliche Ergebnisse möglich wären. \\
 
         \noindent
-        CoSyNE wirft mit der treppenförmigen Fitnesskurve die Idee auf, ob damit eine stetige Verbesserung, oder explizit keine Verschlechterung als Garantie gegeben werden kann. Diese Eigenschaft wurde bisher in keinem der Ursprungspaper untersucht.
+        CoSyNE wirft mit der treppenförmigen Fitnesskurve die Idee auf, ob eine stetige Verbesserung, oder explizit keine Verschlechterung als Garantie gegeben werden kann. Diese Eigenschaft wurde bisher nicht in der Literatur erwähnt und wäre unter dem statistischen Sicherheitsaspekt interessant zu untersuchen.
 
 \newpage
 
-    \section{Ausblick}
+    \section{Ausblick} \label{ausblick}
         Diese Arbeit hat leider einen festen Zeitrahmen gehabt und wir konnten vieles nicht ausprobieren. Wir sprechen mögliche Verbesserungen an, die man in zukünftigen Arbeiten beachtet werden können.
 
         \subsection*{Genetische Algorithmen}
-            Die genetische Suche wurde mit ausgewogenen Parametern durchgeführt, die jedoch keine besondere Spezialisierung für die Anwendung bekommen haben. Darunter fällt der Mutationsparamter in CoSyNE, der im Urpsrungspaper sehr hoch gewählt war \cite{cosyne2} und die Begrenzung der Koeffizienten auf [-3,3] die wir gewählt haben, weil es keine Quellen dafür gab. 
+            Die genetische Suche wurde mit ausgewogenen Parametern durchgeführt, die jedoch keine besondere Spezialisierung für die Anwendung bekommen haben. Darunter fällt der Mutationsparamter in CoSyNE, der in der Literatur sehr hoch gewählt war \cite{cosyne2} und die Begrenzung der Koeffizienten auf [-3,3] die wir gewählt haben, weil es keine Literatur dafür gab. 
         \subsection*{Aufbau des neuronalen Netzes}
             Der Aufbau des KNNs kann mit von der Schicht aus LSTM Neuronen in Tiefe und Größe verändert werden, da wir potenziell bessere Lernfähigkeiten bekommen können. Vorallem in der Kombination mit der DCT Kompression besteht die Möglichkeit Netze mit über 1 Million Gewichten erfolgreich zu kodieren \cite{cosyne4}. \\[2mm]
             \noindent
@@ -26,14 +26,16 @@
             Die Cross Entropy Method Lösung wurde lediglich in der einfachsten Form umgesetzt und es fand weder Repopulation mit neuen Individuen statt, noch haben wir einen Mutationsschritt gehabt. Das Hinzufügen von diesen Methoden würde wahrscheinlich zu besseren Lösungen führen. Viele Verberbesserungen finden sich auch in \cite{cem}.
 
         \subsection*{Aktionsraum}
-            Der High-Level Aktionsraum wurde während der Arbeit im Urpsrungspaper erweitert, sodass wir Aktionen wie \textit{Go\_To\_Ball} oder \textit{Reduce\_Angle\_To\_Ball} nicht benutzt haben. Da die Dokumentation der übrigen Aktionen sehr spärlich ausgefallen ist, würden eigene Aktionen eine bessere Möglichkeit bieten über die Effektivität der Algorithmen zu argumentieren. Sie würden auch sehr wahrscheinlich mehr Taktiken zulassen.
+            Der High-Level Aktionsraum wurde während der Arbeit im HFO Framework erweitert, sodass wir Aktionen wie \textit{Go\_To\_Ball} oder \textit{Reduce\_Angle\_To\_Ball} nicht benutzt haben. Da die Dokumentation der übrigen Aktionen sehr spärlich ausgefallen ist, würden eigene Aktionen eine bessere Möglichkeit bieten über die Effektivität der Algorithmen zu argumentieren. Sie würden auch sehr wahrscheinlich mehr Taktiken zulassen.
 
         \subsection*{Multi-Agenten Systeme}
-            Da die Simulation skalierend modelliert wurde, erlaubt sie uns einfaches Testen mit mehreren Agenten, wie 2vs1, oder 4vs4. Leider haben wir keine Möglichkeit gehabt diese Domänen ausführlich zu testen. 
+            Da die Simulation skalierend modelliert wurde, erlaubt sie uns einfaches Testen mit mehreren Agenten, wie 2vs1, oder 4vs4. Leider hätten ausführliche Tests dieser Domänen den zeitlichen Rahmen der Bachelorarbeit maßlos gesprengt.
 
 \newpage
 
     \section{Schlusswort}
+        TODO
+
 
         \subsection*{Implementierung für OpenAI Gym}
             Während der Entwicklung dieser Arbeit gab es eine Implementierung der HFO Domäne für das 1vs1 Szenario in der OpenAI Gym, das ein bekanntes machine learning Framework in Python ist. Die Umsetzung von unseren Algorithmen dafür wäre der nächste logische Schritt um die neuroevolutionären Methoden mehr in den Fokus zu Rücken. Diese spezielle Implementierung erlaubt uns Schritte vorzusimulieren, da der Torwart deterministisch ist. Damit können andere Trainingstechniken, wie Backpropagation, benutzt werden, die einen interessanten Vergleich anstellen.

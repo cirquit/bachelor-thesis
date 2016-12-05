@@ -280,23 +280,23 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
 
             Die Idee hinter künstlichen neuronalen Netzen ist der Versuch die Struktur vom menschliche Gehirn nachzuahmen. Ein übliches ANN besteht jedoch aus vielfach weniger Neuronen, meist hundert bis mehrere tausend, wobei unser Gehirn 86 Milliarden\cite{brainsize} besitzt.\\
             \noindent
-            Ein künstliches Neuron kann man sich anschaulich als eine Formel vorstellen, die \textbf{eine oder mehrere Eingaben} über \textbf{gewichtete Pfade} bekommt, sie \textbf{aufsummiert} und eine \textbf{Aktivierungsfunktion} auf das Ergebnis anwendet, die es auf den Bereich $[0,\infty]$, $[0,1]$, oder $[-1,1]$ abbildet. Dieses Resultat nennen wir $\hat{y}$:
+            Ein künstliches Neuron kann man sich anschaulich als eine Formel vorstellen, die \textbf{eins oder mehrere Eingabesignale} über \textbf{gewichtete Pfade} bekommt, sie \textbf{aufsummiert} und eine \textbf{Aktivierungsfunktion} auf das Ergebnis anwendet, die es auf den Bereich $[0,\infty]$, $[0,1]$, oder $[-1,1]$ abbildet. Dieses Resultat nennen wir $\hat{y}$:
 
             \begin{figure}[H]
                 \begin{mdframed}
                     \noindent
                     Sei $n$ die Anzahl der Eingaben,\\
-                    \hspace*{4.5mm}    $X = \{x_0,x_1,...,x_n\}$ die Eingabe,\\
-                    \hspace*{4.5mm}    $W = \{w_0, w_1,...,w_n\}$ die jeweiligen Gewichte, \\
+                    \hspace*{4.5mm}    $X = \{x_1,x_2,...,x_n\}$ ein Vektor der Eingabesignale,\\
+                    \hspace*{4.5mm}    $W = \{w_1,w_2,...,w_n\}$ ein Vektor der jeweiligen Gewichte, \\
                     \hspace*{4.5mm}    $\sigma(x) = max(x,0)$ die Aktivierungsfunktion:\\[4mm]
-                    \hspace*{50mm} \Resize{4.5cm}{$\widehat{y} = \sigma(\sum^{n}_{i = 0} x_i \cdot w_i)$}
+                    \hspace*{50mm} \Resize{4.5cm}{$\widehat{y} = \sigma(\sum^{n}_{i = 1} x_i \cdot w_i)$}
                 \end{mdframed}
                 \formforfigure
                 \caption{\label{neuron-math} Formel zur Berechnung der Ausgabe eines Neurons}
             \end{figure}
 
             \noindent
-            Wenn man nun mehrere von diesen Neuronen in Reihe zusammenschaltet (Abbildung \ref{fig:nntikz}), kriegt man ein vollständig vermaschtes Netz, welches grundsätzlich in drei Schichten unterteilt werden kann.
+            Wenn man nun mehrere von diesen Neuronen in Reihe zusammenschaltet (Abbildung \ref{fig:nntikz}), kriegt man ein vollständig vermaschtes Netz, welches grundsätzlich in drei Schichten unterteilt werden kann:
             \begin{itemize}
                 \setlength{\itemsep}{5pt}
                 \item \textbf{Eingabeschicht} \\
@@ -365,26 +365,26 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
 %                            \draw [->] (input-\i) -- node [sloped, above, near start] {$w_{\n,\m}$} (hidden-\j); 
 
                     \draw [->] (input-1) -- node [sloped, above]           {$w_{1,1}$} (hidden-1);
-                    \draw [->] (input-1) -- node [sloped, above, near end] {$w_{1,2}$} (hidden-2);
+                    \draw [->] (input-1) -- node [sloped, above, near end] {$w_{1,m}$} (hidden-2);
 
                     \draw [->] (input-2) -- node [sloped, above] {$w_{2,1}$} (hidden-1);
-                    \draw [->] (input-2) -- node [sloped, below, pos=0.68] {$w_{2,2}$} (hidden-2);
+                    \draw [->] (input-2) -- node [sloped, below, pos=0.7] {$w_{2,m}$} (hidden-2);
 
                     \draw [->] (input-3) -- node [sloped, above, pos=0.6] {$w_{3,1}$} (hidden-1);
-                    \draw [->] (input-3) -- node [sloped, below, pos=0.6] {$w_{3,2}$} (hidden-2);
+                    \draw [->] (input-3) -- node [sloped, below, pos=0.6] {$w_{3,m}$} (hidden-2);
 
-                    \draw [->] (input-4) -- node [sloped, above, pos=0.8] {$w_{4,1}$} (hidden-1);
-                    \draw [->] (input-4) -- node [sloped, above] {$w_{4,2}$} (hidden-2);
+                    \draw [->] (input-4) -- node [sloped, above, pos=0.8] {$w_{n,1}$} (hidden-1);
+                    \draw [->] (input-4) -- node [sloped, above, pos=0.625] {$w_{n,m}$} (hidden-2);
 
 %                    \foreach \i [count=\n] in {1,2}
 %                        \foreach \j [count=\m] in {1,2}
 %                            \draw [line width = 0.0mm, ->] (hidden-\i) -- node [midway, sloped, above=0.3mm] {$v_{\n, \m}$} (
 %                            output-\j);
 
-                \draw [line width = 0.0mm, ->] (hidden-1) -- node [midway, sloped, above=0.3mm] {$v_{1, 1}$} (output-1);
-                \draw [line width = 0.0mm, ->] (hidden-1) -- node [midway, sloped, above=0.3mm, pos=0.8] {$v_{1, 2}$} (output-2);
-                \draw [line width = 0.0mm, ->] (hidden-2) -- node [midway, sloped, above=0.3mm, pos=0.8] {$v_{1, 1}$} (output-1);
-                \draw [line width = 0.0mm, ->] (hidden-2) -- node [midway, sloped, above=0.3mm] {$v_{1, 2}$} (output-2);
+                \draw [->] (hidden-1) -- node [midway, sloped, above=0.3mm] {$v_{1, 1}$} (output-1);
+                \draw [->] (hidden-1) -- node [midway, sloped, above=0.3mm, pos=0.8] {$v_{1, k}$} (output-2);
+                \draw [->] (hidden-2) -- node [midway, sloped, above=0.3mm, pos=0.8] {$v_{n, 1}$} (output-1);
+                \draw [->] (hidden-2) -- node [midway, sloped, above=0.3mm] {$v_{n, k}$} (output-2);
 
                     \foreach \l [count=\x from 0] in {Eingabe, Versteckte, Ausgabe}
                         \node [align=center, above] at (\x*2,2) {\l \\ Ebene};
@@ -432,8 +432,8 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                     \begin{mdframed}
                         \noindent
                         Sei $m$ die Größe des Trainingssets,\\
-                        \hspace*{4.5mm} $Y = \{y_0, y_1,...,y_m\}$ ein Vektor von Soll-Ergebnissen, \\
-                        \hspace*{4.5mm} $\widehat{Y} = \{\widehat{y}_0, \widehat{y}_1,...,\widehat{y}_m\}$ ein Vektor von Resultaten des ANNs, dann ist\\[4mm]
+                        \hspace*{4.5mm} $Y = \{y_0, y_1,\dotsc,y_m\}$ ein Vektor von Soll-Ergebnissen, \\
+                        \hspace*{4.5mm} $\widehat{Y} = \{\widehat{y}_0, \widehat{y}_1,\dotsc,\widehat{y}_m\}$ ein Vektor von Resultaten des ANNs, dann ist\\[4mm]
                         \hspace*{30mm} \Resize{7cm}{cost$(Y, \widehat{Y}) = \frac{1}{m} \cdot \sum_{j = 0}^{m} \; (y_j - \widehat{y}_j)^2$}\\[4mm]
                         die mittlere quadratische Abweichung.
                     \end{mdframed}
@@ -444,17 +444,20 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                 Eine der möglichen Kostenfunktionen sieht man in Formel \ref{cost-math}, die \textbf{mittlere quadratische Abweichung} (\textit{mean squared error}, MSE). Je kleiner das Ergebnis dieser Kostenfunktion ist, umso besser kann unser ANN die Ergebnisse nachahmen. Um die Kosten für eine bestimmte Eingabe zu minimieren, müssen wir herausfinden welche Gewichte aus dem Netz den größten Einfluss hatten und diese entsprechend anpassen. \\
 
                 \noindent
-                Anders gesagt, müssen wir den negativen Gradienten der Kostenfunktion entlang wandern. Da diese Kostenfunktion mehrere Variablen besitzt $(w_{1} \dots w_{n})$, müssen wir die partielle Ableitung abhängig von jedem Gewicht nehmen und bekommen damit die Richtung in die wir gehen müssen um das Minima anzustreben.\\
+                Anders gesagt, müssen wir den negativen Gradienten der Kostenfunktion entlang wandern. Um ihn zu berechnen, sehen wir in \ref{neuron-math} und \ref{fig:nntikz}, dass die einzigen Faktoren, die das Ergebnis beeinflussen, die Gewichte $(w_1, \dotsc , w_n)$ sind, weil die Eingaben $(x_1, \dotsc , x_n)$ damit multipliziert und aufsummiert werden. Die Aktivierungsfunktion bildet diese Summe lediglich in einen beschränktes Subset der reellen Zahlen ab. \\
 
                 \noindent
-                Diese partielle Ableitung wird für pro Eingabe ($x_0 \dots x_n$) und dem voraussichtlichten Ergebnis $\widehat{y}_j$ für jedes Gewicht ausgerechnet. Daraus bekommen wir eine Funktion und können sie benutzen, um eine \textbf{Anpassungsregel} für jedes Gewicht zu erstellen. 
+                Um ein Netz für bestimme $(x_1, \dotsc , x_n)$ zu trainieren, rechnen wir die jeweilige Vorraussage $\; \widehat{y} = \sigma(\sum^{n}_{i = 1} w_i \cdot x_i) \;$ aus und setzen es in die Kostenfunktion ein. Da wir nur ein einziges Ergebnis haben, wird in der Kostenfunktion die Differenz zum Sollergebnis $y$ berechnet und quadriert, $\; \text{cost}(y, \widehat{y}) = (y - \widehat{y})^2 \;$. \\
+
+                \noindent
+                Wenn der berechnete Fehler groß ist, können wir diese Funktion partiell nach dem Gewicht $w_i$ ableiten, um aus dem Gradienten eine \textbf{Anpassungsregel} herzuleiten. Wenn wir auf jedes Gewicht diese Regel, die von dieser bestimmten Eingabe abhängig ist, anwenden, wird der Einfluss derart verändert, dass sie den Fehler den Kostenfunktion minimieren.
 
                 \begin{figure}[H]
                     \begin{mdframed}
                         \noindent
                         Sei $\widehat{y}$ definiert als Ergebnis des Netzes aus \ref{neuron-math}, dann gilt \\
                         pro Beobachtung $\widehat{y}_j \in \widehat{Y}$ und erwartetes Ergebnis $y_j \in Y$, \\
-                        leiten wir für jedes Gewicht $w_i \in W$ ab:\\[4mm]
+                        leiten wir nach dem Gewicht $w_i$ ab:\\[4mm]
     \hspace*{40mm} \Resize{5.5cm}{$\frac{\partial \text{cost}(y_j,\widehat{y}_j)}{\partial w_i} = \frac{\partial}{\partial w_i} (y_j - \widehat{y}_j)^2$} \\[2mm]
     \hspace*{62.3mm} \Resize{7.0cm}{$ = \frac{\partial}{\partial w_i} (y_j - max(\sum_{i = 0}^{n} x_i \cdot w_i ,0))^2$} \\[2mm]
     \hspace*{62.3mm} \Resize{6.25cm}{$ = -2 \cdot \frac{\partial}{\partial w_i} \; max(\sum_{i = 0}^{n} x_i \cdot w_i ,0)$} \\[2mm]
@@ -469,30 +472,33 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                                                                              \end{cases}$}
                     \end{mdframed}
                     \formforfigure
-                    \caption{\label{derivative} Berechnung der Anpassungsregel für jedes Gewicht nach MSE}
+                    \caption{\label{derivative} Beispielhafte Berechnung der Anpassungsregel für $w_i$ nach MSE}
                 \end{figure}
 
 
             \noindent
-            Mithilfe der Anpassungsregel aus \ref{derivative}, die zum alten Gewicht die partielle Ableitung addiert, können wir jedes Mal, wenn das Ergebnis des ANNs zu stark vom Sollergebnis abweicht, diese Regel auf jedes Gewicht anwenden.\\
+            Mithilfe der Anpassungsregel aus \ref{derivative}, die zum alten Gewicht die partielle Ableitung addiert, können wir jedes Mal, wenn das Ergebnis des ANNs zu stark vom Sollergebnis abweicht, diese Regel auf jedes Gewicht anwenden. Damit werden wir uns immer einem Extrema der Kostenfunktion annähern und diese Methode nennt sich \textbf{Fermat's Theorem zu Kritischen Punkten} \cite{miller2009fermat}.\\
 
             \noindent
-            Für unser einfaches Beispiel ist es wahrscheinlich, dass nach dem Anpassen der Gewichte unser ANN das Sollergebnis besser erreicht. Damit wird die Kostenfunktion kleiner werden und wir können mit der nächsten Trainingdaten weitermachen. \\
+            Für unser einfaches Beispiel ist es wahrscheinlich, dass nach dem Anpassen der Gewichte unser ANN das spezifisches Sollergebnis besser erreicht. Damit wird der Fehler reduziert und wir können mit der nächsten Eingaben weitermachen. \\
 
             \noindent
             Leider haben wir noch ein paar Feinheiten aus dem Fokus gelassen, die sich den Mantelbegriff \textbf{Regularisierung} teilen. Eins der Probleme die Regularisierung löst, passiert wenn unser ANN sich zu stark auf die Trainingsdaten festlegt, aber in der echten Anwendung extreme Abweichungen besitzt. Um das sogenannte \textbf{Overfitting} zu verhindern, gibt es verschiedene Techniken, wie die Anpassung der Lernrate, \textit{weight decay}, \textit{stopped training} oder \textit{noisy data}. Andere Problematiken die bei Backpropagation entstehen und genauere Erklärungen sind im Vorlesungsskript von Machine Learning and Data Mining (2015) von Prof. Dr. Volker Tresp \cite{ml-script} zu finden.\\
 
             \noindent
-            Wenn man auf diese Nuancen achtet, bietet Backpropagation ein extrem mächtiges Instrument, das solange einsetzbar ist, wie das gesamte Netz als Formel dargestellt werden kann, ableitbar ist und wir ein Trainingsset an Daten haben.\\
+            Wenn man auf diese Nuancen achtet, bietet Backpropagation ein extrem mächtiges Instrument, das solange einsetzbar ist, wie das gesamte Netz als Formel dargestellt werden kann, ableitbar ist und damit einen Gradienten liefert an dem wir entlang optimieren können. \\ %Trainingsset an Daten haben.\\
 
             \noindent
-            Unglücklicherweise bieten viele Probleme keine ausreichende Möglichkeit Trainingsdaten zu sammeln, weil das System von vielen unabhängigen Parametern abhängt, wie anderen Agenten parallel zu mir Aktionen ausführen. Deshalb nutzen wir diese Trainingsmethode lediglich als vergleichendes Beispiel, um das alternative, simulationsbasierte Training zu präsentieren.
+            Unglücklicherweise bieten viele Probleme keine Möglichkeit Trainingsdaten zu sammeln, da das erwünschte Ergebnis keine Rückschlüsse auf den Lösungsweg erlaubt. Anders gesagt, die Kostenfunktion hat keinen Gradienten, den wir verfolgen können. \\ 
+
+            \noindent
+            In der Anwendung in der Fußballdomäne aus Kap. \ref{hfo-definition} ist das erwünschte Ergebnis ein Tor, dabei gibt es uns keine Aussage über die notwendigen Schritte. Dieses Fitnesssignal ist so zustandsunabhängig, dass wir nicht einmal wissen, wie viele Spieler auf dem Feld stehen oder ob sie zusammen spielen. Deshalb nutzen wir diese Trainingsmethode lediglich als vergleichendes Beispiel, um ein alternative Methode vorzuschlagen, die trotz dieser Einschränkung lernende Merkmale aufzeigt (\ref{fig:graph-ne}).
 
         \subsection{Verbindung mit genetischen Algorithmen}
-            Wenn wir nun zum Trainieren von ANNs einen genetischen Algorithmus benutzen wollen, müssen wir das Netz als Liste von Gewichten kodieren, aus denen es besteht. Ein Beispiel dafür bietet der \textbf{GENITOR}\cite{moriarty1999evolutionary} Algorithmus (1998). Dabei werden die einzelnen Gewichte der Kreuzung und einer speziellen Mutation ausgesetzt, die von der Varianz der Gesamtpopulation abhängt. \\
+            Wenn wir nun zum Trainieren von ANNs einen genetischen Algorithmus benutzen wollen, müssen wir das Netz als Liste von Gewichten kodieren, aus denen es besteht. Ein Beispiel dafür bietet der \textbf{GENITOR} \cite{moriarty1999evolutionary} Algorithmus (1998). Dabei werden die einzelnen Gewichte der Kreuzung und einer speziellen Mutation ausgesetzt, die von der Varianz der Gesamtpopulation abhängt. \\
 
             \noindent
-            Ein weiterer Ansatz ist \textbf{SANE}\cite{moriarty1999evolutionary} (1999), der gesamte Neuronen für die \textit{Hidden Ebene} entwickelt und gleichzeitig die Netztopologie verändert. Damit versucht es sich an die Komplexität der Aufgabe anzupassen. \\ % Dadurch wurde eine nicht triviale Strategie für das Spiel Othello wiederentdeckt \cite{othello95}. \\
+            Ein weiterer Ansatz ist \textbf{SANE} \cite{moriarty1999evolutionary} (1999), der gesamte Neuronen für die \textit{Hidden Ebene} entwickelt und gleichzeitig die Netztopologie verändert. Damit versucht es sich an die Komplexität der Aufgabe anzupassen. \\ % Dadurch wurde eine nicht triviale Strategie für das Spiel Othello wiederentdeckt \cite{othello95}. \\
 
             \noindent
             Problematischerweise benutzen neuronale Netze heutzutage je nach Anwendungsgebiet immer aufwendigere Strukturen, die extrem viele Gewichte besitzen. Eine naive genetische Suche in so einem hochdimensionalen Zustandsraum dauert zu lange und deshalb untersuchen wir Techniken, die uns erlauben zielsicherer und effizienter den Raum aller Möglichkeiten zu durchsuchen. 
@@ -552,7 +558,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
         Nachdem wir den Zustandsraum komprimiert haben, sodass ein genetischer Algorithmus ihn in absehbarer Zeit entwickeln und ein neuronales Netz befüllt werden kann, erschließt sich die Verküpfung zu einem mächtigen Werkzeug das viele interessante Eigenschaften besitzt. Dieser Algorithmus wird Kooperative Synapsen Neuroevolution (\textbf{Cooperative Synapse Neuroevolution}) \cite{cosyne2}, oder auch \textbf{CoSyNE} genannt.\\
 
         \noindent
-        Er zeichnet sich speziell dadurch aus, dass er auf kontinuierlichen Zuständen und Aktionen funktioniert und spärliche Fitnessignale interpretieren kann. Das schafft er, indem er rekurrente Netze aufbaut und die genetische Suche mit aggressiver Mutation im Zustandsraum beschleunigt. Ein gutes Beispiel dafür ist das Rennspiel \textbf{TORCS}\cite{cosyne3}, wo der Algorithmus 993 Gewichte in 33 Koeffizienten kodiert \textit{(Faktor 1:30)} und lediglich durch die Bilddaten ähnlich gute Ergebnisse liefert wie die per Hand programmierten Agenten, die die Physik des Spieles kennen.\\
+        Er zeichnet sich speziell dadurch aus, dass er auf kontinuierlichen Zuständen und Aktionen funktioniert und spärliche Fitnessignale interpretieren kann. Das schafft er, indem er rekurrente Netze aufbaut und die genetische Suche mit aggressiver Mutation im Zustandsraum beschleunigt. Ein gutes Beispiel dafür ist das Rennspiel \textbf{TORCS} \cite{cosyne3}, wo der Algorithmus 993 Gewichte in 33 Koeffizienten kodiert \textit{(Faktor 1:30)} und lediglich durch die Bilddaten ähnlich gute Ergebnisse liefert wie die per Hand programmierten Agenten, die die Physik des Spieles kennen.\\
 
         \noindent
         Ein großer Nachteil von genetischen Algorithmen ist, dass sie oft bei lokalen Maxima feststecken bleiben und lange brauchen um aus diesem Tal rauszukommen. Um dieses Problem anzugehen, versucht man die Stellschrauben wie Mutationswahrscheinlichkeit oder Kinderanzahl per Hand zu verändern \cite{grefenstette86}. CoSyNE benutzt dafür eine eigene \textbf{genetische Methode}, um die Suche einfacher zu gestalten. Sie nennt sich Permutation und erzeugt innerhalb der gesamten Population Unterteilungen in kleinere Populationen die in einer \textbf{kooperativen und koevolutionären} Beziehung stehen.
@@ -703,7 +709,7 @@ print population
 
             \newpage
             \noindent
-            Wenn wir Individuen erstellen wollen, müssen wir aus jeder Normalverteilung eine Stichprobe (die Punkte entlang der Graphen in \ref{fig:norm-dist-encoding}) nehmen. Die Kreuzung und Mutation fallen aus, dafür berechnen wir nach jeder Simulation pro Eigenschaft neue Durchschnitte und Standartabweichungen aus den besten Individuen. Damit versuchen wir die Suche auf den vielversprechendsten Raum einzugrenzen.\\
+            Wenn wir Individuen erstellen wollen, müssen wir aus jeder Normalverteilung eine Stichprobe nehmen (samplen), die wir als Punkte entlang der Graphen in \ref{fig:norm-dist-encoding} eingezeichnet haben.  Die Kreuzung und Mutation fallen aus, dafür berechnen wir nach jeder Simulation pro Eigenschaft neue Durchschnitte und Standartabweichungen aus den besten Individuen. Damit versuchen wir die Suche auf den vielversprechendsten Raum einzugrenzen.\\
 
             \noindent
             Der Ablauf der Cross Entropy Method sieht daher folgendermaßen aus \cite{cem-blog}:\\

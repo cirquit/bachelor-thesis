@@ -16,7 +16,7 @@
         \caption{Screenshot von dem gesamten Spielfeld von RoboCup2D \label{fig:robocup-screenshot}}
     \end{figure}
 
-    \section{Half Field Offense}
+    \section{Half Field Offense} \label{hfo-definition}
 
         Die Domäne Half Field Offense grenzt das Spielfeld auf eine Hälfte ein, sodass wir 4 Angreifer und 3 Verteidiger + Torwart haben. Diese Einschränkung vereinfacht den Such- und Zustandsraum immens und erlaubt trotzdem noch eine Wiederverwendbarkeit der Agenten, wenn eine vollständige Mannschaft aufgebaut wird.\\
         \\
@@ -156,11 +156,13 @@
             % ``Simulation Learning''            \\
             % ``Hochdimensional Kontinuierlich'' \\
             % ``Auch genannt Black Box RL''
-            Die Domäne HFO hat besondere Einschränkungen, die sie zu einem schwierigen Problem machen. Zum einen haben wir keine Möglichkeit in die Zukunft zu schauen, um herauszufinden wie gut eine Aktion für einen bestimmten Zustand war. Stattdessen müssen wir uns auf das Resultat der Simulation verlassen, das uns lediglich am Ende sagt ob ein Tor geschossen wurde. \\[2mm]
+            Die Domäne HFO hat besondere Einschränkungen, die sie zu einem schwierigen Problem machen. Zum einen haben wir keine Möglichkeit im Voraus herauszufinden, wie gut eine Aktion für einen bestimmten Zustand war, da das Framework diese Funktionalität nicht unterstützt. Stattdessen müssen wir uns auf das Resultat der Simulation verlassen, das uns lediglich am Ende sagt, ob ein Tor geschossen wurde. \\[2mm]
             \noindent
-            Zum anderen ist ein Spiel eine Abfolge von mehreren hundert Aktionen die alle gemeinsam bewertet werden, und deshalb ist es unmöglich eine Fragmentierung in Teilziele zu schaffen. \\[2mm]
+            Zum anderen ist ein Spiel eine Abfolge von mehreren hundert Aktionen die alle gemeinsam bewertet werden, und deshalb ist es unmöglich eine Fragmentierung in Teilziele zu schaffen. Zusätzlich zum spärlichen Signal, ob wir ein Tor geschossen haben, kommt der kontinuierliche 9-dimensionale Zustandsraum, den wir mit normalverteiltem Rauschen empfangen haben.\\[2mm]
             \noindent
-            Zusätzlich zum spärlichen Signal, ob wir ein Tor geschossen haben, kommt der kontinuierliche 9-dimensionale Zustandsraum, den wir mit normalverteiltem Rauschen empfangen haben.
+            Daher ist unsere Annahme, wenn unter Bedingungen diesem extremen Setting die Algorithmen Erfolge erziehlen können, werden sie ähnliche oder bessere Performanz bei einfacheren Aufgaben zeigen. Hinzu kommt das große Anwendungsgebiet, weil wir minimale Anforderungen an das Problem stellen, das uns lediglich seltenes Fitnessignal zur Verfügung stellen muss. \\[2mm]
+            \noindent
+            Eine Beispieldomäne wäre eine Fabrik, die von autonomen Robotern bedient wird und als Auftrag bekommt, einen bestimmten Durchsatz zu erzeugen. Dabei haben die Roboter keinerlei Wissen über die Lage oder Ausstattung der Fabrik und besitzen nur einfache Sichtsensoren.
 
 %             enn man sie mit herkömmlichen Machine Learning Tasks vergleicht \textit{(Vergleich Moonrover, Roboterarm etc.)}. Zum einen erlaubt sie uns wegen der Implementierung nicht in die Zukunft zu propagieren und zu schauen wie gut eine Entscheidung ist. Wir haben eine Simulation die erst nachdem ein Spiel fertig ist ein Fitnesssignal sendet und wir daraufhin abzuleiten müssen ob die lange Aktionsketten die wir ausgeführt haben uns zum Erfolg führten. Diese Eigenschaft nennt sich \textbf{sparse Fitness} und findet sich in Beispielen wie \textit{(Zitat)}
 
@@ -170,16 +172,16 @@
 \newpage
 
     \section{Implementierung der Algorithmen}
-        In diesem Abschnitt schauen wir uns die Parametrisierung der Algorithmen und den Aufbau der Simulation genauer an. Dafür waren die folgenden drei Programme zuständig:
+        In diesem Abschnitt schauen wir uns die Parametrisierung der Algorithmen und den Aufbau der Simulation genauer an. Dafür wurden die folgenden drei Programme entwickelt:
 
         \subsubsection*{Simulationsserver}
         Der Simulationsserver ist in C++ geschrieben und wurde aus \cite{hfo} übernommen. Er wird durch Flags beim Starten parametrisiert. 
 
         \subsubsection*{Agenten}
-        Die Agenten sind in Python geschrieben und stellen eine Erweiterung von einem der Beispielskripte dar \cite{hfo}. Diese Prozesse werden mit eigenen Kommandozeilenparametern, die ihnen sagen welcher Spieler sie sind, wie sie die Kodierung des KNNs benutzen, um damit das Netz zu befüllen.
+        Die Agenten sind in Python geschrieben und stellen eine Erweiterung von einem der Beispielskripte vom HFO Framework \cite{hfo} dar. Diese Prozesse werden mit Kommandozeilenparametern gesteuert, die bestimmen welcher Spieler sie sind und wie sie die Kodierung des KNNs benutzen, um damit das Netz zu befüllen.
 
         \subsubsection*{Koordinator}
-        Der Koordinator ist für die Umsetzung des GAs und den jeweiligen Kodierungen zuständig, startet den Server, die Agenten Skripte und überwacht die Simulation. Er ist, wie alle folgenden Codebeispiele, in Haskell geschrieben.
+        Der Koordinator ist für die Umsetzung des GAs und die jeweiligen Kodierungen zuständig, startet den Server, die Agenten Skripte und überwacht die Simulation. Er ist, wie alle folgenden Codebeispiele, in Haskell geschrieben.
 
 
         \subsubsection*{Rahmenbedingungen für die Simulation}
@@ -202,9 +204,10 @@
 
         \subsection{Wahrscheinlichkeitsverteilung von Aktionen}
 
-            Der erste Algorithmus hat als Kodierung der Individuen eine diskrete Wahrscheinlichkeitsverteilung über 5 Aktionen benutzt. Wenn der Agent gestartet wurde samplet er jeden Zeitschritt ohne Wissen über jeglichen Zustand aus dieser Verteilung raus. 
+            Der erste Algorithmus hat als Kodierung der Individuen eine diskrete Wahrscheinlichkeitsverteilung über 5 Aktionen benutzt. Wir nennen diesen Algorithmus im Folgenden \textbf{WvA}. Wenn der Agent gestartet wurde, samplet er jeden Zeitschritt ohne Wissen über jeglichen Zustand aus dieser Verteilung raus. 
 
             \subsubsection*{Kodierung}
+            Die Kodierung besteht aus den 5 Aktionen aus (\ref{actionspace-definition}), für die wir ihre jeweilige Wahrscheinlichkeit als Zahl kodieren. Sie ist muss die Regeln aus (\ref{kodierung}) für eine diskrete Wahrscheinlichkeitsverteilung einhalten.
 
             \begin{figure}[H]
                 \begin{mdframed}
@@ -256,8 +259,7 @@
             Damit haben wir eine Wahrscheinlichkeitsverteilung über 5 Aktionen und können uns sicher sein dass sie aufsummiert immer $100$ ergibt.
 
             \subsubsection*{Kreuzung Version 1}
-            Wir haben zwei verschiedene Kreuzungsmethoden ausprobiert die sich in unserer Simulation als gleichwertig herausgestellt haben.
-            Die erste Methode wurde mit den Listen umgesetzt, aus denen sie generiert wurden (die jeweils die 0 und 100 angehängt bekommen haben). Dafür wurde elementweise der Durchschnitt berechnet und daraus entsteht dann eine neue Generatorliste aus der sich die Verteilung berechnen lässt.
+            Wir haben zwei verschiedene Kreuzungsmethoden ausprobiert, die während der Entwicklung als austauschbar bewertet wurden. Die erste Methode wurde mit den Listen umgesetzt, aus denen sie generiert wurden (die jeweils die 0 und 100 angehängt bekommen haben). Dafür wurde elementweise der Durchschnitt berechnet und daraus entsteht dann eine neue Generatorliste aus der sich die Verteilung berechnen lässt.
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{haskell}
 > let individualA = [0, 15, 38, 55, 87, 100]
@@ -339,7 +341,7 @@ sort
         \noindent
         Wenn der Agent spielt, wird jedes Frame der aktuelle (verrauschte) Zustand dem Netz gegeben und wir samplen aus der Wahrscheinlichkeitsverteilung die Aktion raus, die dann ausgeführt wird. \\[2mm]
         \noindent
-        Das KNN besitzt 1108 Gewichte und wir reduzieren es mithilfe von DCT (\ref{dct-definition}) auf 20 Koeffizienten, was eine Komprimierungsverhältnis von \textit{1:55} ist. Die Abbildung \ref{fig:dct-my-case} zeigt diese Kompressionsrate.\\
+        Das KNN besitzt 1108 Gewichte und wir reduzieren es mithilfe von DCT (\ref{dct-definition}) auf 20 Koeffizienten, was eine Komprimierungsverhältnis von \textit{1:55} ist. Die Abbildung \ref{fig:dct-my-case} zeigt diese Kompressionsrate für normalverteilte Daten $ \mathcal{X} \sim \mathcal{N} (\mu = 1, \sigma = 10) $.\\
 
         \begin{figure}[H]
             \begin{center}
@@ -354,7 +356,7 @@ sort
         \begin{itemize}
             \setlength\itemsep{1em}
             \item \textbf{Cross Entropy} (\ref{cross-entropy-definition}) \\
-            Hier haben wir die 20 Koeffizienten als Normalverteilung kodiert, $25\%$ der Population als Eltern gewählt und die restlichen $75\%$ aus den neu berechneten Normalverteilungen der Eltern gesamplet. Die Grenzen zum Erstellen der Normalverteilung waren $\mu = 0$ und $\sigma \in [-1.5,1.5]$.
+            Hier haben wir die 20 Koeffizienten als Normalverteilung kodiert, $25\%$ der Population als Eltern gewählt und die restlichen $75\%$ aus den neu berechneten Normalverteilungen der Eltern gesamplet. Die initialen Grenzen zum Erstellen der Normalverteilung waren $\mu = 0$ und $\sigma \in [-1.5,1.5]$.
 
             \item \textbf{Neuroevolution} (\ref{neural-evo-definition}) \\
             Bei der naiven Neuroevolution hat jedes Individuum die 20 Koeffizienten als Zahlen gespeichert. $25\%$ der Population wurden als Eltern gewählt die $50\%$ Kinder erzeugen und die restlichen $25\%$ wurden völlig neu erstellt. Die Grenzen zur Erstellung der Koeffizienten war $c \in [-3,3]$.
@@ -367,7 +369,7 @@ sort
 \newpage
 
 \chapter{Resultate}
-    Im folgenden Teil beschreiben wir die Resultate und versuchen diese zu begründen. Durchschnittlich hat eine Trainigsphase mit 300 Generationen, Population der Größe 50 und 25 Episoden pro Team 30 Stunden gedauert. Der Suchraum für die Neuroevolution wurde von 1108Gewichten auf 20 Koeffizienten reduziert, welches einer Kompressionsrate 1:55 entspricht. Die Simulationen wurden auf einem Laptop mit einem Intel i5 mit Dual Core 2.9GHz und 4GB Arbeitsspeicher ausgeführt.\\[2mm]
+    Im folgenden Teil beschreiben wir die Resultate und versuchen diese zu begründen. Durchschnittlich hat eine Trainigsphase mit 300 Generationen, Population der Größe 50 und 25 Episoden pro Team 30 Stunden gedauert. Der Suchraum für die Neuroevolution wurde von 1108 Gewichten auf 20 Koeffizienten reduziert, welches einer Kompressionsrate 1:55 entspricht. Die Simulationen wurden auf einem Laptop mit einem Intel i5 mit Dual Core 2.9 GHz und 4 GB Arbeitsspeicher ausgeführt.\\[2mm]
     \noindent
     Nachdem wir pro Algorithmus die besten 5 Individuen ermittelt haben, ließen wir sie jeweils 10000 Spiele spielen, um die erfasste Fitness auf ihre Stabilität zu testen. Wir haben sie wie folgt quantifiziert:\\[2mm]
 %        \noindent
@@ -375,9 +377,9 @@ sort
 
         \begin{figure}[H]
             \begin{mdframed}
-                Sei $F_{Training}$ die trainierte Fitness, \\
-                \hspace*{4mm} $F_{Test}$ die neu getestete Fitness, dann ist der Fehler definiert als:\\[4mm]
-                \hspace*{40mm} \Resize{5cm}{$Fehler = \frac{F_{Entwicklung} - F_{Test}}{F_{Entwicklung}}$}
+                Sei $F_{\text{Training}}$ die trainierte Fitness, \\
+                \hspace*{4mm} $F_{\text{Test}}$ die neu getestete Fitness, dann ist der Fehler definiert als:\\[4mm]
+                \hspace*{40mm} \Resize{5cm}{$Fehler = \frac{F_{\text{Entwicklung}} - F_{\text{Test}}}{F_{\text{Entwicklung}}}$}
             \end{mdframed}
             \renewcommand{\figurename}{Definition}
             \caption{Berechnung des Fehlers für ein Individuum}
@@ -386,12 +388,13 @@ sort
         \noindent
         Je kleiner die Abweichung zwischen dem Training und dem Test, umso kleiner ist der Fehler und daher können wir schließen, dass das Individuum sicherer seine versprochene Leistung bringt.\\
 
-        Unser Lernziel für die HFO Domäne war einen offensiven Spieler zu trainieren der gegen einen vom Server gesteuerten Torwart so gut es geht Tore schießt. Das haben wir mit vier in Kapitel 2 angesprochenend Algorithmen getestet und stellen die Resultate vor. \\[2mm]
+        \noindent
+        Unser Lernziel für die HFO Domäne war, einen offensiven Spieler zu trainieren, der gegen einen vordefinierten Torwart aus dem HFO Framework so gut es geht Tore schießt. Das haben wir mit vier in Kapitel 2 angesprochenend Algorithmen getestet und stellen die Resultate vor. \\[2mm]
 
         \noindent
-        Als stabilster und bester Algorithmus ist die naive Neuroevolution mit einer durchschnittlichen Gewinnrate von \textbf{42\%} im Training und \textbf{20\%} im Test. Auf Platz 2 kam CoSyNE mit $37\%$ im Training und $12\%$ im Test. Cross Entropy und die Wahrscheinlichkeitsverteilung der Aktionen haben zwar beide im Training $30\%$ erreicht, aber im Test nur knapp $6\%$ und sind damit extren instabil.
+        Der stabilste und erfolgreichste Algorithmus ist die naive Neuroevolution mit einer durchschnittlichen Gewinnrate von \textbf{42\%} im Training und \textbf{20\%} im Test. Auf Platz 2 kam CoSyNE mit $37\%$ im Training und $12\%$ im Test. Cross Entropy und WvA haben zwar beide im Training $30\%$ erreicht, aber im Test nur knapp $6\%$ und sind damit extrem instabil.
 \newpage
-            \section{Wahrscheinlichkeitsverteilung der Aktionen}
+            \section{WvA}
                 \begin{multicols}{2}
                     \noindent
                     Die Wahrscheinlichkeitsverteilung war der erste Ansatz um zu überprüfen ob die Domäne bereits durch eine einfache Kodierung lösbar ist. Leider ging die Varianz in der Population nach der $10$ Generation gegen $0$ und die Verteilung sah folgendermaßen aus:
@@ -412,14 +415,14 @@ sort
                     \begin{figure}[H]
                         \centering
                         \includegraphics[scale=0.5]{../pictures/summary/actiondist-fitness.png}\\
-                        \caption{Fitness Graph für die \\Wahrscheinlichkeitsverteilung}\label{fig:graph-ac}
+                        \caption{Fitness Graph für WvA}\label{fig:graph-ac}
                     \end{figure}
                 \end{multicols}
                 \noindent
-                Die gesamte Population ist zu dem Ergebnis konvergiert, dass jede Aktion gleich wahrscheinlich ist, bis auf \textit{Shoot}. Die Schussaktion hat wahrscheinlich zu oft zu einem Schuss ins Aus geführt, was sofort das Spiel als verloren wertet.\\
+                Die gesamte Population ist zu dem Ergebnis konvergiert, dass jede Aktion gleich wahrscheinlich ist, bis auf \textit{Shoot}. Die Schussaktion hat wahrscheinlich zu oft den Ball ins Aus befördert, was sofort das Spiel als verloren wertet.\\
 
                 \noindent
-                Die maximale erreichte Fitness beträgt \textbf{33\%} und schwankt eher im Bereich von $[15,25]$. Leider stellt sich heraus, dass die besten Agenten Ausreißer waren und keinesfalls die durchschnittliche Gewinnwahrscheinlichkeit darstellen. \\[4mm]
+                Die maximale erreichte Fitness nach 375000 Spielen beträgt \textbf{33\%} und schwankt aber eher im Bereich von $[15,25]$. Leider stellt sich heraus, dass die besten Agenten in den Tests extrem schlecht abschneiden und nichtmal in 6\% der Fälle ein Tor schießen. Damit haben sie den größten berechneten Fehler und können die trainierten Ergebnisse am schlechtesten replizieren.\\[3mm]
 
                 \begin{table}[H]
                     \begin{center}
@@ -437,26 +440,25 @@ sort
                     \caption{Stabilität der besten 5 Individuen \label{fig:actiondisttable}}
                 \end{table}
                 \noindent
-                Die durchschnittliche Gewinnwahrscheinlichkeit liegt bei 5.72\% und wenn man den Spieler beobachtet, kann man sich beim besten Willen nicht erklären, wie er es überhaupt schafft Tore zu schießen, da er meistens versucht ins Tor zu laufen während ihm der Ball abgenommen wird. Das ist aber auch nicht verwunderlich, da der Spieler weder weiß, wo der Torwart ist, noch ob er den Ball hat, oder wo er sich auf dem Spielfeld befindet. \\
+                Die durchschnittliche Gewinnwahrscheinlichkeit nach dem Testen liegt bei 5.72\% und wenn man den Spieler beobachtet, kann man sich nicht erklären, wie er es überhaupt schafft Tore zu schießen, da er meistens versucht ins Tor zu laufen während ihm der Ball abgenommen wird. Das ist aber auch nicht verwunderlich, da der Spieler weder weiß, wo der Torwart ist, noch ob er den Ball hat, oder wo er sich auf dem Spielfeld befindet. \\
 
 \newpage
-        \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
+        \subsubsection*{}
         \begin{figure}[H]
             \begin{center}
                 \includegraphics[scale=0.83]{../pictures/games/actiondist-gameplay.png}\\
-                \caption{\label{fig:actiondist-gameplay}}
+                \caption{ Illustration eines Torversuchs für einen der Top 5 Agenten von WvA \label{fig:actiondist-gameplay}}
             \end{center}
         \end{figure}
 
-        In Abbildung \ref{fig:actiondist-gameplay} sehen wir einen vielversprechenden Torversuch von dem Individuum. Leider läuft er einfach nur in den Torwart rein und ihm wird sein Ball abgenommen. Es passiert auch sehr oft, dass er vor dem Tor stehen bleibt, oder einfach nur wild um sich herumschießt, egal in welcher Position er steht. Aus der Tabelle der Verteilungen kann man nur bestätigen dass sich sein Verhalten zufällig beschreiben lässt.
-
+        In Abbildung \ref{fig:actiondist-gameplay} sehen wir einen vielversprechenden Torversuch von dem Individuum. Leider läuft er einfach nur in den Torwart rein und ihm wird sein Ball abgenommen. Es passiert auch sehr oft, dass er vor dem Tor stehen bleibt, oder einfach nur wild um sich herumschießt, egal in welcher Position er steht. Die Werte aus der Tabelle \ref{fig:actiondisttable} konnten wir beim den manuellen Simulationen nur bestätigen, da wir über 50 Spiele anschauen mussten um ein Tor zu sehen.
 
 \newpage
             \section{Cross Entropy}
                 \begin{multicols}{2}
                     \noindent
                     \\[5mm]
-                    Die Cross Entropy Methode hat nach der statistischen Analyse keine besonders unterschiedliche Werte produziert, da sie durchschnittlich eine 2\% bessere Fitness hat und die Stabilität um 1\% besser ist, als wie die Wahrscheinlichkeitsverteilung.\\[2mm]
+                    Die Cross Entropy Methode hat nach der statistischen Analyse keine besonders unterschiedliche Werte produziert, da sie durchschnittlich eine 2\% bessere Fitness hat und die Stabilität um 1\% besser ist, als der WaV Algorithmus.\\[2mm]
                     Sie ist nach ungefähr 50 Generationen konvergiert, die maximale erreichte Fitness beträgt \textbf{32\%} und schwankt im Bereich von $[15,30]$. 
                     \begin{figure}[H]
                        \includegraphics[scale=0.5]{../pictures/summary/cross-entropy-fitness.png}
@@ -480,19 +482,26 @@ sort
                     \caption{Stabilität der besten 5 Cross Entropy Individuen \label{fig:crossentropytable}}
                 \end{table}
                 \noindent
-                Von den Werten sieht man kaum einen Unterschied zu der Wahrscheinlichkeitsverteilung, aber in der Simulation merkt man ein extrem aggressives Verhalten vom Spieler. Der Agent schießt den Ball sehr oft und versucht bereits nachdem er die Mitte des Spielfeldes überquert hat ein Tor zu schießen, unabhängig davon ob er in einer guten Position ist. Das führt natürlich dazu dass er öfter ins Aus schießt, ist aber wesentlich interessanter anzuschauen, da er jedes Spiel unberechenbar ist. \\[2mm]
+                Von den Werten sieht man kaum einen Unterschied zu dem WvA Algorithmus, aber in der Simulation merkt man ein extrem aggressives Verhalten vom Spieler. Der Agent schießt den Ball sehr oft und versucht bereits nachdem er die Mitte des Spielfeldes überquert hat ein Tor zu schießen, unabhängig davon ob er in einer guten Position ist. Das führt natürlich dazu dass er öfter ins Aus schießt, ist aber wesentlich interessanter anzuschauen, da er jedes Spiel unberechenbar ist. \\[2mm]
 
                 \noindent
                 Es ist zu beachten, dass dieser Algorithmus die \textbf{schnellste Lernkurve} von den drei Algorithmen hatte, die im komprimierten DCT Raum arbeiten.
 \newpage
-                \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
-                \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für den Cross Entropy Method} \end{center}
+                \begin{figure}[H]
+                    \begin{center}
+                        \includegraphics[scale=0.83]{../pictures/games/cross-entropy-gameplay.png}\\
+                        \caption{Illustration eines Torversuchs für einen der Top 5 Agenten\\ der Cross Entropy Method \label{fig:ce-gameplay}}
+                    \end{center}
+                \end{figure}
+
+                \noindent
+                In dem Torversuch aus \ref{fig:ce-gameplay} sehen wir das erste ``Manöver'' von allen Algorithmen, wo der Agent zuerst bis zu dem Strafraum läuft und den Ball wieder in Richtung Mittelfeld schießt. Danach er läuft ihm hinterher und schießt von der Strafraumlinie ein Tor in die rechte Ecke. Diese Methodik ist jedoch nicht repräsentativ, da der Agent oft versucht Tore ausserhalb des Strafraums zu schießen die oft ins Aus gehen. Er unterscheidet sich stark vom WaV Agenten, da er nicht so oft vor dem Tor stehen bleibt und riskante Schüsse probiert, auch wenn sie daneben gehen.
 \newpage
             \section{Neuroevolution}
                 \begin{multicols}{2}
                     \noindent
                     \\[5mm]
-                    Der Ansatz die Gewichte naiv als DCT Koeffizienten darzustellen, führte zu den besten Ergebnissen. Das stärkste Individuum hat knapp \textbf{jedes zweite Spiel gewonnen} und ist mehr als 3-mal stabiler als die Cross-Entropy Lösung. Die Fitness hat sich nach ungefähr 150 Generationen im Bereich von $[30,45]$ eingependelt.
+                    Der Ansatz die Gewichte als DCT Koeffizienten darzustellen, führte zu den besten Ergebnissen. Das stärkste Individuum hat knapp \textbf{jedes zweite Spiel gewonnen} und ist mehr als 3-mal stabiler als die Cross-Entropy Lösung. Die Fitness hat sich nach ungefähr 150 Generationen im Bereich von $[30,45]$ eingependelt.
                     \begin{figure}[H]
                        \includegraphics[scale=0.5]{../pictures/summary/neural-fitness.png}
                        \caption{Fitness Graph für Cross Entropy}\label{fig:graph-ne}
@@ -519,16 +528,15 @@ sort
                 Die stabile Fitness ist bei knapp 20\% und damit gewinnen diese Individuen durchschnittliche jedes fünfte Spiel. Hier haben wir bereits starke Anzeichen für eine Taktik gesehen. Der Agent rennt von Anfang an zum Tor, bleibt kurz vor dem Strafraum stehen und pendelt von Ecke zu Ecke bis der Torwart weiter rausgeht um ein Tor zu schießen.\\
 
                 \noindent
-                Wenn er mal verliert, ist es weil er sofort zum Beginn des Spieles sich ins Aus schießt, oder zu nah am Tor ist, sodass ihm der Ball abgenommen wird. Die Tendenz am Ende des Graphen deutet darauf hin, dass bei längeren Laufzeiten noch bessere Ergebnisse möglich wären.% Die stichprobenartigen Aufnahmen von diesen Agenten haben dennoch Gewinnserien von 3-4 Spielen hintereinander gezeigt, obwohl die die Wahrscheinlichkeit dafür 
+                Wenn der Agent verliert, schießt er sich sofort zum Beginn des Spieles ins Aus schießt, oder er ist zu nah am Tor, sodass ihm der Ball abgenommen wird. Die Tendenz am Ende des Graphen deutet darauf hin, dass bei längeren Laufzeiten noch bessere Ergebnisse möglich wären.% Die stichprobenartigen Aufnahmen von diesen Agenten haben dennoch Gewinnserien von 3-4 Spielen hintereinander gezeigt, obwohl die die Wahrscheinlichkeit dafür 
 \newpage
-        \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
         \begin{figure}[H]
             \begin{center}
                 \includegraphics[scale=0.83]{../pictures/games/neural-evo-gameplay.png}\\
-                \caption{\label{fig:neural-evo-gameplay}}
+                \caption{Illustration eines Torversuchs für einen der Top 5 Agenten \\ des Neuroevolution Algorithmus \label{fig:neural-evo-gameplay}}
             \end{center}
         \end{figure}
-        In Abbildung \ref{fig:neural-evo-gameplay} sehen wir die bisher interessanteste Bewegung, da der Agent versucht sich zuerst in die untere Ecke zu positionieren, dabei den Torwart etwas rauslockt, um dann haarfein das Tor zu schießen. Diese Taktik ist die ausgereifteste, da sie die Reaktion des Torwarts, der Abhängigkeit des größsten offenen Winkels zum Tor und der damit in Beziehung stehende Torchancen in Betracht zieht. Aus anderen Visualisierungen haben wir auch Tore außerhalb des Strafraums fallen sehen, was bedeutet dass der Agent nicht nur eine einzelne Gewinnstrategie gelernt hat, sondern wirklich \textit{abwägt}, welche Aktion gerade am nützlichsten ist.
+        In Abbildung \ref{fig:neural-evo-gameplay} sehen wir die bisher interessanteste Bewegung, da der Agent versucht sich zuerst in die untere Ecke zu positionieren, dabei den Torwart etwas rauslockt, um dann haarfein das Tor zu schießen. Diese Taktik ist die ausgereifteste, da sie die Reaktion des Torwarts, der Abhängigkeit des größsten offenen Winkels zum Tor und der damit in Beziehung stehende Torchancen in Betracht zieht. Aus anderen Simulationen haben wir auch Tore außerhalb des Strafraums fallen sehen, was bedeutet, dass der Agent nicht nur eine einzelne Gewinnstrategie verfolgt.
 \newpage
             \section{CoSyNE}
                 \begin{multicols}{2}
@@ -554,7 +562,7 @@ sort
                           Mean &  \textbf{37.60\%} & \textbf{12.45\%} & \textbf{66.98\%}  \\ \hline
                     \end{tabular}
                     \end{center}
-                    \caption{Stabilität der besten 5 Neurevolution Individuen \label{fig:neuroevotable}}
+                    \caption{Stabilität der besten 5 Neurevolution Individuen \label{fig:cosynetable}}
                 \end{table}
                 \noindent
                 Die beste Individuen haben lediglichlich nur knapp 12\% ihrer Spiele gewonnen und man kann eine ähnliche Taktik wie die Neuroevolution Agenten erahnen, nur wesentlich schlechter umgesetzt. Es passiert häufig, dass der Agent kurz vor dem Strafraum stehen bleibt und sich für eine sehr lange Zeit nicht bewegt. Da der Torwart nicht zu weit von dem Tor rausgeht, befinden sie sich im Deadlock bis der Agent versucht ein Tor zu schießen. Das Schießen ins Aus am Anfang des Spiels tritt hier gehäuft auf.\\
@@ -563,8 +571,14 @@ sort
                 Eine interessante Eigenschaft von CoSyNE ist das stufenartige Entwickeln der Fitness die ab bestimmten Generationen nie wieder schlechter wird.
 
 \newpage
-                \subsubsection*{Illustration eines Torversuchs für einen der Top 5 Agenten}
-                \begin{center} \textit{Beispielhafte Abfolge von einem Spiel für CoSyNE} \end{center}
+                \begin{figure}[H]
+                    \begin{center}
+                        \includegraphics[scale=0.83]{../pictures/games/cosyne-gameplay.png}\\
+                        \caption{Illustration eines Torversuchs für einen der Top 5 Agenten \\ des CoSyNE Algorithmus \label{fig:cosyne-gameplay}}
+                    \end{center}
+                \end{figure}
+
+                In Abbildung \ref{fig:cosyne-gameplay} sehen wir den Torversuch von einem CoSyNE Agenten. Darin kann man den Unterschied zu dem Neuroevoltutionsansatz, der sich in den manuellen Simulationen sichtbar macht, erahnen. Der Agent bleibt oft in dem Strafraum stehen und kommt aus diesem Zustand nicht mehr raus. Ansonsten sehen wir ein ähnliches Ergebnis wie bei der Neuroevolution, da der Trick mit dem Rausspielen des Torwarts hier angewendet wird, um einen besseren Schusswinkel zu bekommen.
 \newpage
 
         \section{Vergleich} \label{algo-comparisson}
@@ -585,7 +599,7 @@ sort
                 \end{table}
 
             \noindent
-            Neuroevolution gewinnt eindeutig in allen getesteten Merkmalen und hat während den Aufnahmen den raffiniertesten Eindruck gemacht. Wir sehen, dass die Aggressivität bei der Cross-Entropy Method zwar interessante Züge macht, jedoch nicht tauglich für den Einsatz auf dem echten Spielfeld ist. \\[2mm]
+            Neuroevolution gewinnt eindeutig in allen getesteten Merkmalen und hat während den manuellen Simulationen subjektiv den raffiniertesten Eindruck gemacht. Wir sehen, dass die Aggressivität bei der Cross-Entropy Method zwar interessante Züge macht, jedoch nicht tauglich für den Einsatz auf dem echten Spielfeld ist. \\[2mm]
 
             \noindent
             Sicherheit und die \textit{Planung} machen auf lange Sicht viel mehr Sinn und sollten verstärkt werden. Der CoSyNE Algorithmus unterstützt diese Art von Entwicklung in dieser Dimensionalität schlechter als die naive Suche über alle Parameter. Es ist zu überprüfen ob diese Aussage für gleichzeitiges Lernen in einem 2v1 Setting übereinstimmt.\\[2mm]
