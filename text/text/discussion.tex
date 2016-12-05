@@ -1,44 +1,54 @@
 \addtocontents{toc}{\protect\newpage}
 \chapter{Diskussion}
-    In diesem Kapitel schauen wir uns die Ergebnisse aus dem Vergleich zwischen den verschiedenen Algorithmen und deren Einschränkungen an, erwägen den potenziellen Nutzen für ähnliche Probleme und stellen Verbesserungsvorschläge dar. Das Schlusswort umfasst verwandte Felder die im Bezug zu unseren Algorithmen stehen.
+    In diesem Kapitel studieren wir uns die Ergebnisse aus dem Vergleich zwischen den verschiedenen Algorithmen und deren Einschränkungen, erwägen den potenziellen Nutzen für ähnliche Probleme und stellen Verbesserungsvorschläge dar. Das Schlusswort umfasst verwandte Felder, die im Bezug zu unseren Algorithmen stehen.
     \section{Anwendungsmöglichkeiten}
         Unsere Aufgabe hat Einschränkungen, die für viele Probleme aus der realen Welt zutreffen, wie seltene Fitnesssignale, kontinuierliche und verrauschte Zustandsräume, sowie aufeinander aufbauende Aktionsketten. Daher glauben wir dass die Anwendungsgebiete, wie autonomes Verhalten voneinander abhängigen Robotern, selbstfahrende Autos oder das Entdecken von neuen Lösungswegen mithilfe von simplen Fitnessfunktionen, mit diesen Techniken weitergebracht werden kann. \\
 
         \noindent
-        Vorallem war es interessant zu sehen, dass KNNs entwickelt werden können, die lediglich aus 20 Koeffizienten bestehen, extrem korellierte Gewichte produzieren und trotzdem lernen können. Ohne die Tests könnten man aus Abbildung \ref{fig:dct-my-case} ableiten, dass es extrem unwahrscheinlich ist, dass das befüllte Netz in irgendeiner Art Nutzen bringt. Deshalb können wir die Annahme, dass Gewichte in neuronalen Netzen keine große Abweichung zueinander haben müssen, bestätigen \cite{cosyne1}. Es wäre interessant zu schauen, ob bei Netzen die viel größer sind, ähnliche Ergebnisse möglich wären. \\
+        Vorallem war es interessant zu sehen, dass KNNs entwickelt werden können, die lediglich aus 20 Koeffizienten bestehen, extrem korellierte Gewichte produzieren und trotzdem lernen können. Ohne die Tests könnte man aus Abbildung \ref{fig:dct-my-case} ableiten, dass es extrem unwahrscheinlich ist, dass das befüllte Netz in irgendeiner Art Nutzen bringt. Deshalb können wir die Annahme, dass Gewichte in neuronalen Netzen keine große Abweichung zueinander haben müssen, bestätigen \cite{cosyne1}. Es wäre vergleichsweise interessant zu schauen, ob bei Netzen die viel größer sind, ähnliche Ergebnisse möglich wären. \\
 
         \noindent
-        CoSyNE wirft mit der treppenförmigen Fitnesskurve die Idee auf, ob eine stetige Verbesserung, oder explizit keine Verschlechterung als Garantie gegeben werden kann. Diese Eigenschaft wurde bisher nicht in der Literatur erwähnt und wäre unter dem statistischen Sicherheitsaspekt interessant zu untersuchen.
+        CoSyNE wirft mit der treppenförmigen Fitnesskurve die Idee auf, ob eine stetige Verbesserung, oder explizit keine Verschlechterung als Garantie gegeben werden kann. Diese Eigenschaft wurde bisher nicht in der Literatur \cite{cosyne1}\cite{cosyne2}\cite{cosyne3} erwähnt und wäre interessant unter dem statistischen Sicherheitsaspekt zu untersuchen.
 
 \newpage
 
     \section{Ausblick} \label{ausblick}
-        Diese Arbeit hat leider einen festen Zeitrahmen gehabt und wir konnten vieles nicht ausprobieren. Wir sprechen mögliche Verbesserungen an, die man in zukünftigen Arbeiten beachtet werden können.
+        In diesem Abschnitt behandeln wir konkrete Verbesserungsvorschläge der Algorithmen aus \ref{basics} und interessante Thematiken für zukünftige Arbeiten, die aus zeitlichen Gründen nicht in diese Bachelorarbeit eingehen konnten.
 
         \subsection*{Genetische Algorithmen}
-            Die genetische Suche wurde mit ausgewogenen Parametern durchgeführt, die jedoch keine besondere Spezialisierung für die Anwendung bekommen haben. Darunter fällt der Mutationsparamter in CoSyNE, der in der Literatur sehr hoch gewählt war \cite{cosyne2} und die Begrenzung der Koeffizienten auf [-3,3] die wir gewählt haben, weil es keine Literatur dafür gab. 
-        \subsection*{Aufbau des neuronalen Netzes}
-            Der Aufbau des KNNs kann mit von der Schicht aus LSTM Neuronen in Tiefe und Größe verändert werden, da wir potenziell bessere Lernfähigkeiten bekommen können. Vorallem in der Kombination mit der DCT Kompression besteht die Möglichkeit Netze mit über 1 Million Gewichten erfolgreich zu kodieren \cite{cosyne4}. \\[2mm]
+            Die genetische Suche wurde mit üblichen Parametern durchgeführt, die keine besondere Spezialisierung für die Anwendung bekommen haben. Darunter fällt der Mutationsparameter in CoSyNE, der in der Literatur sehr hoch gewählt war \cite{cosyne2} und die Begrenzung der Koeffizienten auf [-3,3] die wir gewählt haben, weil es keine Literatur dafür gab. Ob die Größe dieser Zahlen eine Bedeutung hat, oder lediglich die Unterschiede innerhalb.
+
+        \subsection*{Aufbau und Kodierung des neuronalen Netzes}
+            Der Aufbau des KNNs kann bezüglich der Schicht aus LSTM-Neuronen in Tiefe und Größe verändert werden, da wir potenziell bessere Lernfähigkeiten bekommen können. Vorallem in der Kombination mit der DCT-Kompression besteht die Möglichkeit Netze mit über 1 Million Gewichten erfolgreich zu kodieren \cite{cosyne4}. \\
+
             \noindent
-            Ausser DCT gibt es noch eine andere Suchraumverringerung die auf Wavelets basiert und vielversprechendere Ergebinsse in vielen Arcade Learning Environments geschafft hat \cite{wavelet}. Die Wavelets kodieren den Zustandsraum auch in hochfrequenten Domänen, behalten aber im Gegensatz zu Fouriertransformationen die Stetigkeit in der Ordnung der Daten, was zu schnelleren Lösungen in der Octopusarm Aufgabe geführt hat.
+            Außer DCT gibt es noch eine andere Technik zur Verringerung des Suchraums, die auf Wavelets basiert und vielversprechende Ergebnisse in vielen Arcade Learning Environments geschafft habt \cite{wavelet}. Die Wavelet-Transformation funktioniert ähnlich wie die Fourier-Transformation und bildet den Suchraum (von Gewichten) auf einen Koeffizientenraum ab. Dabei wird aber nicht nur die Frequenz, wie bei DCT, kodiert, sondern auch die Lokalität der Daten, sodass wir eine stetige Ordnung beibehalten. Wenn wir diese Technik zum Befüllen von Gewichten für ein ANN benutzen, können wir uns dadurch auf bestimmte Bereiche vom Netz konzentrieren, anstatt das gesamte Netz mit dem veränderten Frequenzspektrum zu beeinflussen. \\
+
+            \noindent
+            Ein Vergleich zwischen DCT und der Wavelet-Transformation sieht man an der Octopus-Arm-Aufgabe \cite{wavelet}. Dabei muss man einen Arm, der aus 18 Segmenten besteht, in einer 2D Umgebung einen Punkt berühren zu lassen, indem die entsprechenden ``Muskeln'' angespannt werden. Dieses Problem wird oft als Benchmark für Neuroevoltion hergenommen \cite{cosyne1}\cite{cosyne4}\cite{wavelet}.
+
+%            Die Wavelets kodieren den Zustandsraum, genauso wie DCT, in hochfrequenten Domänen, behalten aber im Gegensatz zu Fouriertransformationen die Stetigkeit in der Ordnung der Daten, was zu schnelleren Lösungen in der Octopusarm Aufgabe geführt hat.
 
         \subsection*{Cross Entropy Method}
-            Die Cross Entropy Method Lösung wurde lediglich in der einfachsten Form umgesetzt und es fand weder Repopulation mit neuen Individuen statt, noch haben wir einen Mutationsschritt gehabt. Das Hinzufügen von diesen Methoden würde wahrscheinlich zu besseren Lösungen führen. Viele Verberbesserungen finden sich auch in \cite{cem}.
+            Die Cross Entropy Method Lösung wurde lediglich in der einfachsten Form umgesetzt und es findet weder Repopulation mit neuen Individuen statt, noch haben wir einen Mutationsschritt. Das Hinzufügen und Spezialisierung von diesen Methoden würde wahrscheinlich zu besseren Lösungen führen. Viele Verbesserungen finden sich dazu in der Literatur bei der Spezialisierung für das Spiel Tetris \cite{cem}.
 
         \subsection*{Aktionsraum}
-            Der High-Level Aktionsraum wurde während der Arbeit im HFO Framework erweitert, sodass wir Aktionen wie \textit{Go\_To\_Ball} oder \textit{Reduce\_Angle\_To\_Ball} nicht benutzt haben. Da die Dokumentation der übrigen Aktionen sehr spärlich ausgefallen ist, würden eigene Aktionen eine bessere Möglichkeit bieten über die Effektivität der Algorithmen zu argumentieren. Sie würden auch sehr wahrscheinlich mehr Taktiken zulassen.
+            Der High-Level Aktionsraum wurde während der Arbeit im HFO Framework erweitert, sodass wir Aktionen wie \textit{Go\_To\_Ball} oder \textit{Reduce\_Angle\_To\_Ball} nicht benutzen konnten. Da die Dokumentation der übrigen Aktionen sehr spärlich ausgefallen ist, würden eigene Aktionen eine bessere Möglichkeit bieten über die Effektivität der Algorithmen zu argumentieren. Sie würden auch sehr wahrscheinlich vielartige Taktiken zulassen. \\
+
+            \noindent
+            Die Low-Level Aktionen mit Argumenten, wie \textit{Pass} oder \textit{Kick\_To}, könnten in dem ANN mit geringem Aufwand als zusätzliche Ausgangsparameter modelliert werden und würden eine schwierigere, aber dennoch interessante Herausforderung.
+
 
         \subsection*{Multi-Agenten Systeme}
-            Da die Simulation skalierend modelliert wurde, erlaubt sie uns einfaches Testen mit mehreren Agenten, wie 2vs1, oder 4vs4. Leider hätten ausführliche Tests dieser Domänen den zeitlichen Rahmen der Bachelorarbeit maßlos gesprengt.
+            Da die Simulation skalierend modelliert wurde, erlaubt sie uns einfaches Testen mit mehreren Agenten, wie 2vs1, oder 4vs4. Leider hätten ausführliche Tests dieser Domänen den zeitlichen Rahmen der Bachelorarbeit maßlos gesprengt. 
 
 \newpage
 
     \section{Schlusswort}
-        TODO
-
+        Das Schlusswort bilden wir aus dem Anriss über Forschungsthemen, dem HFO Framework und den fortlaufenden Nutzen dieser Arbeit.
 
         \subsection*{Implementierung für OpenAI Gym}
-            Während der Entwicklung dieser Arbeit gab es eine Implementierung der HFO Domäne für das 1vs1 Szenario in der OpenAI Gym, das ein bekanntes machine learning Framework in Python ist. Die Umsetzung von unseren Algorithmen dafür wäre der nächste logische Schritt um die neuroevolutionären Methoden mehr in den Fokus zu Rücken. Diese spezielle Implementierung erlaubt uns Schritte vorzusimulieren, da der Torwart deterministisch ist. Damit können andere Trainingstechniken, wie Backpropagation, benutzt werden, die einen interessanten Vergleich anstellen.
+            Während der Entwicklung dieser Arbeit gab es eine Implementierung der HFO Domäne für das 1vs1 Szenario in der OpenAI Gym, das ein bekanntes Machine Learning Framework in Python ist. Die Umsetzung von unseren Algorithmen dafür wäre der nächste logische Schritt um die neuroevolutionären Methoden mehr in den Fokus zu Rücken. Diese spezielle Implementierung erlaubt uns Schritte vorzusimulieren, da der Torwart deterministisch ist. Damit können andere Trainingstechniken, wie Backpropagation, benutzt werden, die einen interessanten Vergleich anstellen.
 
         \subsection*{ConvNet, CoSyNE, DCT und Wavelets}
             In \cite{cosyne4} wird CoSyNE und DCT für die Komprimierung von über 1 Million Gewichten in einem Convolutional Neural Network benutzt und hat beeindruckende Ergebnisse für die Steuerung von einem Auto mit Bilddaten erzielt. Deshalb würde es sich anbieten die Verknüpfung von CoSyNE und DCT auf anderen Aufgaben, die auf hochdimensinalen korrelierten Daten basieren, anzuwenden. \\

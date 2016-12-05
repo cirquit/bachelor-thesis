@@ -97,29 +97,48 @@ month={Feb}}
   howpublished = "\url{http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}"
 }
 
-@MISC{go,
-  title = {Mastering the Game of Go with Deep Neural Networks and
-Tree Search},
-  author = {David Silver, Aja Huang},
-  year = {2016},
-  howpublished = "\url{http://airesearch.com/wp-content/uploads/2016/01/deepmind-mastering-go.pdf}"
+@article{go,
+title = {Mastering the game of Go with deep neural networks and tree search},
+author  = {David Silver and Aja Huang and Christopher J. Maddison and Arthur Guez and Laurent Sifre and George van den Driessche and Julian Schrittwieser and Ioannis Antonoglou and Veda Panneershelvam and Marc Lanctot and Sander Dieleman and Dominik Grewe and John Nham and Nal Kalchbrenner and Ilya Sutskever and Timothy Lillicrap and Madeleine Leach and Koray Kavukcuoglu and Thore Graepel and Demis Hassabis},
+year  = 2016,
+URL = {http://www.nature.com/nature/journal/v529/n7587/full/nature16961.html},
+journal = {Nature},
+pages = {484--503},
+volume  = {529}
 }
 
-@MISC{wavenet,
-  title = {WaveNet: A Generative Model for Raw Audio},
-  author = {Aaron van den Oord, Sander Dieleman},
-  year = {2016},
-  howpublished = "\url{https://arxiv.org/pdf/1609.03499.pdf}"
+@article{wavenet,
+  author    = {Aaron van den Oord and
+               Sander Dieleman and
+               Heiga Zen and
+               Karen Simonyan and
+               Oriol Vinyals and
+               Alex Graves and
+               Nal Kalchbrenner and
+               Andrew W. Senior and
+               Koray Kavukcuoglu},
+  title     = {WaveNet: {A} Generative Model for Raw Audio},
+  journal   = {CoRR},
+  volume    = {abs/1609.03499},
+  year      = {2016},
+  url       = {http://arxiv.org/abs/1609.03499},
+  timestamp = {Mon, 03 Oct 2016 17:51:10 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/corr/OordDZSVGKSK16},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
 }
+
+
 
 % Optional fields: author, title, howpublished, month, year, note
-@MISC{hfo,
-  title = {Half Field Offense: An Environment for Multiagent
-Learning and Ad Hoc Teamwork},
-  author = {Matthew Hausknecht, Prannoy Mupparaju},
-  year = {2016},
-  howpublished = "\url{http://www.cs.utexas.edu/~pstone/Papers/bib2html-links/ALA16-hausknecht.pdf}"
 
+@inproceedings{hfo,
+title={Half Field Offense: An Environment for Multiagent Learning and Ad Hoc Teamwork},
+author={Matthew Hausknecht and Prannoy Mupparaju and Sandeep Subramanian and Shivaram Kalyanakrishnan and Peter Stone},
+booktitle={AAMAS Adaptive Learning Agents (ALA) Workshop},
+month={May},
+address={Singapore},
+url="http://www.cs.utexas.edu/users/ai-lab/?hausknecht:aamasws16",
+year={2016}
 }
 
 % Optional fields: author, title, howpublished, month, year, note
@@ -127,6 +146,7 @@ Learning and Ad Hoc Teamwork},
   title  = {An Overview of Genetic Algorithms: Part 1, Fundamentials},
   author = {David Beasley, David R. Bull},
   year   = {1993},
+  journal = {University Computing},
   howpublished ="\url{http://www.geocities.ws/francorbusetti/gabeasley1.pdf}"
 }
 
@@ -147,11 +167,15 @@ Learning and Ad Hoc Teamwork},
  }
 
  % Optional fields: volume, number, pages, month, note
- @MISC{whiteley88,
-   author = {D.Whiteley},
-   title = {Applying Genetic Algorithms to Neural Network Problems: A Preliminary Report},
-   year = {1988}
- }
+@inproceedings{whitley88,
+   key       = {connectionism},
+   author    = {Darrell Whitley},
+   title     = {Applying Genetic Algorithms to Neural Network Problems: A Preliminary Report},
+   booktitle = {Proceedings of the International Neural Network Society Conference},
+   organization = {PROC INNS88},
+   year      = {1988}
+
+}
  (1995) Game Playing Othello Neuro-
 EVOLUTION Marker-BASED Encoding, Connection Science, 7:3-4, 195-210
  % Optional fields: volume, number, pages, month, note
@@ -275,12 +299,11 @@ EVOLUTION Marker-BASED Encoding, Connection Science, 7:3-4, 195-210
 
 % Optional fields: author, title, howpublished, month, year, note
 @MISC{hfo-history,
-   author = "Robocup",
-   title = "A Brief History of RoboCup",
-   year = "2016",
-   howpublished = "\url{http://www.robocup.org/a_brief_history_of_robocup}",
-   note = "[Online; accessed 27-Nov-2016]"
- 
+  author = "Robocup",
+  title = "A Brief History of RoboCup",
+  year = "2016",
+  howpublished = "\url{http://www.robocup.org/a_brief_history_of_robocup}",
+  note = "[Online; accessed 27-Nov-2016]"
 }
 
 
@@ -295,8 +318,7 @@ EVOLUTION Marker-BASED Encoding, Connection Science, 7:3-4, 195-210
 % Optional fields: editor, volume/number, series, pages, address, month, organization, publisher, note
 @CONFERENCE{robot,
   author = {Siyuan Feng, X Xinjilefu, Christopher G. Atkeson},
-  title = {Optimization Based Controller Design and Implementation for the
-Atlas Robot in the DARPA Robotics Challenge Finals},
+  title = {Optimization Based Controller Design and Implementation for the Atlas Robot in the DARPA Robotics Challenge Finals},
   booktitle = {IEEE-RAS 2015},
   year = {2015}
 }

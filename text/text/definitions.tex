@@ -1,8 +1,8 @@
 % pdflatex -shell-escape -interaction=nonstopmode main.tex && pdflatex -shell-escape -interaction=nonstopmode main.tex
 
-\chapter{Grundlagen}
+\chapter{Grundlagen} \label{basics}
 
-Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} (Kap. \ref{ga-my-definition}) im Zusammenhang mit \textbf{neuronalen Netzen} (Kap. \ref{neural-evo-definition}) und der \textbf{Cross Entropy Method} (Kap. \ref{cross-entropy-definition}). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fouriertransformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
+Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{Genetischen Algorithmen} (Kap. \ref{ga-my-definition}) im Zusammenhang mit \textbf{neuronalen Netzen} (Kap. \ref{neural-evo-definition}) und der \textbf{Cross Entropy Method} (Kap. \ref{cross-entropy-definition}). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fourier-Transformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
 
     \section{Genetische Algorithmen} \label{ga-my-definition}
         % ``Die Motivation von Genetischen Algorithmen kam aus der Natur bla blubb''\\
@@ -507,10 +507,10 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
 
     \section{Diskrete Kosinustransformation} \label{dct-definition}
 
-        Eine Technik zum reduzieren des Suchraums ist die diskrete Kosinustransformation (\textit{discrete cosine transform}, \textbf{DCT}), die zur Familie der Fouriertransformationen gehört. Eine \textbf{Fouriertransformation} teilt ein Signal in beliebig viele trigonometrische Funktionen, wie Sinus oder Kosinus auf, und über die Summe dieser Funktionen kann jedes Signal beschrieben werden. \\
+        Eine Technik zum reduzieren des Suchraums ist die diskrete Kosinustransformation (\textit{discrete cosine transform}, \textbf{DCT}), die zur Familie der Fourier-Transformationen gehört. Eine \textbf{Fourier-Transformation} teilt ein Signal in beliebig viele trigonometrische Funktionen, wie Sinus oder Kosinus auf, und über die Summe dieser Funktionen kann jedes Signal beschrieben werden. \\
 
         \noindent
-        Diese Fouriertransformation liefert uns ein diskretes Frenquenzenspektrum, das in Form von Koeffizienten dargestellt wird. Dabei wird pro kodierten Datenpunkt ein Koeffizient erzeugt. Um die Daten wiederherzustellen gibt es die inverse Kosinustransformation, die die Koeffizienten wieder umwandelt.
+        Diese Fourier-Transformation liefert uns ein diskretes Frenquenzenspektrum, das in Form von Koeffizienten dargestellt wird. Dabei wird pro kodierten Datenpunkt ein Koeffizient erzeugt. Um die Daten wiederherzustellen gibt es die inverse Kosinustransformation, die die Koeffizienten wieder umwandelt.
 
         \begin{multicols}{2}
             \begin{figure}[H]
