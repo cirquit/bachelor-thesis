@@ -3,14 +3,14 @@
     % ``Was für Ligen gibt es'' \\
     % ``Was für eine Domäne ist es im Vergleich zu anderen'' \\
     % \\
-    RoboCup ist ein Fußball Simulator, der seine Anfänge in 1993 in Japan, Tokyo gefunden hat. Eine Gruppe von Forschern, inklusive Minoru Asada, Yasuo Kuniyoshi und Hiroaki Kitano, haben als einen Wettbewerb unter dem Namen \textbf{Robot J-League} gestartet. Der Name stammt von einer professionellen japanischen Fußball Liga \cite{hfo-history}.\\
+    RoboCup ist ein Fußball Simulator, der seine Anfänge in 1993 in Japan, Tokyo gefunden hat. Eine Gruppe von Forschern, inklusive Minoru Asada, Yasuo Kuniyoshi und Hiroaki Kitano, haben ein Wettbewerb unter dem Namen \textbf{Robot J-League} gestartet. Der Name stammt von einer professionellen japanischen Fußball Liga \cite{hfo-history}.\\
     \\
     Nach einem Monat haben sie jedoch weltweit überwältigendes Feedback bekommen und haben die Initiative als internationales Projekt weitergeführt, daher kam die Umbenennung zur \textbf{Robot World Cup Initiative}, kurz RoboCup. \\
     % \textit {(source: http://www.robocup.org/about-robocup/a-brief-history-of-robocup/)} \\
     \\
-    Die RoboCup Initiative betreibt derzeit sechs große Wettbewerbe, die sich jeweils wieder in Ligen und Subligen aufteilen lassen. Darunter fällt \textbf{RoboCup Soccer} (\ref{fig:robocup-screenshot}), \textbf{RoboCup Rescue Rescue}, \textbf{RoboCup Junior}, \textbf{RoboCup Logistics}, \textbf{RoboCup @ Work} und \textbf{RoboCup @ Home}. Unsere Implementierung fällt in die Subliga \textbf{2D Soccer Simulation}, in der es darum geht in einer zweidimensionalen Welt zwei Fußballmannschaften gegeneinander antreten zu lassen.\\
+    Die RoboCup Initiative betreibt derzeit sechs große Wettbewerbe, die sich jeweils wieder in Ligen und Subligen aufteilen lassen. Darunter fällt \textbf{RoboCup Soccer} (Abbildung \ref{fig:robocup-screenshot}), \textbf{RoboCup Rescue Rescue}, \textbf{RoboCup Junior}, \textbf{RoboCup Logistics}, \textbf{RoboCup @ Work} und \textbf{RoboCup @ Home}. Unsere Implementierung fällt in die Subliga \textbf{2D Soccer Simulation}, in der es darum geht in einer zweidimensionalen Welt zwei Fußballmannschaften gegeneinander antreten zu lassen.\\
     \\
-    Die Aufgabe, die wir angehen, gehört zu einem Fragement von RoboCup2D, genannt \textbf{Half Field Offense} (\ref{fig:hfo-screenshot}).\\
+    Die Aufgabe, die wir angehen, gehört zu einem Fragement von RoboCup2D, genannt \textbf{Half Field Offense} (Abbildung \ref{fig:hfo-screenshot}).\\
     \begin{figure}[htbp]
         \includegraphics[width = 1.0\textwidth, center]{../pictures/full-field.png}
         \caption{Screenshot von dem gesamten Spielfeld von RoboCup2D \label{fig:robocup-screenshot}}
@@ -20,7 +20,7 @@
 
         Die Domäne Half Field Offense grenzt das Spielfeld auf eine Hälfte ein, sodass wir 4 Angreifer und 3 Verteidiger + Torwart haben. Diese Einschränkung vereinfacht den Such- und Zustandsraum immens und erlaubt trotzdem noch eine Wiederverwendbarkeit der Agenten, wenn eine vollständige Mannschaft aufgebaut wird.\\
         \\
-        In unserer Implementierung haben wir lediglich ein 1vs1 Szenario, also ein Angreifer gegen ein Torwart. Die Modellierung erlaubt dennoch ein nahtlosen Skalierung auf ein 4vs4 Szenario, sodass weitere Parametrisierung ohne viel Aufwand ausprobiert werden können.\\
+        In unserer Implementierung haben wir lediglich ein 1vs1 Szenario, also einen Angreifer gegen einen Torwart. Die Modellierung erlaubt dennoch ein nahtlosen Skalierung auf ein 4vs4 Szenario, sodass weitere Parametrisierung ohne viel Aufwand ausprobiert werden können.\\
 
         \begin{figure}[htbp]
             \includegraphics[width = 0.7\textwidth,height = 0.6\textheight, center]{../pictures/half-field.png}
@@ -46,7 +46,7 @@
             \end{mdframed}
 %            \textit{(Frage: Alles vom Paper abschreiben oder referenzieren?)} \\
             \hfill  \\
-            In unserem 1vs1 High Level Setting haben wir damit 13 Zustandsparameter. Vier von diesen Parametern gehören zu dem Torwart, aber da seine Position implizit durch andere Eigenschaftn gegeben ist, beachten wir sie nicht. Redundante Information würde den Suchraum unnötig aufblähen und die Suche verlängern. Deshalb wurden nur die folgenden 9 Zustände bereitgestellt:
+            In unserem 1vs1 High Level Setting haben wir damit 13 Zustandsparameter. Vier von diesen Parametern gehören zu dem Torwart, aber da seine Position implizit durch andere Eigenschaften gegeben ist, beachten wir sie nicht. Redundante Information würde den Suchraum unnötig aufblähen und die Suche verlängern. Deshalb wurden nur die folgenden 9 Zustände bereitgestellt:
 
 
 
@@ -77,7 +77,7 @@
             Der Zustand kann in 4 Kategorieren unterteilt werden, die alle auf den Wertebereich von $[ -1, +1 ]$ reduziert wurden.
 
             \subsubsection*{Winkelkodierung}
-                Die Winkel sind im Bereich von $[0, \pi]$ und durch folgende Formel auf den Bereich $[-1, +1]$ transformiert \footnote[1]{Formel laut dem E-Mail-Verkehr mit dem Entwickler}:
+                Die Winkel sind im Bereich von $[0, \pi]$ und werden durch die folgende Formel auf den Bereich $[-1, +1]$ transformiert \footnote[1]{Formel laut dem E-Mail-Verkehr mit dem Entwickler}:
 
                 \begin{mdframed}
                     Sei $f : [0,\pi] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
@@ -91,7 +91,7 @@
                 Die boole'schen Werte sind binär und $-1$ entspricht $false$ und $1$ entsprechend $true$.
 
             \subsubsection*{Lagekodierung}
-                Die Lagekodierung ist normalisiert auf der maximale diagonale Länge des Spielfelds die durch $max_{\text{L}} = \sqrt{l^2 + w^2}$ gegeben ist, wobei $l$ die Länge und $w$ die Breite ist. In dem Fall für HFO, entspricht sie $sqrt(2^2 + 2^2) ~= 2.82$. Die Formeln dafür sind: \\
+                Die Lagekodierung ist auf der maximale diagonale Länge des Spielfelds normalisiert, die durch $max_{\text{L}} = \sqrt{l^2 + w^2}$ gegeben ist, wobei $l$ die Länge und $w$ die Breite ist. In dem Fall für HFO, entspricht sie $sqrt(2^2 + 2^2) ~= 2.82$. Die Formeln zum Umrechnen dafür sind: \\
 
                 \begin{mdframed}
                 Sei $f : [-max_{\text{L}}, max_{\text{L}}] \rightarrow [-1, +1]$ die Kodierungsfunktion \\
@@ -103,11 +103,10 @@
             \subsubsection*{Anderes}
                 Unter diese Kategorie fallen nur die x- und y-Koordinaten und sind trivialerweise im Bereich von $[-1, +1]$, weil das die Grenzen des Spielfelds sind.
 
-\newpage
         \subsection{Aktionsraum} \label{actionspace-definition}
             % ``Gibt 6 nicht parametrisierte Aktionen, die wir benutzt haben''\\
             % ``Gibt noch andere parametrisierte''
-            Es gibt 8 parametrisierte und 6 nicht parametrisierte Aktionen. Wir haben die Algorithmen auf 5 der Aktionen trainiert die nicht parametrisiert sind. Die Aktion \textit{CATCH} ist für Angreifer illegal und wurde deshalb weggelassen. Die folgende Aufzählung beschreibt alle Aktionen \cite{hfo}:
+            Es gibt 8 parametrisierte und 6 nicht parametrisierte Aktionen. Wir haben die Algorithmen auf 5 der Aktionen trainiert, die nicht parametrisiert sind. Die Aktion \textit{CATCH} ist für Angreifer illegal und wurde deshalb weggelassen. Die folgende Aufzählung beschreibt alle Aktionen aus der Literatur \cite{hfo}:
 
             \begin{multicols}{2}
                 \textbf{Parametrisierte}
@@ -148,7 +147,7 @@
             Wenn diese Aktion gewählt wird, macht der Agent nichts.
 
             \subsubsection*{Abfrage der Aktionen}
-            Jedes Spiel hatte eine maximale Laufzeit die in Frames aufgeteilt wird und jeder Agent pro Frame gefragt, welche Aktion er ausführen will. Wenn über längere Zeit keine Antwort von dem Agenten kommt, wird automatisch die No-Op Aktion ausgeführt.
+            Jedes Spiel hatte eine maximale Laufzeit die in Frames aufgeteilt wird und jeder Agent wird pro Frame gefragt, welche Aktion er ausführen will. Wenn über längere Zeit keine Antwort von dem Agenten kommt, wird automatisch die No-Op Aktion ausgeführt.
 
 
         \subsection{Einschränkungen}
@@ -158,9 +157,9 @@
             % ``Auch genannt Black Box RL''
             Die Domäne HFO hat besondere Einschränkungen, die sie zu einem schwierigen Problem machen. Zum einen haben wir keine Möglichkeit im Voraus herauszufinden, wie gut eine Aktion für einen bestimmten Zustand war, da das Framework diese Funktionalität nicht unterstützt. Stattdessen müssen wir uns auf das Resultat der Simulation verlassen, das uns lediglich am Ende sagt, ob ein Tor geschossen wurde. \\[2mm]
             \noindent
-            Zum anderen ist ein Spiel eine Abfolge von mehreren hundert Aktionen die alle gemeinsam bewertet werden, und deshalb ist es unmöglich eine Fragmentierung in Teilziele zu schaffen. Zusätzlich zum spärlichen Signal, ob wir ein Tor geschossen haben, kommt der kontinuierliche 9-dimensionale Zustandsraum, den wir mit normalverteiltem Rauschen empfangen haben.\\[2mm]
+            Zum anderen ist ein Spiel eine Abfolge von mehreren hundert Aktionen, die alle gemeinsam bewertet werden und deshalb ist es unmöglich eine Fragmentierung in Teilziele zu schaffen. Zusätzlich zum spärlichen Signal, ob wir ein Tor geschossen haben, kommt der kontinuierliche 9-dimensionale Zustandsraum, den wir mit normalverteiltem Rauschen empfangen.\\[2mm]
             \noindent
-            Daher ist unsere Annahme, wenn unter Bedingungen diesem extremen Setting die Algorithmen Erfolge erziehlen können, werden sie ähnliche oder bessere Performanz bei einfacheren Aufgaben zeigen. Hinzu kommt das große Anwendungsgebiet, weil wir minimale Anforderungen an das Problem stellen, das uns lediglich seltenes Fitnessignal zur Verfügung stellen muss. \\[2mm]
+            Daher ist unsere Annahme, wenn unter den Bedingungen von diesem extremen Setting die Algorithmen Erfolge erziehlen können, werden sie ähnliche oder bessere Performanz bei einfacheren Aufgaben zeigen. Hinzu kommt das große Anwendungsgebiet, weil wir minimale Anforderungen an das Problem stellen, das uns lediglich ein seltenes Fitnessignal ohne Gradienten zur Verfügung stellen muss. \\[2mm]
             \noindent
             Eine Beispieldomäne wäre eine Fabrik, die von autonomen Robotern bedient wird und als Auftrag bekommt, einen bestimmten Durchsatz zu erzeugen. Dabei haben die Roboter keinerlei Wissen über die Lage oder Ausstattung der Fabrik und besitzen nur einfache Sichtsensoren.
 
@@ -178,7 +177,7 @@
         Der Simulationsserver ist in C++ geschrieben und wurde aus \cite{hfo} übernommen. Er wird durch Flags beim Starten parametrisiert. 
 
         \subsubsection*{Agenten}
-        Die Agenten sind in Python geschrieben und stellen eine Erweiterung von einem der Beispielskripte vom HFO Framework \cite{hfo} dar. Diese Prozesse werden mit Kommandozeilenparametern gesteuert, die bestimmen welcher Spieler sie sind und wie sie die Kodierung des KNNs benutzen, um damit das Netz zu befüllen.
+        Die Agenten sind in Python geschrieben und stellen eine Erweiterung von einem der Beispielskripte vom HFO Framework \cite{hfo} dar. Diese Prozesse werden mit Kommandozeilenparametern gesteuert, die bestimmen welcher Spieler sie sind und wie sie die Kodierung des ANNs benutzen, um das Netz zu befüllen.
 
         \subsubsection*{Koordinator}
         Der Koordinator ist für die Umsetzung des GAs und die jeweiligen Kodierungen zuständig, startet den Server, die Agenten Skripte und überwacht die Simulation. Er ist, wie alle folgenden Codebeispiele, in Haskell geschrieben.
@@ -207,7 +206,7 @@
             Der erste Algorithmus hat als Kodierung der Individuen eine diskrete Wahrscheinlichkeitsverteilung über 5 Aktionen benutzt. Wir nennen diesen Algorithmus im Folgenden \textbf{WvA}. Wenn der Agent gestartet wurde, samplet er jeden Zeitschritt ohne Wissen über jeglichen Zustand aus dieser Verteilung raus. 
 
             \subsubsection*{Kodierung}
-            Die Kodierung besteht aus den 5 Aktionen aus (\ref{actionspace-definition}), für die wir ihre jeweilige Wahrscheinlichkeit als Zahl kodieren. Sie ist muss die Regeln aus (\ref{kodierung}) für eine diskrete Wahrscheinlichkeitsverteilung einhalten.
+            Die Kodierung besteht aus den 5 Aktionen aus Kapitel \ref{actionspace-definition}, für die wir ihre jeweilige Wahrscheinlichkeit als Zahl kodieren. Sie ist muss die Regeln aus Lemma \ref{kodierung} für eine diskrete Wahrscheinlichkeitsverteilung einhalten.
 
             \begin{figure}[H]
                 \begin{mdframed}
@@ -242,7 +241,7 @@
 [15,38,55,87,100]
 > let l2 = it
 > {-
-  [15, 38, 55, 87, 100]
+   [15, 38, 55, 87, 100]
 - [ 0, 15, 38, 55,  87, 100]
 = [15, 23, 17, 32,  13]
 -}
@@ -253,10 +252,12 @@
             \end{minted}
             \end{mdframed}
             \noindent
-            Damit haben wir eine Wahrscheinlichkeitsverteilung über 5 Aktionen und können uns sicher sein dass sie aufsummiert immer $100$ ergibt.
+            Damit haben wir eine Wahrscheinlichkeitsverteilung über 5 Aktionen und können uns sicher sein, dass sie aufsummiert immer $100$ ergibt.
 
             \subsubsection*{Kreuzung Version 1}
             Wir haben zwei verschiedene Kreuzungsmethoden ausprobiert, die während der Entwicklung als austauschbar bewertet wurden. Die erste Methode wurde mit den Listen umgesetzt, aus denen sie generiert wurden (die jeweils die 0 und 100 angehängt bekommen haben). Dafür wurde elementweise der Durchschnitt berechnet und daraus entsteht dann eine neue Generatorliste aus der sich die Verteilung berechnen lässt.
+
+
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{haskell}
 > let individualA = [0, 15, 38, 55, 87, 100]
@@ -315,7 +316,7 @@ sort
             Aus diesem Generator kann wieder eine Wahrscheinlichkeitsverteilung erstellt werden.
 
             \subsubsection*{Mutation Version 2}
-            Für die zweite Variante der Mutation spalten wir das $\delta$ in $n$ Teile, summieren sie elementweise mit der Verteilung, überprüfen auf die Grenzen von [$0,100$] und normalisieren sie wie in Kreuzung Version 2.
+            Für die zweite Variante der Mutation spalten wir das $\delta$ in $n$ Teile, summieren sie elementweise mit der Verteilung, überprüfen auf die Grenzen von [$0,100$] und normalisieren sie wie in Definition \ref{norm-prop}.
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{haskell}
 > let delta = 50
@@ -333,12 +334,12 @@ sort
 
 \newpage
 
-        \subsection{Agentenstrategien als KNN mit DCT} \label{knn-dct-impl}
-        Für alle folgenden Algorithmen haben wir ein neuronales Netz mit 9 Eingaben, 12 LSTM (\ref{lstm-definition}) Neuronen und 5 Dense Ausgaben benutzt, wo ein Softmax (\ref{softmax-definition}) drübergelegt wurde. Damit wird der Zustand aus (\ref{statespace-definition}) dem Netz gegeben und er gibt uns eine Wahrscheinlichkeitsverteilung über 5 Aktionen aus (\ref{actionspace-definition}) zurück.\\[2mm]
+        \subsection{Agentenstrategien als ANN mit DCT} \label{knn-dct-impl}
+        Für alle folgenden Algorithmen haben wir ein neuronales Netz mit 9 Eingaben, 12 LSTM (Kapitel \ref{lstm-definition}) Neuronen und 5 Dense Ausgaben benutzt, wo ein Softmax (Kapitel \ref{softmax-definition}) darübergelegt wurde. Damit wird der Zustand aus Kapitel \ref{statespace-definition} dem Netz gegeben und er gibt uns eine Wahrscheinlichkeitsverteilung über 5 Aktionen (Kapitel \ref{actionspace-definition}) zurück.\\[2mm]
         \noindent
-        Wenn der Agent spielt, wird jedes Frame der aktuelle (verrauschte) Zustand dem Netz gegeben und wir samplen aus der Wahrscheinlichkeitsverteilung die Aktion raus, die dann ausgeführt wird. \\[2mm]
+        Wenn der Agent spielt, wird jedes Frame der aktuelle, verrauschte Zustand dem Netz gegeben und wir samplen aus der Wahrscheinlichkeitsverteilung die Aktion raus, die ausgeführt wird. \\[2mm]
         \noindent
-        Das KNN besitzt 1108 Gewichte und wir reduzieren es mithilfe von DCT (\ref{dct-definition}) auf 20 Koeffizienten, was eine Komprimierungsverhältnis von \textit{1:55} ist. Die Abbildung \ref{fig:dct-my-case} zeigt diese Kompressionsrate für normalverteilte Daten $ \mathcal{X} \sim \mathcal{N} (\mu = 1, \sigma = 10) $.\\
+        Das ANN besitzt 1108 Gewichte und wir reduzieren es mithilfe von DCT (Kapitel \ref{dct-definition}) auf 20 Koeffizienten, was eine Komprimierungsverhältnis von \textit{1:55} ist. Die Abbildung \ref{fig:dct-my-case} zeigt diese Kompressionsrate beispielhaft für normalverteilte Daten $ \mathcal{X} \sim \mathcal{N} (\mu = 1, \sigma = 10) $.\\
 
         \begin{figure}[H]
             \begin{center}
@@ -348,18 +349,18 @@ sort
         \end{figure}
 
         \noindent
-        Man erkennt eine extreme Korrelation zwischen benachbarten Gewichten die der Reihe nach das KNN befüllt haben. Die folgenden drei Algorithmen benutzen die Kompression:
+        Man erkennt eine extreme Korrelation zwischen benachbarten Gewichten die der Reihe nach das ANN befüllt haben. Die folgenden drei Algorithmen benutzen diese Zustandskompression:
 
         \begin{itemize}
-            \setlength\itemsep{1em}
-            \item \textbf{Cross Entropy} (\ref{cross-entropy-definition}) \\
+            \setlength\itemsep{5pt}
+            \item \textbf{Cross Entropy} (Kapitel \ref{cross-entropy-definition}) \\
             Hier haben wir die 20 Koeffizienten als Normalverteilung kodiert, $25\%$ der Population als Eltern gewählt und die restlichen $75\%$ aus den neu berechneten Normalverteilungen der Eltern gesamplet. Die initialen Grenzen zum Erstellen der Normalverteilung waren $\mu = 0$ und $\sigma \in [-1.5,1.5]$.
 
-            \item \textbf{Neuroevolution} (\ref{neural-evo-definition}) \\
+            \item \textbf{Neuroevolution} (Kapitel \ref{neural-evo-definition}) \\
             Bei der naiven Neuroevolution hat jedes Individuum die 20 Koeffizienten als Zahlen gespeichert. $25\%$ der Population wurden als Eltern gewählt die $50\%$ Kinder erzeugen und die restlichen $25\%$ wurden völlig neu erstellt. Die Grenzen zur Erstellung der Koeffizienten war $c \in [-3,3]$.
 
-            \item \textbf{CoSyNE} (\ref{cosyne-definition}) \\
-            Der CoSyNE Algorithmus benutzt die gleichen Ablauf wie Neuroevolution, mit der Ausnahme, dass er statt neue Individuen zu erstellen, genug Kinder erstellt und dann die gesamte Population im Eigenschaftsraum zufällig vermischt.
+            \item \textbf{CoSyNE} (Kapitel \ref{cosyne-definition}) \\
+            Der CoSyNE Algorithmus benutzt die gleichen Ablauf wie die naive Neuroevolution, mit der Ausnahme, dass er statt neue Individuen zu erstellen, genug Kinder erstellt und dann die gesamte Population in den Eigenschaftsräumen zufällig vermischt.
 
         \end{itemize}
 
@@ -437,7 +438,7 @@ sort
                     \caption{Stabilität der besten 5 Individuen \label{fig:actiondisttable}}
                 \end{table}
                 \noindent
-                Die durchschnittliche Gewinnwahrscheinlichkeit nach dem Testen liegt bei 5.72\% und wenn man den Spieler beobachtet, kann man sich nicht erklären, wie er es überhaupt schafft Tore zu schießen, da er meistens versucht ins Tor zu laufen während ihm der Ball abgenommen wird. Das ist aber auch nicht verwunderlich, da der Spieler weder weiß, wo der Torwart ist, noch ob er den Ball hat, oder wo er sich auf dem Spielfeld befindet. \\
+                Die durchschnittliche Gewinnwahrscheinlichkeit nach dem Testen liegt bei 5.72\% und wenn man den Spieler beobachtet, kann man sich nicht erklären, wie er es überhaupt schafft Tore zu schießen, da er meistens versucht ins Tor zu laufen, während ihm der Ball abgenommen wird. Das ist aber auch nicht verwunderlich, da der Spieler weder weiß, wo der Torwart ist, noch ob er den Ball hat, oder wo er sich auf dem Spielfeld befindet. \\
 
 \newpage
         \subsubsection*{}
@@ -479,10 +480,10 @@ sort
                     \caption{Stabilität der besten 5 Cross Entropy Individuen \label{fig:crossentropytable}}
                 \end{table}
                 \noindent
-                Von den Werten sieht man kaum einen Unterschied zu dem WvA Algorithmus, aber in der Simulation merkt man ein extrem aggressives Verhalten vom Spieler. Der Agent schießt den Ball sehr oft und versucht bereits nachdem er die Mitte des Spielfeldes überquert hat ein Tor zu schießen, unabhängig davon ob er in einer guten Position ist. Das führt natürlich dazu dass er öfter ins Aus schießt, ist aber wesentlich interessanter anzuschauen, da er jedes Spiel unberechenbar ist. \\[2mm]
+                Von den Werten sieht man kaum einen Unterschied zu dem WvA Algorithmus, aber in der Simulation merkt man ein extrem aggressives Verhalten vom Spieler. Der Agent schießt den Ball sehr oft und versucht bereits nachdem er die Mitte des Spielfeldes überquert hat ein Tor zu schießen, unabhängig davon ob er in einer guten Position ist, oder nicht. Das führt dazu dass er öfter ins Aus schießt, es ist aber wesentlich interessanter anzuschauen, da er jedes Spiel unberechenbar ist. \\[2mm]
 
                 \noindent
-                Es ist zu beachten, dass dieser Algorithmus die \textbf{schnellste Lernkurve} von den drei Algorithmen hatte, die im komprimierten DCT Raum arbeiten.
+                Es ist zu beachten, dass dieser Algorithmus die \textbf{schnellste Lernkurve} von den drei Algorithmen hatte, die im komprimierten DCT Suchraum arbeiten.
 \newpage
                 \begin{figure}[H]
                     \begin{center}
@@ -492,13 +493,13 @@ sort
                 \end{figure}
 
                 \noindent
-                In dem Torversuch aus \ref{fig:ce-gameplay} sehen wir das erste ``Manöver'' von allen Algorithmen, wo der Agent zuerst bis zu dem Strafraum läuft und den Ball wieder in Richtung Mittelfeld schießt. Danach er läuft ihm hinterher und schießt von der Strafraumlinie ein Tor in die rechte Ecke. Diese Methodik ist jedoch nicht repräsentativ, da der Agent oft versucht Tore ausserhalb des Strafraums zu schießen die oft ins Aus gehen. Er unterscheidet sich stark vom WaV Agenten, da er nicht so oft vor dem Tor stehen bleibt und riskante Schüsse probiert, auch wenn sie daneben gehen.
+                In dem Torversuch aus Abbildung \ref{fig:ce-gameplay} sehen wir das erste ``Manöver'' von allen Algorithmen, wo der Agent zuerst bis zu dem Strafraum läuft und den Ball wieder in Richtung Mittelfeld schießt. Danach er läuft ihm hinterher und schießt von der Strafraumlinie ein Tor in die rechte Ecke. Diese Methodik ist jedoch nicht repräsentativ, da der Agent oft versucht Tore ausserhalb des Strafraums zu schießen die oft ins Aus gehen. Er unterscheidet sich stark vom WaV Agenten, da er nicht so oft vor dem Tor stehen bleibt und riskante Schüsse probiert, auch wenn sie daneben gehen.
 \newpage
             \section{Neuroevolution}
                 \begin{multicols}{2}
                     \noindent
                     \\[5mm]
-                    Der Ansatz die Gewichte als DCT Koeffizienten darzustellen, führte zu den besten Ergebnissen. Das stärkste Individuum hat knapp \textbf{jedes zweite Spiel gewonnen} und ist mehr als 3-mal stabiler als die Cross-Entropy Lösung. Die Fitness hat sich nach ungefähr 150 Generationen im Bereich von $[30,45]$ eingependelt.
+                    Der Ansatz die DCT Koeffizienten als Zahlen darzustellen führte zu den besten Ergebnissen. Das stärkste Individuum hat knapp \textbf{jedes zweite Spiel gewonnen} und ist mehr als 3-mal stabiler als die Cross-Entropy Lösung. Die Fitness hat sich nach ungefähr 150 Generationen im Bereich von $[30,45]$ eingependelt.
                     \begin{figure}[H]
                        \includegraphics[scale=0.5]{../pictures/summary/neural-fitness.png}
                        \caption{Fitness Graph für Cross Entropy}\label{fig:graph-ne}
@@ -525,7 +526,7 @@ sort
                 Die stabile Fitness ist bei knapp 20\% und damit gewinnen diese Individuen durchschnittliche jedes fünfte Spiel. Hier haben wir bereits starke Anzeichen für eine Taktik gesehen. Der Agent rennt von Anfang an zum Tor, bleibt kurz vor dem Strafraum stehen und pendelt von Ecke zu Ecke bis der Torwart weiter rausgeht um ein Tor zu schießen.\\
 
                 \noindent
-                Wenn der Agent verliert, schießt er sich sofort zum Beginn des Spieles ins Aus schießt, oder er ist zu nah am Tor, sodass ihm der Ball abgenommen wird. Die Tendenz am Ende des Graphen deutet darauf hin, dass bei längeren Laufzeiten noch bessere Ergebnisse möglich wären.% Die stichprobenartigen Aufnahmen von diesen Agenten haben dennoch Gewinnserien von 3-4 Spielen hintereinander gezeigt, obwohl die die Wahrscheinlichkeit dafür 
+                Wenn der Agent verliert, schießt er sich entweder sofort zum Beginn des Spiels ins Aus, oder er ist zu nah am Tor, sodass ihm der Ball abgenommen wird. Die Tendenz am Ende des Graphen deutet darauf hin, dass bei längeren Laufzeiten noch bessere Ergebnisse möglich wären.% Die stichprobenartigen Aufnahmen von diesen Agenten haben dennoch Gewinnserien von 3-4 Spielen hintereinander gezeigt, obwohl die die Wahrscheinlichkeit dafür 
 \newpage
         \begin{figure}[H]
             \begin{center}
@@ -533,6 +534,7 @@ sort
                 \caption{Illustration eines Torversuchs für einen der Top 5 Agenten \\ des Neuroevolution Algorithmus \label{fig:neural-evo-gameplay}}
             \end{center}
         \end{figure}
+        \noindent
         In Abbildung \ref{fig:neural-evo-gameplay} sehen wir die bisher interessanteste Bewegung, da der Agent versucht sich zuerst in die untere Ecke zu positionieren, dabei den Torwart etwas rauslockt, um dann haarfein das Tor zu schießen. Diese Taktik ist die ausgereifteste, da sie die Reaktion des Torwarts, der Abhängigkeit des größsten offenen Winkels zum Tor und der damit in Beziehung stehende Torchancen in Betracht zieht. Aus anderen Simulationen haben wir auch Tore außerhalb des Strafraums fallen sehen, was bedeutet, dass der Agent nicht nur eine einzelne Gewinnstrategie verfolgt.
 \newpage
             \section{CoSyNE}
@@ -562,10 +564,10 @@ sort
                     \caption{Stabilität der besten 5 Neurevolution Individuen \label{fig:cosynetable}}
                 \end{table}
                 \noindent
-                Die beste Individuen haben lediglichlich nur knapp 12\% ihrer Spiele gewonnen und man kann eine ähnliche Taktik wie die Neuroevolution Agenten erahnen, nur wesentlich schlechter umgesetzt. Es passiert häufig, dass der Agent kurz vor dem Strafraum stehen bleibt und sich für eine sehr lange Zeit nicht bewegt. Da der Torwart nicht zu weit von dem Tor rausgeht, befinden sie sich im Deadlock bis der Agent versucht ein Tor zu schießen. Das Schießen ins Aus am Anfang des Spiels tritt hier gehäuft auf.\\
+                Die beste Individuen haben lediglichlich nur knapp 12\% ihrer Spiele gewonnen und man kann eine ähnliche Taktik wie die bei der Neuroevolution erahnen, nur wesentlich schlechter umgesetzt. Es passiert häufig, dass der Agent kurz vor dem Strafraum stehen bleibt und sich für eine sehr lange Zeit nicht bewegt. Da der Torwart nicht zu weit von dem Tor rausgeht, befinden sie sich im Deadlock, bis der Agent versucht ein Tor zu schießen. Das Schießen ins Aus am Anfang des Spiels tritt hier häufiger auf als bei der Neuroevolution.\\
 
                 \noindent
-                Eine interessante Eigenschaft von CoSyNE ist das stufenartige Entwickeln der Fitness die ab bestimmten Generationen nie wieder schlechter wird.
+                Eine interessante Eigenschaft von CoSyNE ist das stufenartige Entwickeln der Fitness die ab bestimmten Generationen nie wieder schlechter wird. Diese Eigenschaft wirft viele Fragen über die Sicherheit des Entwicklungsprozesses auf, die wir nicht näher untersucht haben. Es ist interessant, dass diese Besonderheit bisher nicht in der Literatur angesprochen wurde. 
 
 \newpage
                 \begin{figure}[H]
@@ -574,7 +576,7 @@ sort
                         \caption{Illustration eines Torversuchs für einen der Top 5 Agenten \\ des CoSyNE Algorithmus \label{fig:cosyne-gameplay}}
                     \end{center}
                 \end{figure}
-
+                \noindent
                 In Abbildung \ref{fig:cosyne-gameplay} sehen wir den Torversuch von einem CoSyNE Agenten. Darin kann man den Unterschied zu dem Neuroevoltutionsansatz, der sich in den manuellen Simulationen sichtbar macht, erahnen. Der Agent bleibt oft in dem Strafraum stehen und kommt aus diesem Zustand nicht mehr raus. Ansonsten sehen wir ein ähnliches Ergebnis wie bei der Neuroevolution, da der Trick mit dem Rausspielen des Torwarts hier angewendet wird, um einen besseren Schusswinkel zu bekommen.
 \newpage
 

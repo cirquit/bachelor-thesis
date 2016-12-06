@@ -569,7 +569,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
         Nachdem wir den Zustandsraum komprimiert haben, sodass ein genetischer Algorithmus ihn in absehbarer Zeit entwickeln und ein neuronales Netz befüllt werden kann, erschließt sich die Verküpfung zu einem mächtigen Werkzeug das viele interessante Eigenschaften besitzt. Dieser Algorithmus wird Kooperative Synapsen Neuroevolution (\textbf{Cooperative Synapse Neuroevolution}) \cite{cosyne2}, oder auch \textbf{CoSyNE} genannt.\\
 
         \noindent
-        Er zeichnet sich speziell dadurch aus, dass er auf kontinuierlichen Zuständen und Aktionen funktioniert und spärliche Fitnessignale interpretieren kann. Das schafft er, indem er rekurrente Netze aufbaut und die genetische Suche mit aggressiver Mutation im Zustandsraum beschleunigt. Ein gutes Beispiel dafür ist das Rennspiel \textbf{TORCS} \cite{cosyne3}, wo der Algorithmus 993 Gewichte in 33 Koeffizienten kodiert \textit{(Faktor 1:30)} und lediglich durch die Bilddaten ähnlich gute Ergebnisse liefert wie die per Hand programmierten Agenten, die die Physik des Spieles kennen.\\
+        Er zeichnet sich dadurch aus, dass er durch eine spezielle genetische Methode und aggressiver Mutation den Suchraum der Gewichte für ein neuronales Netz schnell einschränkt. In Verknüpfung mit der DCT Kompression, hat er ein rekurrentes neuronales Netz für das Rennspiel \textbf{TORCS} \cite{cosyne3} erstellt, wo der Algorithmus 993 Gewichte in 33 DCT Koeffizienten kodiert \textit{(Faktor 1:30)}. Dabei hat er lediglich durch die Bilddaten ähnlich gute Ergebnisse geliefert, wie die per Hand programmierten Agenten, die die Physik des Spieles kennen.\\
 
         \noindent
         Ein großer Nachteil von genetischen Algorithmen ist, dass sie oft bei lokalen Maxima feststecken bleiben und lange brauchen um aus diesem Tal rauszukommen. Um dieses Problem anzugehen, versucht man die Stellschrauben wie Mutationswahrscheinlichkeit oder Kinderanzahl per Hand zu verändern \cite{grefenstette86}. CoSyNE benutzt dafür eine eigene \textbf{genetische Methode}, um die Suche einfacher zu gestalten. Sie nennt sich Permutation und erzeugt innerhalb der gesamten Population Unterteilungen in kleinere Populationen die in einer \textbf{kooperativen und koevolutionären} Beziehung stehen.
@@ -606,11 +606,11 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                     $6$        &                     $65\; \frac{km}{h}$   & \cellcolor{yellow!65} $42\; cm$ & \cellcolor{red!15} $50\; kg$ & $15\; cm$ \\ \hline
                 \end{tabular}
                 \end{center}
-                \caption{Nach der Permutation \label{fig:pre-perm}}
+                \caption{Nach der Permutation \label{fig:after-perm}}
             \end{table}
 
             \noindent
-            Wenn wir uns die Population als zweidimensionale Liste vorstellen, wo jedes Indviduum eine eigene Liste mit seinen spezifischen Eigenschaften ist, können wir die Population transponieren, wobei nun jede Eigenschaft eine eigene Liste ist, diese zufällig vermischen und wieder zurück transponieren um die neuen Individuen zu bekommen. Der folgende Pythoncode veranschaulicht das Prinzip unter Verwendung der \textit{numpy} Bibliothek.
+            Stellen wir uns die Population als zweidimensionale Liste vor, wo jedes Indviduum eine eigene Liste mit seinen spezifischen Eigenschaften ist (Tabelle \ref{fig:pre-perm}). Dann können wir die Population transponieren, wobei nun jeder Eigenschaftsraum eine eigene Liste ist. Danach vermischen wir innerhalb der Eigenschaftsräume zufällig und transponieren wieder zurück, um die neuen Individuen zu bekommen (Tabelle \ref{fig:after-perm}). Der folgende Pythoncode veranschaulicht das Prinzip unter Verwendung der \textit{numpy} Bibliothek.
 
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{python}
@@ -640,13 +640,13 @@ print population
             \end{minted}
             \end{mdframed}
             \noindent
-            Man erkennt leicht, dass keine der ursprünglichen Individuen erhalten bleiben und wir vollkommen neue bekommen. Der Sinn hinter dem Vermischen in der Eigenschaftsebene basiert auf der \textbf{Verknüpfungung mit der Kreuzungsmethode}. Wenn wir zwei Individuen kreuzen, werden ihre Kinder die gesamte Information von ihren Eltern in der Population übernehmen. Da CoSyNE den Repopulationsschritt nicht ausführt, dafür aber alle restlichen Individuen wegwirft, werden nur die Eigenschaften der Kinder übrig bleiben.\\
+            Man erkennt leicht, dass keine der ursprünglichen Individuen (Tabelle \ref{fig:pre-perm}) erhalten bleiben ) und wir vollkommen Neue bekommen (Tabelle \ref{fig:after-perm}. Der Sinn hinter dem Vermischen in der Eigenschaftsebene basiert auf der \textbf{Verknüpfungung mit der Kreuzungsmethode}. Wenn wir zwei Individuen kreuzen, werden ihre Kinder die gesamte Information von ihren Eltern in die Population übernehmen. Da CoSyNE den Repopulationsschritt nicht ausführt, dafür aber alle restlichen Individuen wegwirft, werden nur die Eigenschaften der Kinder übrig bleiben.\\
 
             \noindent
-            Das führt zur Homogenität in den einzelnen Eigenschaften, die zum Beispiel dafür verantworlich ist, dass alle Individuen gleich große Hörner haben. Wenn nun innerhalb der Hornlänge zufällig gemischt wird, bleibt alles gleich, da die gesamte Liste aus dem gleichen Element besteht. \\
+            Das führt zur Homogenität in den einzelnen Eigenschaftenräumen, die zum Beispiel dafür verantworlich sind, dass alle Individuen gleich große Hörner haben. Wenn nun innerhalb der Hornlänge zufällig gemischt wird, bleibt alles gleich, da die gesamte Liste aus dem gleichen Element besteht. \\
 
             \noindent
-            Die Annahme von CoSyNE ist dass die Lösung für das Problem in der Kombination von den Eigenschaften von allen Individuen liegt, die wir am Anfang erstellen. Durch das aggressive Aussortieren durchsuchen wir den Raum aller Möglichkeiten schneller und darin liegt der größte Vorteil von diesem Algorithmus. Dieser Mechanismus wird als \textbf{kooperative Koevolution} im Eigenschaftsraum interpretiert, da wir jede Eigenschaft als Population betrachten und darin eine genetische Suche abhängig voneinander vollziehen \cite{cosyne2}. \\
+            Die Annahme von CoSyNE ist, dass die Lösung für das Problem in der Kombination von den Eigenschaften von allen Individuen liegt, die wir am Anfang erstellen. Durch das aggressive Aussortieren durchsuchen wir den Raum aller Möglichkeiten schneller und darin liegt der größte Vorteil von diesem Algorithmus. Dieser Mechanismus wird als \textbf{kooperative Koevolution} im Eigenschaftsraum interpretiert, da wir jede Eigenschaft als Population betrachten und darin eine genetische Suche abhängig voneinander vollziehen \cite{cosyne2}. \\
 
             \noindent
             Wenn diese Annahme nicht stimmt und die Lösung nicht in einem Subset von allen Eigenschaften liegt, hat CoSyNE leider nur die Möglichkeit durch Mutation zum Ziel zu kommen. Deshalb wird dieser Parameter oft hoch gewählt \cite{cosyne1}\cite{cosyne2}\cite{cosyne3}.
