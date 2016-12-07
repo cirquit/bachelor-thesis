@@ -2,7 +2,7 @@
 
 \chapter{Grundlagen} \label{basics}
 
-Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{genetischen Algorithmen} (Kap. \ref{ga-my-definition}) im Zusammenhang mit \textbf{neuronalen Netzen} (Kap. \ref{neural-evo-definition}) und der \textbf{Cross Entropy Method} (Kap. \ref{cross-entropy-definition}). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fourier-Transformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
+Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{genetischen Algorithmen} (Kapitel \ref{ga-my-definition}) im Zusammenhang mit \textbf{neuronalen Netzen} (Kapitel \ref{neural-evo-definition}) und der \textbf{Cross Entropy Method} (Kapitel \ref{cross-entropy-definition}). Außerdem werden einige Verbesserungen zu den naiven Methoden besprochen, wie die Reduzierung des Suchraums durch \textbf{Fourier-Transformationen} und die Einführung von einer \textbf{kooperativen Evolution} durch Hinzufügen von einer neuen Aktion zu dem Ablauf des genetischen Algorithmus.
 
     \section{Genetische Algorithmen} \label{ga-my-definition}
         % ``Die Motivation von Genetischen Algorithmen kam aus der Natur bla blubb''\\
@@ -84,7 +84,7 @@ Dieses Kapitel bietet Einblick in die Grundlagen von \textbf{genetischen Algorit
             Nachdem die Evaluation vorbei ist, bekommen wir die Rückmeldung, welche Gazellen überlebt haben. Aus dieser Menge können wir nun einen prozentualen Betrag wählen, die Eltern sein werden. In unserer Implementierung nennen wir diesen Parameter $\alpha$. Damit versichern wir, dass nur die erfolgreichen Eigenschaften weiter in der Population erhalten bleiben und der Rest wegfällt.
 
         \subsection{Kreuzung} \label{crossover}
-            Die erfolgreichen Individuen wurden ausgewählt und können sich nun fortpflanzen. Dafür nehmen wir jeweils zwei Individuen und vertauschen zufällig ihre Ausprägungen. Dieses Verfahren haben wir in den Tabellen \ref{fig:enc-dad}, \ref{fig:enc-mom}, \ref{fig:child-1}, \ref{fig:child-2} dargestellt.
+            Die erfolgreichen Individuen wurden ausgewählt und können sich nun fortpflanzen. Dafür nehmen wir jeweils zwei Individuen und vertauschen zufällig ihre Ausprägungen. Dieses Verfahren haben wir in den Tabellen \ref{fig:enc-dad}, \ref{fig:enc-mom}, \ref{fig:child-1} und \ref{fig:child-2} dargestellt.
             \\[4mm]
             \begin{multicols}{2}
                 \begin{table}[H]
@@ -435,7 +435,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
 
 
             \subsection{Backpropagation} \label{backprop-chapter}
-                Um diese Technik zum Trainieren von ANNs zu erklären, müssen wir zunächst zeigen wie man den Fehler von einem neuronalen Netz misst. Dafür brauchen wir eine \textbf{Kostenfunktion} die uns die Abweichung zum Soll-Ergebnis gibt. Die Ergebnisse des Netzes für $\widehat{y}$ sind in Abbildung \ref{neuron-math} übernommen.
+                Um diese Technik zum Trainieren von ANNs zu erklären, müssen wir zunächst zeigen wie man den Fehler von einem neuronalen Netz misst. Dafür brauchen wir eine \textbf{Kostenfunktion} die uns die Abweichung zum Soll-Ergebnis gibt. Die Ergebnisse des Netzes für $\widehat{y}$ sind aus der Formel \ref{neuron-math} übernommen.
 
                 \begin{figure}[H]
                     \begin{mdframed}
@@ -464,8 +464,8 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
                 \begin{figure}[H]
                     \begin{mdframed}
                         \noindent
-                        Sei $\widehat{y}$ definiert als Ergebnis des Netzes aus Formel \ref{neuron-math}, dann gilt, \\
-                        pro Beobachtung $\widehat{y}_j \in \widehat{Y}$ und erwartetes Ergebnis $y_j \in Y$, \\
+                        Sei $\widehat{y}$ definiert als Ergebnis des Netzes aus Formel \ref{neuron-math}. \\
+                        Pro Beobachtung $\widehat{y}_j \in \widehat{Y}$ und erwartetes Ergebnis $y_j \in Y$, \\
                         leiten wir nach dem Gewicht $w_i$ partiell ab:\\[4mm]
     \hspace*{40mm} \Resize{5.5cm}{$\frac{\partial \text{cost}(y_j,\widehat{y}_j)}{\partial w_i} = \frac{\partial}{\partial w_i} (y_j - \widehat{y}_j)^2$} \\[2mm]
     \hspace*{62.3mm} \Resize{7.0cm}{$ = \frac{\partial}{\partial w_i} (y_j - max(\sum_{i = 1}^{n} x_i \cdot w_i ,0))^2$} \\[2mm]
@@ -610,7 +610,7 @@ newpopulation = eltern + mutkinder        # newpopulation.length = 8
             \end{table}
 
             \noindent
-            Stellen wir uns die Population als zweidimensionale Liste vor, wo jedes Indviduum eine eigene Liste mit seinen spezifischen Eigenschaften ist (Tabelle \ref{fig:pre-perm}). Dann können wir die Population transponieren, wobei nun jeder Eigenschaftsraum eine eigene Liste ist. Danach vermischen wir innerhalb der Eigenschaftsräume zufällig und transponieren wieder zurück, um die neuen Individuen zu bekommen (Tabelle \ref{fig:after-perm}). Der folgende Pythoncode veranschaulicht das Prinzip unter Verwendung der \textit{numpy} Bibliothek.
+            Stellen wir uns die Population als zweidimensionale Liste vor, wo jedes Indviduum eine eigene Liste mit seinen spezifischen Eigenschaften ist (Tabelle \ref{fig:pre-perm}). Dann können wir die Population transponieren, wobei nun jeder Eigenschaftsraum eine eigene Liste ist. Danach vermischen wir innerhalb der Eigenschaftsräume zufällig und transponieren wieder zurück, um die neuen Individuen zu bekommen (Tabelle \ref{fig:after-perm}). Der folgende Pythoncode veranschaulicht das Prinzip unter Verwendung der \textit{numpy} Bibliothek.\\[1mm]
 
             \begin{mdframed}
             \begin{minted}[escapeinside=||, linenos]{python}
@@ -639,8 +639,12 @@ print population
 
             \end{minted}
             \end{mdframed}
+            \hfill \\[1mm]
             \noindent
-            Man erkennt leicht, dass keine der ursprünglichen Individuen (Tabelle \ref{fig:pre-perm}) erhalten bleiben ) und wir vollkommen Neue bekommen (Tabelle \ref{fig:after-perm}. Der Sinn hinter dem Vermischen in der Eigenschaftsebene basiert auf der \textbf{Verknüpfungung mit der Kreuzungsmethode}. Wenn wir zwei Individuen kreuzen, werden ihre Kinder die gesamte Information von ihren Eltern in die Population übernehmen. Da CoSyNE den Repopulationsschritt nicht ausführt, dafür aber alle restlichen Individuen wegwirft, werden nur die Eigenschaften der Kinder übrig bleiben.\\
+            Man erkennt leicht, dass keine der ursprünglichen Individuen (Tabelle \ref{fig:pre-perm}) erhalten bleiben ) und wir vollkommen Neue bekommen (Tabelle \ref{fig:after-perm}). Der Sinn hinter dem Vermischen in der Eigenschaftsebene basiert auf der \textbf{Verknüpfungung mit der Kreuzungsmethode}.
+            \newpage
+            \noindent
+            Wenn wir zwei Individuen kreuzen, werden ihre Kinder die gesamte Information von ihren Eltern in die Population übernehmen. Da CoSyNE den Repopulationsschritt nicht ausführt, dafür aber alle restlichen Individuen wegwirft, werden nur die Eigenschaften der Kinder übrig bleiben.\\
 
             \noindent
             Das führt zur Homogenität in den einzelnen Eigenschaftenräumen, die zum Beispiel dafür verantworlich sind, dass alle Individuen gleich große Hörner haben. Wenn nun innerhalb der Hornlänge zufällig gemischt wird, bleibt alles gleich, da die gesamte Liste aus dem gleichen Element besteht. \\
@@ -716,11 +720,11 @@ print population
                     \end{center}
             \end{figure}
 
-            Stellen wir nun die Kodierung der Eigenschaften von jedem Individuum als Normalverteilung dar. Das bedeutet wir haben für jede Eigenschaft, zum Beispiel \textit{Hornlänge}, einen Durchschnitt und eine Standartabweichung. Die Abbilung (\ref{fig:norm-dist-encoding}) zeigt dies beispielhaft für fünf Individuen mit jeweils 4 Eigenschaften dar.\\[3mm]
+            Stellen wir nun die Kodierung der Eigenschaften von jedem Individuum als Normalverteilung dar. Das bedeutet wir haben für jede Eigenschaft, zum Beispiel \textit{Hornlänge}, einen Durchschnitt und eine Standartabweichung. Die Abbilung \ref{fig:norm-dist-encoding} zeigt dies beispielhaft für fünf Individuen mit jeweils 4 Eigenschaften dar.\\[3mm]
 
             \newpage
             \noindent
-            Wenn wir Individuen erstellen wollen, müssen wir aus jeder Normalverteilung eine Stichprobe nehmen (samplen), die wir als Punkte entlang der Graphen in \ref{fig:norm-dist-encoding} eingezeichnet haben.  Die Kreuzung und Mutation fallen aus, dafür berechnen wir nach jeder Simulation pro Eigenschaft neue Durchschnitte und Standartabweichungen aus den besten Individuen. Damit versuchen wir die Suche auf den vielversprechendsten Raum einzugrenzen.\\
+            Wenn wir Individuen erstellen wollen, müssen wir aus jeder Normalverteilung eine Stichprobe nehmen (samplen), die wir als Punkte entlang der Graphen in Abbildung \ref{fig:norm-dist-encoding} eingezeichnet haben. Die Kreuzung und Mutation fallen aus, dafür berechnen wir nach jeder Simulation pro Eigenschaft neue Durchschnitte und Standartabweichungen aus den besten Individuen. Damit versuchen wir die Suche auf den vielversprechendsten Raum einzugrenzen.\\
 
             \noindent
             Der Ablauf der Cross Entropy Method sieht daher folgendermaßen aus \cite{cem-blog}:\\
